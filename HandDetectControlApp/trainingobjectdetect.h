@@ -70,15 +70,13 @@
     testing.xml and then it will show you the detections on all the images.
 */
 
-
+#define DLIB_GIF_SUPPORT 0
 #include <dlib/svm_threaded.h>
 #include <dlib/string.h>
 #include <dlib/gui_widgets.h>
 #include <dlib/image_processing.h>
 #include <dlib/data_io.h>
 #include <dlib/cmd_line_parser.h>
-
-
 #include <iostream>
 #include <fstream>
 #include <QObject>
