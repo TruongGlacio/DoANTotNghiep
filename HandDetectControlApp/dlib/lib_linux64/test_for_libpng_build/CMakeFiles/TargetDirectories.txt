@@ -1,0 +1,3 @@
+D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/build_linux/test_for_libpng_build/CMakeFiles/edit_cache.dir
+D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/build_linux/test_for_libpng_build/CMakeFiles/libpng_test.dir
+D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/build_linux/test_for_libpng_build/CMakeFiles/rebuild_cache.dir

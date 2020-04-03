@@ -34,7 +34,6 @@ QML_DESIGNER_IMPORT_PATH =
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
-
 HEADERS += \
     ConstDefines.h \
     GlobalTypes.h \
@@ -45,37 +44,42 @@ HEADERS += \
     appengine.h \
     trainingobjectdetect.h \
     #video_tracking.h
+QMAKE_CXXFLAGS_RELEASE += -mavx
 
-#QMAKE_CXXFLAGS_RELEASE += -mavx
-INCLUDEPATH+=D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/include
-#INCLUDEPATH+=D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\lib
-#INCLUDEPATH+=D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\lib\Release
-#INCLUDEPATH+= C:/Program Files (x86)/GnuWin32/src/giflib
-#LIBS +=-L"D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\lib\Release"
-LIBS+=-L"D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\lib"
-LIBS+=-llibdlib
+win32 {
+INCLUDEPATH +=D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\include
+LIBS+=-L"D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\lib_win32"
+
+}
+
+linux-g++-64{
+   LIBS +=-L /usr/bin/openssl #-llibssl
+   INCLUDEPATH +=  /usr/bin/openssl
+   PKGCONFIG += openssl
+}
+
 LIBS += -lmingw32
-#LIBS+=-lOle32
-#LIBS+=-lOleaut32
-#LIBS+=-lm
-#LIBS+= -ldinput8
-#LIBS+=-lcomctl32
+LIBS+=-lOle32
+LIBS+=-lOleaut32
+LIBS+=-lm
+LIBS+= -ldinput8
+LIBS+=-lcomctl32
 
-#LIBS+=-ldxguid
-#LIBS+= -ldxerr8
-#LIBS+=-luser32
-#LIBS+=-lgdi32
-#LIBS+=-lwinmm
-#LIBS+= -limm32
-#LIBS+= -lole32
-#LIBS+=-loleaut32
-#LIBS+=-lshell32
-#LIBS+= -lversion
-#LIBS+= -luuid
+LIBS+=-ldxguid
+LIBS+= -ldxerr8
+LIBS+=-luser32
+LIBS+=-lgdi32
+LIBS+=-lwinmm
+LIBS+= -limm32
+LIBS+= -lole32
+LIBS+=-loleaut32
+LIBS+=-lshell32
+LIBS+= -lversion
+LIBS+= -luuid
 
-#LIBS+=-lglut32
-#LIBS+=-lopengl32
-#LIBS+=-lglu32
-#LIBS+=-lgdi32
-#LIBS+=-lwinmm
-#LIBS += -lws2_32
+LIBS+=-lglut32
+LIBS+=-lopengl32
+LIBS+=-lglu32
+LIBS+=-lgdi32
+LIBS+=-lwinmm
+LIBS += -lws2_32

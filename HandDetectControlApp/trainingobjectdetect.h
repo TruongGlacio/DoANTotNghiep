@@ -82,6 +82,7 @@
 #include <QObject>
 using namespace std;
 using namespace dlib;
+using namespace image_dataset_metadata;
 class TrainingObjectDetect : public QObject
 {
     Q_OBJECT
