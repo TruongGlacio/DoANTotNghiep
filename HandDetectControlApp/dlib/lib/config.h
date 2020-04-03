@@ -11,7 +11,7 @@
 #define DLIB_DISABLE_ASSERTS // asserts always disabled 
 
 /* #undef DLIB_ISO_CPP_ONLY */
-/* #undef DLIB_NO_GUI_SUPPORT */
+#define DLIB_NO_GUI_SUPPORT
 /* #undef DLIB_ENABLE_STACK_TRACE */
 
 /* #undef LAPACK_FORCE_UNDERSCORE */
@@ -21,7 +21,7 @@
 // and a BLAS and LAPACK library.  To do this you need to uncomment the following #defines.
 #define DLIB_JPEG_SUPPORT
 #define DLIB_PNG_SUPPORT
-#define DLIB_GIF_SUPPORT
+/* #undef DLIB_GIF_SUPPORT */
 /* #undef DLIB_USE_FFTW */
 /* #undef DLIB_USE_BLAS */
 /* #undef DLIB_USE_LAPACK */

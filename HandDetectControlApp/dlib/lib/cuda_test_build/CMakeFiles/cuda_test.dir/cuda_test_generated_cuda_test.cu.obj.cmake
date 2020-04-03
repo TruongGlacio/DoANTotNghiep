@@ -58,18 +58,18 @@ endif()
 
 # Set these up as variables to make reading the generated file easier
 set(CMAKE_COMMAND "C:/Program Files/CMake/bin/cmake.exe") # path
-set(source_file "D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib-19.19/dlib/cmake_utils/test_for_cuda/cuda_test.cu") # path
-set(NVCC_generated_dependency_file "D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib-19.19/build/cuda_test_build/CMakeFiles/cuda_test.dir//cuda_test_generated_cuda_test.cu.obj.NVCC-depend") # path
-set(cmake_dependency_file "D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib-19.19/build/cuda_test_build/CMakeFiles/cuda_test.dir//cuda_test_generated_cuda_test.cu.obj.depend") # path
+set(source_file "D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/dlib/cmake_utils/test_for_cuda/cuda_test.cu") # path
+set(NVCC_generated_dependency_file "D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/build/cuda_test_build/CMakeFiles/cuda_test.dir//cuda_test_generated_cuda_test.cu.obj.NVCC-depend") # path
+set(cmake_dependency_file "D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/build/cuda_test_build/CMakeFiles/cuda_test.dir//cuda_test_generated_cuda_test.cu.obj.depend") # path
 set(CUDA_make2cmake "C:/Program Files/CMake/share/cmake-3.17/Modules/FindCUDA/make2cmake.cmake") # path
 set(CUDA_parse_cubin "C:/Program Files/CMake/share/cmake-3.17/Modules/FindCUDA/parse_cubin.cmake") # path
 set(build_cubin OFF) # bool
-set(CUDA_HOST_COMPILER "C:/Strawberry/c/bin/gcc.exe") # path
+set(CUDA_HOST_COMPILER "C:/Qt/Qt5.14.1/Tools/mingw730_32/bin/gcc.exe") # path
 # We won't actually use these variables for now, but we need to set this, in
 # order to force this file to be run again if it changes.
-set(generated_file_path "D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib-19.19/build/cuda_test_build/CMakeFiles/cuda_test.dir//.") # path
-set(generated_file_internal "D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib-19.19/build/cuda_test_build/CMakeFiles/cuda_test.dir//./cuda_test_generated_cuda_test.cu.obj") # path
-set(generated_cubin_file_internal "D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib-19.19/build/cuda_test_build/CMakeFiles/cuda_test.dir//./cuda_test_generated_cuda_test.cu.obj.cubin.txt") # path
+set(generated_file_path "D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/build/cuda_test_build/CMakeFiles/cuda_test.dir//.") # path
+set(generated_file_internal "D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/build/cuda_test_build/CMakeFiles/cuda_test.dir//./cuda_test_generated_cuda_test.cu.obj") # path
+set(generated_cubin_file_internal "D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/build/cuda_test_build/CMakeFiles/cuda_test.dir//./cuda_test_generated_cuda_test.cu.obj.cubin.txt") # path
 
 set(CUDA_NVCC_EXECUTABLE "C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.2/bin/nvcc.exe") # path
 set(CUDA_NVCC_FLAGS -arch=sm_30;-std=c++11;-D__STRICT_ANSI__;-D_MWAITXINTRIN_H_INCLUDED;-D_FORCE_INLINES ;; ) # list
@@ -79,7 +79,7 @@ set(CUDA_NVCC_FLAGS_MINSIZEREL  ; )
 set(CUDA_NVCC_FLAGS_RELEASE  ; )
 set(CUDA_NVCC_FLAGS_RELWITHDEBINFO  ; )
 set(nvcc_flags -m32) # list
-set(CUDA_NVCC_INCLUDE_DIRS [==[C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.2/include;D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib-19.19/dlib/cmake_utils/test_for_cuda/../../cuda;C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.2/include]==]) # list (needs to be in lua quotes to address backslashes)
+set(CUDA_NVCC_INCLUDE_DIRS [==[C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.2/include;D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/dlib/cmake_utils/test_for_cuda/../../cuda;C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v10.2/include]==]) # list (needs to be in lua quotes to address backslashes)
 string(REPLACE "\\" "/" CUDA_NVCC_INCLUDE_DIRS "${CUDA_NVCC_INCLUDE_DIRS}")
 set(CUDA_NVCC_COMPILE_DEFINITIONS [==[DLIB_USE_CUDA]==]) # list (needs to be in lua quotes see #16510 ).
 set(format_flag "-c") # string

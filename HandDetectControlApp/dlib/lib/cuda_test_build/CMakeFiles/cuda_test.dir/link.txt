@@ -1,2 +1,2 @@
-C:\Strawberry\c\bin\ar.exe qc libcuda_test.a  CMakeFiles/cuda_test.dir/cuda_test_generated_cuda_test.cu.obj
-C:\Strawberry\c\bin\ranlib.exe libcuda_test.a
+C:\Qt\Qt5.14.1\Tools\mingw730_32\bin\ar.exe qc libcuda_test.a  CMakeFiles/cuda_test.dir/cuda_test_generated_cuda_test.cu.obj
+C:\Qt\Qt5.14.1\Tools\mingw730_32\bin\ranlib.exe libcuda_test.a

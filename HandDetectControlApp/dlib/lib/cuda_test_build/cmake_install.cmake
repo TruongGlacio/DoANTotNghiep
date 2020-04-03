@@ -1,4 +1,4 @@
-# Install script for directory: D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib-19.19/dlib/cmake_utils/test_for_cuda
+# Install script for directory: D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/dlib/cmake_utils/test_for_cuda
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -40,5 +40,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib-19.19/build/cuda_test_build/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/build/cuda_test_build/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

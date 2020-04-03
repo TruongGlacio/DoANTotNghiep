@@ -56,8 +56,8 @@ add_library(dlib::dlib STATIC IMPORTED)
 set_target_properties(dlib::dlib PROPERTIES
   INTERFACE_COMPILE_FEATURES "cxx_rvalue_references;cxx_variadic_templates;cxx_lambdas;cxx_defaulted_move_initializers;cxx_delegating_constructors;cxx_thread_local;cxx_constexpr;cxx_auto_type"
   INTERFACE_COMPILE_OPTIONS "\$<\$<COMPILE_LANGUAGE:CXX>:-Wreturn-type>"
-  INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include;C:/Strawberry/c/include"
-  INTERFACE_LINK_LIBRARIES "ws2_32;winmm;comctl32;gdi32;imm32;C:/Strawberry/c/lib/libgif.a;C:/Strawberry/c/lib/libpng.a;C:/Strawberry/c/lib/libz.a;C:/Strawberry/c/lib/libjpeg.a"
+  INTERFACE_INCLUDE_DIRECTORIES "${_IMPORT_PREFIX}/include"
+  INTERFACE_LINK_LIBRARIES "ws2_32;winmm;C:/Strawberry/c/lib/libpng.a;C:/Strawberry/c/lib/libz.a;C:/Strawberry/c/lib/libjpeg.a"
 )
 
 if(CMAKE_VERSION VERSION_LESS 2.8.12)

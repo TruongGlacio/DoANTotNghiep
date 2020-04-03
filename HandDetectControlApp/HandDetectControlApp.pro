@@ -17,7 +17,8 @@ SOURCES += \
         PeopleDetectManager.cpp \
         VTIUtility.cpp \
         appengine.cpp \
-        trainingobjectdetect.cpp
+        trainingobjectdetect.cpp \
+        #video_tracking.cpp
         main.cpp
 
 RESOURCES += qml.qrc
@@ -42,13 +43,17 @@ HEADERS += \
     StringDefines.h \
     VTIUtility.h \
     appengine.h \
-    trainingobjectdetect.h
+    trainingobjectdetect.h \
+    #video_tracking.h
 
-QMAKE_CXXFLAGS_RELEASE += -mavx
+#QMAKE_CXXFLAGS_RELEASE += -mavx
 INCLUDEPATH+=D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/include
-INCLUDEPATH+= C:/Program Files (x86)/GnuWin32/src/giflib
-LIBS +=-L"D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/lib"
-#LIBS+=-ldlib
+#INCLUDEPATH+=D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\lib
+#INCLUDEPATH+=D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\lib\Release
+#INCLUDEPATH+= C:/Program Files (x86)/GnuWin32/src/giflib
+#LIBS +=-L"D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\lib\Release"
+LIBS+=-L"D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\lib"
+LIBS+=-llibdlib
 LIBS += -lmingw32
 #LIBS+=-lOle32
 #LIBS+=-lOleaut32

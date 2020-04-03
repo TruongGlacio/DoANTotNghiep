@@ -59,10 +59,10 @@ RM = "C:\Program Files\CMake\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\dlib\cmake_utils\test_for_cuda
+CMAKE_SOURCE_DIR = D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\dlib\cmake_utils\test_for_cuda
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\build\cuda_test_build
+CMAKE_BINARY_DIR = D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\build\cuda_test_build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/cuda_test.dir/depend.make
@@ -75,22 +75,22 @@ include CMakeFiles/cuda_test.dir/flags.make
 
 CMakeFiles/cuda_test.dir/cuda_test_generated_cuda_test.cu.obj: CMakeFiles/cuda_test.dir/cuda_test_generated_cuda_test.cu.obj.depend
 CMakeFiles/cuda_test.dir/cuda_test_generated_cuda_test.cu.obj: CMakeFiles/cuda_test.dir/cuda_test_generated_cuda_test.cu.obj.cmake
-CMakeFiles/cuda_test.dir/cuda_test_generated_cuda_test.cu.obj: D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib-19.19/dlib/cmake_utils/test_for_cuda/cuda_test.cu
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\build\cuda_test_build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building NVCC (Device) object CMakeFiles/cuda_test.dir/cuda_test_generated_cuda_test.cu.obj"
-	cd /d D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\build\cuda_test_build\CMakeFiles\cuda_test.dir && "C:\Program Files\CMake\bin\cmake.exe" -E make_directory D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib-19.19/build/cuda_test_build/CMakeFiles/cuda_test.dir//.
-	cd /d D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\build\cuda_test_build\CMakeFiles\cuda_test.dir && "C:\Program Files\CMake\bin\cmake.exe" -D verbose:BOOL=$(VERBOSE) -D build_configuration:STRING= -D generated_file:STRING=D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib-19.19/build/cuda_test_build/CMakeFiles/cuda_test.dir//./cuda_test_generated_cuda_test.cu.obj -D generated_cubin_file:STRING=D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib-19.19/build/cuda_test_build/CMakeFiles/cuda_test.dir//./cuda_test_generated_cuda_test.cu.obj.cubin.txt -P D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib-19.19/build/cuda_test_build/CMakeFiles/cuda_test.dir//cuda_test_generated_cuda_test.cu.obj.cmake
+CMakeFiles/cuda_test.dir/cuda_test_generated_cuda_test.cu.obj: D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/dlib/cmake_utils/test_for_cuda/cuda_test.cu
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\build\cuda_test_build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building NVCC (Device) object CMakeFiles/cuda_test.dir/cuda_test_generated_cuda_test.cu.obj"
+	cd /d D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\build\cuda_test_build\CMakeFiles\cuda_test.dir && "C:\Program Files\CMake\bin\cmake.exe" -E make_directory D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/build/cuda_test_build/CMakeFiles/cuda_test.dir//.
+	cd /d D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\build\cuda_test_build\CMakeFiles\cuda_test.dir && "C:\Program Files\CMake\bin\cmake.exe" -D verbose:BOOL=$(VERBOSE) -D build_configuration:STRING= -D generated_file:STRING=D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/build/cuda_test_build/CMakeFiles/cuda_test.dir//./cuda_test_generated_cuda_test.cu.obj -D generated_cubin_file:STRING=D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/build/cuda_test_build/CMakeFiles/cuda_test.dir//./cuda_test_generated_cuda_test.cu.obj.cubin.txt -P D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/build/cuda_test_build/CMakeFiles/cuda_test.dir//cuda_test_generated_cuda_test.cu.obj.cmake
 
 # Object files for target cuda_test
 cuda_test_OBJECTS =
 
 # External object files for target cuda_test
 cuda_test_EXTERNAL_OBJECTS = \
-"D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib-19.19/build/cuda_test_build/CMakeFiles/cuda_test.dir/cuda_test_generated_cuda_test.cu.obj"
+"D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/build/cuda_test_build/CMakeFiles/cuda_test.dir/cuda_test_generated_cuda_test.cu.obj"
 
 libcuda_test.a: CMakeFiles/cuda_test.dir/cuda_test_generated_cuda_test.cu.obj
 libcuda_test.a: CMakeFiles/cuda_test.dir/build.make
 libcuda_test.a: CMakeFiles/cuda_test.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\build\cuda_test_build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libcuda_test.a"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\build\cuda_test_build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX static library libcuda_test.a"
 	$(CMAKE_COMMAND) -P CMakeFiles\cuda_test.dir\cmake_clean_target.cmake
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\cuda_test.dir\link.txt --verbose=$(VERBOSE)
 
@@ -104,6 +104,6 @@ CMakeFiles/cuda_test.dir/clean:
 .PHONY : CMakeFiles/cuda_test.dir/clean
 
 CMakeFiles/cuda_test.dir/depend: CMakeFiles/cuda_test.dir/cuda_test_generated_cuda_test.cu.obj
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\dlib\cmake_utils\test_for_cuda D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\dlib\cmake_utils\test_for_cuda D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\build\cuda_test_build D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\build\cuda_test_build D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\build\cuda_test_build\CMakeFiles\cuda_test.dir\DependInfo.cmake
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\dlib\cmake_utils\test_for_cuda D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\dlib\cmake_utils\test_for_cuda D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\build\cuda_test_build D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\build\cuda_test_build D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\build\cuda_test_build\CMakeFiles\cuda_test.dir\DependInfo.cmake
 .PHONY : CMakeFiles/cuda_test.dir/depend
 

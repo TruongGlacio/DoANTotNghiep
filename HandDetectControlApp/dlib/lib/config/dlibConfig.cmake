@@ -30,7 +30,7 @@ endif()
 
 set(dlib_LIBRARIES dlib::dlib)
 set(dlib_LIBS      dlib::dlib)
-set(dlib_INCLUDE_DIRS "C:/Program Files (x86)/dlib/include" "C:/Strawberry/c/include")
+set(dlib_INCLUDE_DIRS "C:/Program Files (x86)/dlib/include" "")
 
 mark_as_advanced(dlib_LIBRARIES)
 mark_as_advanced(dlib_LIBS)

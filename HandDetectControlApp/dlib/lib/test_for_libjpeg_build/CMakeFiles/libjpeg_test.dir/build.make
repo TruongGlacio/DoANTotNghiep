@@ -59,10 +59,10 @@ RM = "C:\Program Files\CMake\bin\cmake.exe" -E rm -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\dlib\cmake_utils\test_for_libjpeg
+CMAKE_SOURCE_DIR = D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\dlib\cmake_utils\test_for_libjpeg
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\build\test_for_libjpeg_build
+CMAKE_BINARY_DIR = D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\build\test_for_libjpeg_build
 
 # Include any dependencies generated for this target.
 include CMakeFiles/libjpeg_test.dir/depend.make
@@ -74,17 +74,18 @@ include CMakeFiles/libjpeg_test.dir/progress.make
 include CMakeFiles/libjpeg_test.dir/flags.make
 
 CMakeFiles/libjpeg_test.dir/libjpeg_test.cpp.obj: CMakeFiles/libjpeg_test.dir/flags.make
-CMakeFiles/libjpeg_test.dir/libjpeg_test.cpp.obj: D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib-19.19/dlib/cmake_utils/test_for_libjpeg/libjpeg_test.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\build\test_for_libjpeg_build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/libjpeg_test.dir/libjpeg_test.cpp.obj"
-	C:\Strawberry\c\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\libjpeg_test.dir\libjpeg_test.cpp.obj -c D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\dlib\cmake_utils\test_for_libjpeg\libjpeg_test.cpp
+CMakeFiles/libjpeg_test.dir/libjpeg_test.cpp.obj: CMakeFiles/libjpeg_test.dir/includes_CXX.rsp
+CMakeFiles/libjpeg_test.dir/libjpeg_test.cpp.obj: D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/dlib/cmake_utils/test_for_libjpeg/libjpeg_test.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\build\test_for_libjpeg_build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/libjpeg_test.dir/libjpeg_test.cpp.obj"
+	C:\Qt\Qt5.14.1\Tools\mingw730_32\bin\g++.exe  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles\libjpeg_test.dir\libjpeg_test.cpp.obj -c D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\dlib\cmake_utils\test_for_libjpeg\libjpeg_test.cpp
 
 CMakeFiles/libjpeg_test.dir/libjpeg_test.cpp.i: cmake_force
 	@echo Preprocessing CXX source to CMakeFiles/libjpeg_test.dir/libjpeg_test.cpp.i
-	C:\Strawberry\c\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\dlib\cmake_utils\test_for_libjpeg\libjpeg_test.cpp > CMakeFiles\libjpeg_test.dir\libjpeg_test.cpp.i
+	C:\Qt\Qt5.14.1\Tools\mingw730_32\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\dlib\cmake_utils\test_for_libjpeg\libjpeg_test.cpp > CMakeFiles\libjpeg_test.dir\libjpeg_test.cpp.i
 
 CMakeFiles/libjpeg_test.dir/libjpeg_test.cpp.s: cmake_force
 	@echo Compiling CXX source to assembly CMakeFiles/libjpeg_test.dir/libjpeg_test.cpp.s
-	C:\Strawberry\c\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\dlib\cmake_utils\test_for_libjpeg\libjpeg_test.cpp -o CMakeFiles\libjpeg_test.dir\libjpeg_test.cpp.s
+	C:\Qt\Qt5.14.1\Tools\mingw730_32\bin\g++.exe $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\dlib\cmake_utils\test_for_libjpeg\libjpeg_test.cpp -o CMakeFiles\libjpeg_test.dir\libjpeg_test.cpp.s
 
 # Object files for target libjpeg_test
 libjpeg_test_OBJECTS = \
@@ -99,7 +100,7 @@ libjpeg_test.exe: C:/Strawberry/c/lib/libjpeg.a
 libjpeg_test.exe: CMakeFiles/libjpeg_test.dir/linklibs.rsp
 libjpeg_test.exe: CMakeFiles/libjpeg_test.dir/objects1.rsp
 libjpeg_test.exe: CMakeFiles/libjpeg_test.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\build\test_for_libjpeg_build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable libjpeg_test.exe"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\build\test_for_libjpeg_build\CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable libjpeg_test.exe"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles\libjpeg_test.dir\link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -112,6 +113,6 @@ CMakeFiles/libjpeg_test.dir/clean:
 .PHONY : CMakeFiles/libjpeg_test.dir/clean
 
 CMakeFiles/libjpeg_test.dir/depend:
-	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\dlib\cmake_utils\test_for_libjpeg D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\dlib\cmake_utils\test_for_libjpeg D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\build\test_for_libjpeg_build D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\build\test_for_libjpeg_build D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib-19.19\build\test_for_libjpeg_build\CMakeFiles\libjpeg_test.dir\DependInfo.cmake
+	$(CMAKE_COMMAND) -E cmake_depends "MinGW Makefiles" D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\dlib\cmake_utils\test_for_libjpeg D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\dlib\cmake_utils\test_for_libjpeg D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\build\test_for_libjpeg_build D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\build\test_for_libjpeg_build D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\build\test_for_libjpeg_build\CMakeFiles\libjpeg_test.dir\DependInfo.cmake
 .PHONY : CMakeFiles/libjpeg_test.dir/depend
 
