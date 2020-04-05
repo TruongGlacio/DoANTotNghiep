@@ -1,3 +1,0 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\libjpeg_test.dir/objects.a
-C:\Qt\Qt5.14.1\Tools\mingw730_32\bin\ar.exe cr CMakeFiles\libjpeg_test.dir/objects.a @CMakeFiles\libjpeg_test.dir\objects1.rsp
-C:\Qt\Qt5.14.1\Tools\mingw730_32\bin\g++.exe    -Wl,--whole-archive CMakeFiles\libjpeg_test.dir/objects.a -Wl,--no-whole-archive  -o libjpeg_test.exe -Wl,--out-implib,liblibjpeg_test.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\libjpeg_test.dir\linklibs.rsp

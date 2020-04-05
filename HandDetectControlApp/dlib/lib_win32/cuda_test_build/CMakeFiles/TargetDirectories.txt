@@ -1,3 +1,0 @@
-D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/build/cuda_test_build/CMakeFiles/cuda_test.dir
-D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/build/cuda_test_build/CMakeFiles/edit_cache.dir
-D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/build/cuda_test_build/CMakeFiles/rebuild_cache.dir

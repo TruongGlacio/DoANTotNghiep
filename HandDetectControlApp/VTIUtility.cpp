@@ -1,7 +1,7 @@
 #include "VTIUtility.h"
 #include <QDir>
 #include<QJsonObject>
-#include<PeopleDetectManager.h>
+#include"UserControlLayer/PeopleDetectManager.h"
 #include <ConstDefines.h>
 #include <GlobalTypes.h>
 #include<QIODevice>

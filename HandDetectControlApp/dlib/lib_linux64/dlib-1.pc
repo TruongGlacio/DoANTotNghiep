@@ -1,8 +1,0 @@
-libdir=C:/Program Files (x86)/dlib/lib
-includedir=C:/Program Files (x86)/dlib/include
-
-Name: dlib
-Description: Numerical and networking C++ library
-Version: 19.19.0
-Libs: -L${libdir} -ldlib ws2_32 winmm comctl32 gdi32 imm32 C:/Strawberry/c/lib/libgif.a C:/Strawberry/c/lib/libpng.a C:/Strawberry/c/lib/libz.a C:/Strawberry/c/lib/libjpeg.a
-Cflags: -I${includedir}  -IC:/Strawberry/c/include

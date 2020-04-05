@@ -1,2 +1,0 @@
-C:/Strawberry/c/bin/ar.exe qc libcuda_test.a  CMakeFiles/cuda_test.dir/cuda_test_generated_cuda_test.cu.obj
-C:/Strawberry/c/bin/ranlib.exe libcuda_test.a

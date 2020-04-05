@@ -1,3 +1,0 @@
-"C:\Program Files\CMake\bin\cmake.exe" -E rm -f CMakeFiles\libpng_test.dir/objects.a
-C:\Qt\Qt5.14.1\Tools\mingw730_32\bin\ar.exe cr CMakeFiles\libpng_test.dir/objects.a @CMakeFiles\libpng_test.dir\objects1.rsp
-C:\Qt\Qt5.14.1\Tools\mingw730_32\bin\g++.exe    -Wl,--whole-archive CMakeFiles\libpng_test.dir/objects.a -Wl,--no-whole-archive  -o libpng_test.exe -Wl,--out-implib,liblibpng_test.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\libpng_test.dir\linklibs.rsp

@@ -11,45 +11,42 @@ DEFINES += QT_DEPRECATED_WARNINGS
 # In order to do so, uncomment the following line.
 # You can also select to disable deprecated APIs only up to a certain version of Qt.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
-
+CMAKE_INSTALL_PREFIX = $$PWD/dlib/
+DEFINES += DLIB_ENABLE_ASSERTS
+DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
-        MouseController.cpp \
-        PeopleDetectManager.cpp \
+        AIandDetectLayer/trainingobjectdetect.cpp \
+        AIandDetectLayer/video_tracking.cpp \
+        UserControlLayer/MouseController.cpp \
+        UserControlLayer/PeopleDetectManager.cpp \
         VTIUtility.cpp \
         appengine.cpp \
-        trainingobjectdetect.cpp \
-        #video_tracking.cpp
+        dlib/dlib/all/source.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
-
-#PKGCONFIG += dlib-1
-# Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
-
-# Additional import path used to resolve QML modules just for Qt Quick Designer
-QML_DESIGNER_IMPORT_PATH =
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 HEADERS += \
+    AIandDetectLayer/trainingobjectdetect.h \
+    AIandDetectLayer/video_tracking.h \
     ConstDefines.h \
     GlobalTypes.h \
-    MouseController.h \
-    PeopleDetectManager.h \
     StringDefines.h \
+    UserControlLayer/MouseController.h \
+    UserControlLayer/PeopleDetectManager.h \
     VTIUtility.h \
     appengine.h \
-    trainingobjectdetect.h \
-    #video_tracking.h
-QMAKE_CXXFLAGS_RELEASE += -mavx
+#QMAKE_CXXFLAGS_RELEASE += -mavx
 
-win32 {
-INCLUDEPATH +=D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\include
-LIBS+=-L"D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\lib_win32"
-
+win32{
+INCLUDEPATH += $$PWD/dlib
+LIBS+= -lgdi32 -lcomctl32 -luser32 -lwinmm -lws2_32
+LIBS += -luser32 -lws2_32 -lgdi32 -lcomctl32 -limm32 -lwinmm
+DEPENDPATH += "$$PWD/dlib"
 }
 
 linux-g++-64{
@@ -57,29 +54,29 @@ linux-g++-64{
    INCLUDEPATH +=  /usr/bin/openssl
    PKGCONFIG += openssl
 }
+#LIBS += -llibdlib
+#LIBS += -lmingw32
+#LIBS+=-lOle32
+#LIBS+=-lOleaut32
+#LIBS+=-lm
+#LIBS+= -ldinput8
+#LIBS+=-lcomctl32
 
-LIBS += -lmingw32
-LIBS+=-lOle32
-LIBS+=-lOleaut32
-LIBS+=-lm
-LIBS+= -ldinput8
-LIBS+=-lcomctl32
+#LIBS+=-ldxguid
+#LIBS+= -ldxerr8
+#LIBS+=-luser32
+#LIBS+=-lgdi32
+#LIBS+=-lwinmm
+#LIBS+= -limm32
+#LIBS+= -lole32
+#LIBS+=-loleaut32
+#LIBS+=-lshell32
+#LIBS+= -lversion
+#LIBS+= -luuid
 
-LIBS+=-ldxguid
-LIBS+= -ldxerr8
-LIBS+=-luser32
-LIBS+=-lgdi32
-LIBS+=-lwinmm
-LIBS+= -limm32
-LIBS+= -lole32
-LIBS+=-loleaut32
-LIBS+=-lshell32
-LIBS+= -lversion
-LIBS+= -luuid
-
-LIBS+=-lglut32
-LIBS+=-lopengl32
-LIBS+=-lglu32
-LIBS+=-lgdi32
-LIBS+=-lwinmm
-LIBS += -lws2_32
+#LIBS+=-lglut32
+#LIBS+=-lopengl32
+#LIBS+=-lglu32
+#LIBS+=-lgdi32
+#LIBS+=-lwinmm
+#LIBS += -lws2_32
