@@ -80,12 +80,12 @@ private slots:
     void stop();
     void setMuted(bool);
 
-    void toggleLock();
+    //void toggleLock();
     void takeImage();
     void displayCaptureError(int, QCameraImageCapture::Error, const QString &errorString);
 
-    void configureCaptureSettings();
-    void configureVideoSettings();
+    //void configureCaptureSettings();
+   // void configureVideoSettings();
     void configureImageSettings();
 
     void displayRecorderError();
@@ -93,20 +93,20 @@ private slots:
 
     void updateCameraDevice(QAction *action);
 
-    void updateCameraState(QCamera::State);
-    void updateCaptureMode();
-    void updateRecorderState(QMediaRecorder::State state);
+   // void updateCameraState(QCamera::State);
+   // void updateCaptureMode();
+ //   void updateRecorderState(QMediaRecorder::State state);
     void setExposureCompensation(int index);
 
     void updateRecordTime();
 
-    void processCapturedImage(int requestId, const QImage &img);
-    void updateLockStatus(QCamera::LockStatus, QCamera::LockChangeReason);
+   // void processCapturedImage(int requestId, const QImage &img);
+  //  void updateLockStatus(QCamera::LockStatus, QCamera::LockChangeReason);
 
-    void displayViewfinder();
-    void displayCapturedImage();
+//    void displayViewfinder();
+  //  void displayCapturedImage();
 
-    void readyForCapture(bool ready);
+    //void readyForCapture(bool ready);
     void imageSaved(int id, const QString &fileName);
 
 protected:
