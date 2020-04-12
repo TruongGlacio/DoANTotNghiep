@@ -1,0 +1,12 @@
+debug/MouseController.o
+debug/PeopleDetectManager.o
+debug/VTIUtility.o
+debug/appengine.o
+debug/trainingobjectdetect.o
+debug/main.o
+debug/qrc_qml.o
+debug/moc_MouseController.o
+debug/moc_PeopleDetectManager.o
+debug/moc_VTIUtility.o
+debug/moc_appengine.o
+debug/moc_trainingobjectdetect.o

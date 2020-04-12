@@ -48,6 +48,10 @@
 **
 ****************************************************************************/
 
+#define IMAGE_HIGH_QUALITY 3 //HighQuality
+#define IMAGE_HEIGHT_SIZE 720
+#define IMAGE_WIDTH_SIZE 1280
+#define IMAGE_FORMAT "png"
 #include "camera.h"
 #include "ui_camera.h"
 #include "videosettings.h"
@@ -84,7 +88,6 @@ Camera::Camera() : ui(new Ui::Camera)
 
         ui->menuDevices->addAction(videoDeviceAction);
     }
-
     connect(videoDevicesGroup, &QActionGroup::triggered, this, &Camera::updateCameraDevice);
     connect(ui->captureWidget, &QTabWidget::currentChanged, this, &Camera::updateCaptureMode);
 
@@ -94,7 +97,6 @@ Camera::Camera() : ui(new Ui::Camera)
 void Camera::setCamera(const QCameraInfo &cameraInfo)
 {
     m_camera.reset(new QCamera(cameraInfo));
-
     connect(m_camera.data(), &QCamera::stateChanged, this, &Camera::updateCameraState);
     connect(m_camera.data(), QOverload<QCamera::Error>::of(&QCamera::error), this, &Camera::displayCameraError);
 
@@ -128,9 +130,10 @@ void Camera::setCamera(const QCameraInfo &cameraInfo)
 
     ui->captureWidget->setTabEnabled(0, (m_camera->isCaptureModeSupported(QCamera::CaptureStillImage)));
     ui->captureWidget->setTabEnabled(1, (m_camera->isCaptureModeSupported(QCamera::CaptureVideo)));
-
     updateCaptureMode();
     m_camera->start();
+    configureImageSettings();
+
 }
 
 void Camera::keyPressEvent(QKeyEvent * event)
@@ -234,15 +237,29 @@ void Camera::configureVideoSettings()
 
 void Camera::configureImageSettings()
 {
-    ImageSettings settingsDialog(m_imageCapture.data());
-    settingsDialog.setWindowFlags(settingsDialog.windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    settingsDialog.setImageSettings(m_imageSettings);
-
-    if (settingsDialog.exec()) {
-        m_imageSettings = settingsDialog.imageSettings();
-        m_imageCapture->setEncodingSettings(m_imageSettings);
+    m_camera->setCaptureMode(QCamera::CaptureStillImage);
+    const QStringList supportedImageCodecs = m_imageCapture.data()->supportedImageCodecs();
+    for (const QString &codecName : supportedImageCodecs) {
+        QString description = m_imageCapture.data()->imageCodecDescription(codecName);
+        qDebug()<<"camera codec support"<<codecName<<"\n";
     }
+
+
+    const QList<QSize> supportedResolutions = m_imageCapture.data()->supportedResolutions();
+    for (const QSize &resolution : supportedResolutions) {
+        qDebug()<<"camera Resolutions support "<<"width:"<<resolution.width()<<"\n height="<<resolution.height()<<"\n";
+    }
+    m_camera->setCaptureMode(QCamera::CaptureStillImage);
+    QImageEncoderSettings settings;// = m_imageCapture.data()->encodingSettings();
+    QSize imageSize=QSize(IMAGE_WIDTH_SIZE,IMAGE_HEIGHT_SIZE);
+    settings.setCodec(IMAGE_FORMAT);
+    settings.setQuality(QMultimedia::EncodingQuality(IMAGE_HIGH_QUALITY));
+    settings.setResolution(imageSize);
+    m_imageSettings=settings;
+    m_imageCapture->setEncodingSettings(m_imageSettings);
+
+
 }
 
 void Camera::record()
