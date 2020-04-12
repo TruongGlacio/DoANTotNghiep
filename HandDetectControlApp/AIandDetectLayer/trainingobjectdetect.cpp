@@ -301,6 +301,8 @@ int TrainingObjectDetect::train_object_detector(int argc, char** argv)
             for (unsigned long i = 0; i < images.size(); ++i)
                 load_image(images[i], parser[i]);
 
+
+
             // Upsample images if the user asked us to do that.
             for (unsigned long i = 0; i < upsample_amount; ++i)
             {
@@ -339,6 +341,54 @@ int TrainingObjectDetect::train_object_detector(int argc, char** argv)
 }
 
     return EXIT_SUCCESS;
+}
+
+void TrainingObjectDetect::Train_objects(QString dataset_filename, QString traning_filename,QString test_filename)
+{
+    Trainobjectoptions optionTrainLabelData;
+    int argc;
+    char** argv;
+    QString nameOfTrainObject="train_object_detector";
+    optionTrainLabelData.Option1=OPTION_TV;
+    optionTrainLabelData.Option3=OPTION_U1;
+    optionTrainLabelData.Option4=OPTION_FLIP;
+    argv[0]=nameOfTrainObject.toUtf8().data();
+
+    /*handle traing object with data set file (.xml format)*/
+    /*..........................................................*/
+    optionTrainLabelData.DataSetFileName_Option2=dataset_filename;
+    argc=3;
+    argv[1]=optionTrainLabelData.Option1.toUtf8().data();
+    argv[2]=optionTrainLabelData.DataSetFileName_Option2.toUtf8().data();
+    train_object_detector(argc,argv);
+    /*..........................................................*/
+
+    /*handle traing object with training file (.xml format)*/
+    /*..........................................................*/
+    argc=5;
+    optionTrainLabelData.DataSetFileName_Option2 = traning_filename;
+    argv[2]=optionTrainLabelData.DataSetFileName_Option2.toUtf8().data();
+    argv[3]=optionTrainLabelData.Option3.toUtf8().data();
+    argv[4]=optionTrainLabelData.Option4.toUtf8().data();
+    train_object_detector(argc,argv);
+    /*..........................................................*/
+
+     /*handle traing object with testing  file (.xml format)*/
+     /*..........................................................*/
+    argc=4;
+    optionTrainLabelData.Option1=OPTION_TEST;
+    optionTrainLabelData.DataSetFileName_Option2 = test_filename;
+
+    argv[1]=optionTrainLabelData.Option1.toUtf8().data();
+    argv[2]=optionTrainLabelData.DataSetFileName_Option2.toUtf8().data();
+    argv[3]=optionTrainLabelData.Option3.toUtf8().data();
+    train_object_detector(argc,argv);
+    /*..........................................................*/
+}
+
+void TrainingObjectDetect::DetectObject(QString image_filename)
+{
+
 }
 
 // ----------------------------------------------------------------------------------------

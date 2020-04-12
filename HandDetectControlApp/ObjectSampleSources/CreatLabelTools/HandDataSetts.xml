@@ -4,45 +4,11 @@
 <name>imglab dataset</name>
 <comment>Created by imglab tool.</comment>
 <images>
-  <image file='D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\ObjectSampleSources\Hands\hand10.png'>
-    <box top='6' left='150' width='534' height='296'>
-      <label>Hands_five_feet</label>
-    </box>
-    <box top='301' left='683' width='1' height='1'>
-      <label>Hands_five_feet</label>
-    </box>
-    <box top='4' left='146' width='627' height='815'>
-      <label>Hands_five_feet</label>
-    </box>
-    <box top='817' left='771' width='2' height='1'>
-      <label>Hands_five_feet</label>
-    </box>
-  </image>
-  <image file='D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\ObjectSampleSources\Hands\hands1.png'>
-    <box top='4' left='12' width='5' height='21'>
-      <label>Hands_five_feet</label>
-    </box>
-    <box top='1296' left='1460' width='1' height='1'>
-      <label>Hands_five_feet</label>
-    </box>
-    <box top='24' left='4' width='2273' height='1237'>
-      <label>Hands_five_feet</label>
-    </box>
-    <box top='1260' left='2276' width='1' height='1'>
-      <label>Hands_five_feet</label>
-    </box>
-  </image>
   <image file='D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\ObjectSampleSources\Hands\hands11.png'>
     <box top='17' left='244' width='379' height='284'>
       <label>Hands_five_feet</label>
     </box>
-    <box top='300' left='622' width='1' height='1'>
-      <label>Hands_five_feet</label>
-    </box>
     <box top='18' left='240' width='385' height='502'>
-      <label>Hands_five_feet</label>
-    </box>
-    <box top='519' left='624' width='1' height='1'>
       <label>Hands_five_feet</label>
     </box>
   </image>
@@ -50,15 +16,9 @@
     <box top='29' left='115' width='257' height='383'>
       <label>Hands_five_feet</label>
     </box>
-    <box top='411' left='371' width='1' height='1'>
-      <label>Hands_five_feet</label>
-    </box>
   </image>
   <image file='D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\ObjectSampleSources\Hands\hands13.png'>
     <box top='8' left='6' width='283' height='263'>
-      <label>Hands_five_feet</label>
-    </box>
-    <box top='270' left='288' width='1' height='1'>
       <label>Hands_five_feet</label>
     </box>
   </image>
@@ -66,15 +26,9 @@
     <box top='26' left='119' width='625' height='620'>
       <label>Hands_five_feet</label>
     </box>
-    <box top='641' left='739' width='1' height='2'>
-      <label>Hands_five_feet</label>
-    </box>
   </image>
   <image file='D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\ObjectSampleSources\Hands\hands15.png'>
     <box top='-1' left='-1' width='290' height='299'>
-      <label>Hands_five_feet</label>
-    </box>
-    <box top='297' left='288' width='1' height='1'>
       <label>Hands_five_feet</label>
     </box>
   </image>
@@ -82,23 +36,14 @@
     <box top='-3' left='-3' width='1525' height='1882'>
       <label>Hands_five_feet</label>
     </box>
-    <box top='1875' left='1482' width='1' height='1'>
-      <label>Hands_five_feet</label>
-    </box>
   </image>
   <image file='D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\ObjectSampleSources\Hands\hands3.png'>
     <box top='23' left='18' width='477' height='570'>
       <label>Hands_five_feet</label>
     </box>
-    <box top='588' left='490' width='1' height='1'>
-      <label>Hands_five_feet</label>
-    </box>
   </image>
   <image file='D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\ObjectSampleSources\Hands\hands4.png'>
     <box top='45' left='151' width='268' height='319'>
-      <label>Hands_five_feet</label>
-    </box>
-    <box top='364' left='420' width='2' height='1'>
       <label>Hands_five_feet</label>
     </box>
   </image>
@@ -111,14 +56,6 @@
   </image>
   <image file='D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\ObjectSampleSources\Hands\hands7.png'>
     <box top='39' left='190' width='476' height='567'>
-      <label>Hands_five_feet</label>
-    </box>
-  </image>
-  <image file='D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\ObjectSampleSources\Hands\hands8.png'>
-    <box top='84' left='63' width='1453' height='1627'>
-      <label>Hands_five_feet</label>
-    </box>
-    <box top='108' left='78' width='1441' height='1873'>
       <label>Hands_five_feet</label>
     </box>
   </image>

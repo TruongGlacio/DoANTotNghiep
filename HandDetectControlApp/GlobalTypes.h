@@ -30,9 +30,11 @@ struct NewsInfo
 
  // struct config for Company Data
  /*-------------------------------------------------*/
- struct CompanyData{
-     QString name;
-     QString createDate;
+ struct Trainobjectoptions{
+     QString Option1;
+     QString DataSetFileName_Option2;
+     QString Option3;
+     QString Option4;
  };
  /*-------------------------------------------------*/
 
@@ -109,22 +111,6 @@ struct NewsInfo
      bool companyStructureInfo;
      bool standbyVideo;
      bool guidelineVideo;
- };
- /*-------------------------------------------------*/
-
- // struct config for genaral Json
- /*-------------------------------------------------*/
- struct GenaralJson{
-     NewsData newsData;
-     CompanyData companyData;
-     CustomerData customerData;
-     GuilineVideo guilineVideo;
-     StandbyVideo standbyVideo;
-     OtherInforData otherInforData;
-     DectectData dectectData;
-     DectectHandData dectectHandData;
-     ConfigTechnologies configTechnologies;
-     UpdateStatusData updateStatusData;
  };
  /*-------------------------------------------------*/
 

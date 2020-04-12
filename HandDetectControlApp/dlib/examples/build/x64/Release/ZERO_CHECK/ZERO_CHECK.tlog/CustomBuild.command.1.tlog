@@ -1,0 +1,10 @@
+^D:\PROJECTS\GITPROJECTS\DOANTOTNGHIEP\DOANTOTNGHIEP\HANDDETECTCONTROLAPP\DLIB\EXAMPLES\BUILD\CMAKEFILES\1D014A7C95BD586CC9569698F3E41A6F\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/examples -BD:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/examples/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/examples/build/examples.sln
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

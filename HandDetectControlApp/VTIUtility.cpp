@@ -139,17 +139,6 @@ DectectHandData VTIUtility::ReadDectectHandDataJson( QJsonObject jsonObject)
     return dectectHandData;
 }
 
-CompanyData VTIUtility::ReadCompanyDataJson(QJsonObject jsonObject)
-{
-    CompanyData companyData;
-
-    companyData.name = jsonObject.value(COMPANY_NAME).toString();
-    companyData.createDate = jsonObject.value(COMPANY_CREATDATE).toString();
-    qDebug()<<"DataJson parse from jsonObject \n companyDataName="<<companyData.name+"\n CompanyDataCreatDate="<<companyData.createDate<<endl;
-
-    return  companyData;
-}
-
 CustomerData VTIUtility::ReadCustomerDataJson(QJsonObject jsonObject)
 {
 

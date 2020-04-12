@@ -17,7 +17,6 @@ public:
     static void WriteJsonFile(QString data ,QString filepath);
     static DectectData ReadDectectDataJson(QJsonObject jsonObject);
     static DectectHandData ReadDectectHandDataJson( QJsonObject jsonObject);
-    static CompanyData ReadCompanyDataJson(QJsonObject jsonObject);
     static CustomerData ReadCustomerDataJson(QJsonObject jsonObject);
     static GuilineVideo ReadGuilineVideoDataJson(QJsonObject jsonObject);
     static StandbyVideo ReadStandbyVideoDataJson(QJsonObject jsonObject);

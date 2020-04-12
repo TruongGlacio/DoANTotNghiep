@@ -170,6 +170,10 @@ void throw_invalid_box_error_message (
 
 int main(int argc, char** argv)
 {  
+	for (int i=0;i<argc; i++)
+	{
+	cout << "arguments [" <<i<< "]"<<argv[i] << endl;
+	}
     try
     {
         command_line_parser parser;

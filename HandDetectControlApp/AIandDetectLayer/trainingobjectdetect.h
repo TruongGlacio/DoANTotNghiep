@@ -1,6 +1,9 @@
 #ifndef TRAININGOBJECTDETECT_H
 #define TRAININGOBJECTDETECT_H
-
+#define OPTION_TV "-tv"
+#define OPTION_U1 "-u1"
+#define OPTION_FLIP "--flip"
+#define OPTION_TEST " --test"
 // The contents of this file are in the public domain. See LICENSE_FOR_EXAMPLE_PROGRAMS.txt
 /*
 
@@ -80,6 +83,7 @@
 #include <iostream>
 #include <fstream>
 #include <QObject>
+#include"GlobalTypes.h"
 using namespace std;
 using namespace dlib;
 using namespace image_dataset_metadata;
@@ -97,6 +101,8 @@ public:
                                          const std::vector<std::vector<rectangle> >& removed,
                                          const unsigned long target_size);
     int train_object_detector(int argc, char** argv);
+    void Train_objects(QString dataset_filename, QString traning_filename,QString test_filename);
+    void DetectObject(QString image_filename);
 
 signals:
 

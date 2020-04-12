@@ -1,0 +1,42 @@
+^D:\PROJECTS\GITPROJECTS\DOANTOTNGHIEP\DOANTOTNGHIEP\HANDDETECTCONTROLAPP\DLIB\DLIB\CUDA\CUDA_DLIB.CU
+setlocal
+cd D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\examples\build\dlib_build\CMakeFiles\dlib.dir\cuda
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/examples/build/dlib_build/CMakeFiles/dlib.dir/cuda/Release
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -D verbose:BOOL=OFF -D "CCBIN:PATH=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools/MSVC/14.25.28610/bin/Hostx64/x64" -D build_configuration:STRING=Release -D generated_file:STRING=D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/examples/build/dlib_build/CMakeFiles/dlib.dir/cuda/Release/dlib_generated_cuda_dlib.cu.obj -D generated_cubin_file:STRING=D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/examples/build/dlib_build/CMakeFiles/dlib.dir/cuda/Release/dlib_generated_cuda_dlib.cu.obj.cubin.txt -P D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/examples/build/dlib_build/CMakeFiles/dlib.dir/cuda/dlib_generated_cuda_dlib.cu.obj.Release.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\PROJECTS\GITPROJECTS\DOANTOTNGHIEP\DOANTOTNGHIEP\HANDDETECTCONTROLAPP\DLIB\DLIB\CUDA\CUSOLVER_DLIBAPI.CU
+setlocal
+cd D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\HandDetectControlApp\dlib\examples\build\dlib_build\CMakeFiles\dlib.dir\cuda
+if %errorlevel% neq 0 goto :cmEnd
+D:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/examples/build/dlib_build/CMakeFiles/dlib.dir/cuda/Release
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -D verbose:BOOL=OFF -D "CCBIN:PATH=C:\Program Files (x86)\Microsoft Visual Studio\2019\Community\VC\Tools/MSVC/14.25.28610/bin/Hostx64/x64" -D build_configuration:STRING=Release -D generated_file:STRING=D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/examples/build/dlib_build/CMakeFiles/dlib.dir/cuda/Release/dlib_generated_cusolver_dlibapi.cu.obj -D generated_cubin_file:STRING=D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/examples/build/dlib_build/CMakeFiles/dlib.dir/cuda/Release/dlib_generated_cusolver_dlibapi.cu.obj.cubin.txt -P D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/examples/build/dlib_build/CMakeFiles/dlib.dir/cuda/dlib_generated_cusolver_dlibapi.cu.obj.Release.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^D:\PROJECTS\GITPROJECTS\DOANTOTNGHIEP\DOANTOTNGHIEP\HANDDETECTCONTROLAPP\DLIB\DLIB\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SD:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/examples -BD:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/examples/build --check-stamp-file D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/examples/build/dlib_build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

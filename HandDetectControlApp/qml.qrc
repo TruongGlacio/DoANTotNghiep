@@ -5,5 +5,7 @@
         <file>Qml/Images/icon_hand.png</file>
         <file>Qml/Images/Ring_Circle_blue.png</file>
         <file>Qml/Images/Ring_Circle_yellow.png</file>
+        <file>UserControlLayer/AppTrainer/photosurface.qml</file>
+        <file>Qml/CameraManeger.qml</file>
     </qresource>
 </RCC>
