@@ -20,7 +20,7 @@
 #include <dlib/gui_widgets.h>
 #include <dlib/image_io.h>
 #include <dlib/dir_nav.h>
-
+#include "CameraManager/cameramanager.h"
 
 using namespace dlib;
 using namespace std;
@@ -31,8 +31,12 @@ class video_tracking : public QObject
 public:
     explicit video_tracking(QObject *parent = nullptr);
     int video_tracking_hand(int argc, char** argv);
+    void CaptureImage();
 
-signals:
+//signals:
+CameraManager mCamera;
+public slots:
+    void getImagePath(QString imagePath);
 
 };
 

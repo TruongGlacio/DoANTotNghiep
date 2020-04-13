@@ -2,11 +2,13 @@
 #define PHOTOSURFACE_H
 
 #include <QObject>
-#ifdef QT_WIDGETS_LIB
-#include <QtWidgets/QApplication>
-#else
-#include <QtGui/QGuiApplication>
-#endif
+//#ifdef QT_WIDGETS_LIB
+//#include<QApplication>
+//#include <QtWidgets/QApplication>
+//#else
+//#include <QtGui/QGuiApplication>
+//#endif
+#include<QApplication>
 #include <QtQml/QQmlApplicationEngine>
 #include <QtQml/QQmlContext>
 #include <QtQuick/QQuickWindow>

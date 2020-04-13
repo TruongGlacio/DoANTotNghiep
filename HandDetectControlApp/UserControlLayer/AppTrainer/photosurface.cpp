@@ -4,9 +4,9 @@ Photosurface::Photosurface(QObject *parent) : QObject(parent)
 {
     QQuickWindow::setDefaultAlphaBuffer(true);
 
-     QCoreApplication::setApplicationName(QStringLiteral("Photosurface"));
-     QCoreApplication::setOrganizationName(QStringLiteral("QtProject"));
-     QCoreApplication::setApplicationVersion(QLatin1String(QT_VERSION_STR));
+     QApplication::setApplicationName(QStringLiteral("Photosurface"));
+     QApplication::setOrganizationName(QStringLiteral("QtProject"));
+     QApplication::setApplicationVersion(QLatin1String(QT_VERSION_STR));
 
      QQmlApplicationEngine engine;
      QQmlContext *context = engine.rootContext();
@@ -18,7 +18,6 @@ Photosurface::Photosurface(QObject *parent) : QObject(parent)
      engine.load(QUrl("qrc:///photosurface.qml"));
      if (engine.rootObjects().isEmpty())
          return;
-
 }
 
 QStringList Photosurface::imageNameFilters()
