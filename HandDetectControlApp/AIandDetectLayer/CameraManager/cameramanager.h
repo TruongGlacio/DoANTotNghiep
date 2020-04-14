@@ -1,6 +1,5 @@
 #ifndef CAMERAMANAGER_H
 #define CAMERAMANAGER_H
-
 #include <QObject>
 #include <QCameraInfo>
 #include <QCamera>
@@ -11,6 +10,7 @@
 #include <QAction>
 #include<QMessageBox>
 #include<QDir>
+#include"StringDefines.h"
 class CameraManager : public QObject
 {
 

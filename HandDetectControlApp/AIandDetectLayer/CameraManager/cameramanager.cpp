@@ -154,7 +154,7 @@ void CameraManager::setMuted(bool muted)
 void CameraManager::takeImage()
 {
     m_isCapturingImage = true;
-    m_imageCapture->capture();
+    m_imageCapture->capture(TEMP_IMAGE_FILE_PATH);
 }
 
 void CameraManager::displayCaptureError(int id, QCameraImageCapture::Error error, const QString &errorString)
