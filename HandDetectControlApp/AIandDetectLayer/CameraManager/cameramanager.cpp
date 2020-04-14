@@ -10,7 +10,7 @@ CameraManager::CameraManager(QObject *parent) : QObject(parent)
     if (cameraengine.rootObjects().isEmpty())
         return;
      bool checkCameraresult=CheckAvaiableCamera();
-     if(checkCameraresult!=true)
+     if(checkCameraresult==false)
 
      {
          QMessageBox msgBox;
@@ -18,6 +18,9 @@ CameraManager::CameraManager(QObject *parent) : QObject(parent)
          msgBox.exec();
          return;
      }
+     QMessageBox msgBox;
+     msgBox.setText("Camera is avaiable");
+     msgBox.exec();
      setCamera(QCameraInfo::defaultCamera());
 }
 
@@ -91,7 +94,7 @@ bool CameraManager::CheckAvaiableCamera()
                 }
                 else {
                      qDebug() << "Can't open Font face camera";
-                     returnValue= false;
+                   //  returnValue= false;
                 }
             }
 

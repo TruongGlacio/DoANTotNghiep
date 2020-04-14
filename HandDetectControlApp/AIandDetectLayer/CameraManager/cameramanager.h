@@ -29,7 +29,6 @@ public:
     void pause();
     void stop();
     void setMuted(bool muted);
-    void takeImage();
     void displayCaptureError(int id, QCameraImageCapture::Error error, const QString &errorString);
     void configureImageSettings();
     void displayRecorderError();
@@ -38,7 +37,9 @@ public:
     void setExposureCompensation(int index);
     void updateRecordTime();
     void imageSaved(int id, const QString &fileName);
-
+public slots:
+    void takeImage();
+private:
      QCamera *myCamera;
      QQmlApplicationEngine cameraengine;
 
