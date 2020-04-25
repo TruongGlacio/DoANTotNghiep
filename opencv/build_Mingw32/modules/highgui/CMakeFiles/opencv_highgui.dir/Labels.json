@@ -1,0 +1,123 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/include/opencv2/highgui.hpp",
+			"labels" : 
+			[
+				"Main",
+				"opencv_highgui",
+				"Module"
+			]
+		},
+		{
+			"file" : "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/include/opencv2/highgui/highgui.hpp",
+			"labels" : 
+			[
+				"Main",
+				"opencv_highgui",
+				"Module"
+			]
+		},
+		{
+			"file" : "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/include/opencv2/highgui/highgui_c.h",
+			"labels" : 
+			[
+				"Main",
+				"opencv_highgui",
+				"Module"
+			]
+		},
+		{
+			"file" : "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/src/window.cpp",
+			"labels" : 
+			[
+				"Main",
+				"opencv_highgui",
+				"Module"
+			]
+		},
+		{
+			"file" : "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/src/roiSelector.cpp",
+			"labels" : 
+			[
+				"Main",
+				"opencv_highgui",
+				"Module"
+			]
+		},
+		{
+			"file" : "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/src/window_QT.cpp",
+			"labels" : 
+			[
+				"Main",
+				"opencv_highgui",
+				"Module"
+			]
+		},
+		{
+			"file" : "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/src/window_QT.h",
+			"labels" : 
+			[
+				"Main",
+				"opencv_highgui",
+				"Module"
+			]
+		},
+		{
+			"file" : "E:/GitProiects/DoANTotNghiep/opencv/build_Mingw32/modules/highgui/src/moc_window_QT.cpp",
+			"labels" : 
+			[
+				"Main",
+				"opencv_highgui",
+				"Module"
+			]
+		},
+		{
+			"file" : "E:/GitProiects/DoANTotNghiep/opencv/build_Mingw32/modules/highgui/qrc_window_QT.cpp",
+			"labels" : 
+			[
+				"Main",
+				"opencv_highgui",
+				"Module"
+			]
+		},
+		{
+			"file" : "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/src/precomp.hpp",
+			"labels" : 
+			[
+				"Main",
+				"opencv_highgui",
+				"Module"
+			]
+		},
+		{
+			"file" : "E:/GitProiects/DoANTotNghiep/opencv/build_Mingw32/cvconfig.h"
+		},
+		{
+			"file" : "E:/GitProiects/DoANTotNghiep/opencv/build_Mingw32/opencv2/opencv_modules.hpp"
+		},
+		{
+			"file" : "E:/GitProiects/DoANTotNghiep/opencv/build_Mingw32/modules/highgui/vs_version.rc"
+		},
+		{
+			"file" : "E:/GitProiects/DoANTotNghiep/opencv/build_Mingw32/modules/highgui/opencv_highgui_main.cpp"
+		},
+		{
+			"file" : "E:/GitProiects/DoANTotNghiep/opencv/build_Mingw32/modules/highgui/src/moc_window_QT.cpp.rule"
+		},
+		{
+			"file" : "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/src/window_QT.qrc"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"Main",
+			"opencv_highgui",
+			"Module"
+		],
+		"name" : "opencv_highgui"
+	}
+}

@@ -1,6 +1,6 @@
 #include <QApplication>
 #include <QQmlApplicationEngine>
-#include <appengine.h>
+#include <ConnectLayer/appengine.h>
 
 int main(int argc, char *argv[])
 {

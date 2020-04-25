@@ -1,10 +1,9 @@
 #include "UserControlLayer/PeopleDetectManager.h"
-#include <ConstDefines.h>
+#include <ConnectLayer/ConstDefines.h>
 #include<UserControlLayer/MouseController.h>
-#include<ConstDefines.h>
 #include <QTimer>
 #include<QDebug>
-#include<VTIUtility.h>
+#include<ConnectLayer/VTIUtility.h>
 #include<QtConcurrent>
 #define CLIENT_CONNECTED "Client connected"
 // contructor

@@ -1,0 +1,51 @@
+# Target labels
+ Main
+ opencv_highgui
+ Module
+# Source files and their labels
+E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/include/opencv2/highgui.hpp
+ Main
+ opencv_highgui
+ Module
+E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/include/opencv2/highgui/highgui.hpp
+ Main
+ opencv_highgui
+ Module
+E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/include/opencv2/highgui/highgui_c.h
+ Main
+ opencv_highgui
+ Module
+E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/src/window.cpp
+ Main
+ opencv_highgui
+ Module
+E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/src/roiSelector.cpp
+ Main
+ opencv_highgui
+ Module
+E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/src/window_QT.cpp
+ Main
+ opencv_highgui
+ Module
+E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/src/window_QT.h
+ Main
+ opencv_highgui
+ Module
+E:/GitProiects/DoANTotNghiep/opencv/build_Mingw32/modules/highgui/src/moc_window_QT.cpp
+ Main
+ opencv_highgui
+ Module
+E:/GitProiects/DoANTotNghiep/opencv/build_Mingw32/modules/highgui/qrc_window_QT.cpp
+ Main
+ opencv_highgui
+ Module
+E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/src/precomp.hpp
+ Main
+ opencv_highgui
+ Module
+E:/GitProiects/DoANTotNghiep/opencv/build_Mingw32/cvconfig.h
+E:/GitProiects/DoANTotNghiep/opencv/build_Mingw32/opencv2/opencv_modules.hpp
+E:/GitProiects/DoANTotNghiep/opencv/build_Mingw32/modules/highgui/vs_version.rc
+E:/GitProiects/DoANTotNghiep/opencv/build_Mingw32/modules/highgui/opencv_highgui_main.cpp
+E:/GitProiects/DoANTotNghiep/opencv/build_Mingw32/modules/highgui/src/moc_window_QT.cpp.rule
+E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/src/window_QT.qrc

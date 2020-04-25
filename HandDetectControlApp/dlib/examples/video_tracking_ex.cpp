@@ -47,7 +47,8 @@ int main(int argc, char** argv) try
     // frame you will see that the juice box is centered at pixel point(92,110) and 38
     // pixels wide and 86 pixels tall.
     correlation_tracker tracker;
-    tracker.start_track(img, centered_rect(point(93,110), 38, 86));
+	 tracker.start_track(img, centered_rect(point(347,835), 266, 230));
+//    tracker.start_track(img, centered_rect(point(93,110), 38, 86));
 
     // Now run the tracker.  All we have to do is call tracker.update() and it will keep
     // track of the juice box!

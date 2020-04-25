@@ -1,4 +1,4 @@
-QT += core qml widgets gui quick multimedia websockets concurrent network multimediawidgets
+QT += core charts qml widgets gui quick multimedia websockets concurrent network multimediawidgets
 
 CONFIG += c++11
 # The following define makes your compiler emit warnings if you use
@@ -18,14 +18,14 @@ DEFINES += DLIB_ENABLE_ASSERTS
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
-        AIandDetectLayer/CameraManager/cameramanager.cpp \
-        AIandDetectLayer/trainingobjectdetect.cpp \
-        AIandDetectLayer/video_tracking.cpp \
+        AIandDetectLayer/camProcess.cpp \
+        AIandDetectLayer/camWidget.cpp \
+        AIandDetectLayer/cameramanager.cpp \
         UserControlLayer/AppTrainer/photosurface.cpp \
         UserControlLayer/MouseController.cpp \
         UserControlLayer/PeopleDetectManager.cpp \
-        VTIUtility.cpp \
-        appengine.cpp \
+        ConnectLayer/VTIUtility.cpp \
+        ConnectLayer/appengine.cpp \
         dlib/dlib/all/source.cpp \
         main.cpp
 
@@ -36,28 +36,41 @@ qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 HEADERS += \
-    AIandDetectLayer/CameraManager/cameramanager.h \
-    AIandDetectLayer/trainingobjectdetect.h \
-    AIandDetectLayer/video_tracking.h \
-    ConstDefines.h \
-    GlobalTypes.h \
-    StringDefines.h \
+    AIandDetectLayer/camProcess.h \
+    AIandDetectLayer/camWidget.h \
+    AIandDetectLayer/cameramanager.h \
+    AIandDetectLayer/global.h \
+    AIandDetectLayer/kernels.h \
+    ConnectLayer/ConstDefines.h \
+    ConnectLayer/GlobalTypes.h \
+    ConnectLayer/StringDefines.h \
     UserControlLayer/AppTrainer/photosurface.h \
     UserControlLayer/MouseController.h \
     UserControlLayer/PeopleDetectManager.h \
-    VTIUtility.h \
-    appengine.h \
-#QMAKE_CXXFLAGS_RELEASE += -mavx
+    ConnectLayer/VTIUtility.h \
+    ConnectLayer/appengine.h \
 
 win32{
+#include path for dlib c++
+INCLUDEPATH += $$PWD/AIandDetectLayer
 INCLUDEPATH += $$PWD/dlib
 LIBS+= -lgdi32 -lcomctl32 -luser32 -lwinmm -lws2_32
 LIBS += -luser32 -lws2_32 -lgdi32 -lcomctl32 -limm32 -lwinmm
 DEPENDPATH += "$$PWD/dlib"
+
+# include path and lib for opencv
+INCLUDEPATH += $$PWD/../opencv/build_Mingw32/install/include
+DEPENDPATH += $$PWD/../opencv/build_Mingw32/install/include
+
+LIBS +=  -L$$PWD/../opencv/build_Mingw32/install/x64/mingw/bin/
+LIBS += -llibopencv_calib3d430 -llibopencv_core430
+LIBS += -llibopencv_dnn430 -llibopencv_features2d430
+LIBS += -llibopencv_flann430 -llibopencv_gapi430 -llibopencv_highgui430
+LIBS +=-llibopencv_imgcodecs430 -llibopencv_imgproc430 -llibopencv_ml430
+LIBS += -llibopencv_objdetect430 -llibopencv_photo430 -llibopencv_stitching430
+LIBS += -llibopencv_video430 -llibopencv_videoio430
 }
 
 linux-g++-64{
-   LIBS +=-L /usr/bin/openssl #-llibssl
-   INCLUDEPATH +=  /usr/bin/openssl
-   PKGCONFIG += openssl
+
 }

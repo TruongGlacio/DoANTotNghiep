@@ -8,14 +8,7 @@ CONFIG += c++11
 
 TARGET = handDetection
 
-#INCLUDEPATH += C:\opencv\release\install\include
-#LIBS += C:\opencv\release\bin\libopencv_core320.dll \
-#        C:\opencv\release\bin\libopencv_videoio320.dll \
-#        C:\opencv\release\bin\libopencv_imgproc320.dll \
-#        C:\opencv\release\bin\libopencv_video320.dll
-
 win32{
-#INCLUDEPATH += $$PWD/../opencv/build_Mingw32#include#opencv/build_Mingw32/install/include#$$PWD/opencv/build/include
 INCLUDEPATH += $$PWD/../opencv/build_Mingw32/install/include
 DEPENDPATH += $$PWD/../opencv/build_Mingw32/install/include
 
@@ -29,10 +22,17 @@ LIBS += -llibopencv_video430 -llibopencv_videoio430
 
 }
 
-SOURCES += $$PWD/src/*.cpp \
-
-HEADERS += $$PWD/inc/*.h \
-
 INCLUDEPATH += $$PWD/inc/
 
 DEFINES *= QT_USE_QSTRINGBUILDER
+
+HEADERS += \
+    inc/camProcess.h \
+    inc/camWidget.h \
+    inc/global.h \
+    inc/kernels.h
+
+SOURCES += \
+    src/camProcess.cpp \
+    src/camWidget.cpp \
+    src/main.cpp

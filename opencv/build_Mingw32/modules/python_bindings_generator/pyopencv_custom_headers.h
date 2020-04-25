@@ -1,0 +1,11 @@
+//user-defined headers
+#include "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/core/misc/python/pyopencv_async.hpp"
+#include "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/core/misc/python/pyopencv_cuda.hpp"
+#include "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/core/misc/python/pyopencv_umat.hpp"
+#include "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/flann/misc/python/pyopencv_flann.hpp"
+#include "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/ml/misc/python/pyopencv_ml.hpp"
+#include "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/dnn/misc/python/pyopencv_dnn.hpp"
+#include "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/features2d/misc/python/pyopencv_features2d.hpp"
+#include "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/videoio/misc/python/pyopencv_videoio.hpp"
+#include "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/objdetect/misc/python/pyopencv_objdetect.hpp"
+#include "E:/GitProiects/DoANTotNghiep/opencv/sources/modules/stitching/misc/python/pyopencv_stitching.hpp"

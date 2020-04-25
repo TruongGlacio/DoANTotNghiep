@@ -1,0 +1,14 @@
+-IE:/GitProiects/DoANTotNghiep/opencv/build_Mingw32
+-IE:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui
+-IE:/GitProiects/DoANTotNghiep/opencv/build_Mingw32/modules/highgui
+-D_WIN32_WINNT=0x0601
+-D__OPENCV_BUILD=1
+-D_USE_MATH_DEFINES
+-D__STDC_CONSTANT_MACROS
+-D__STDC_LIMIT_MACROS
+-D__STDC_FORMAT_MACROS
+-DHAVE_WEBP
+-DWIN32
+-o
+E:/GitProiects/DoANTotNghiep/opencv/build_Mingw32/modules/highgui/src/moc_window_QT.cpp
+E:/GitProiects/DoANTotNghiep/opencv/sources/modules/highgui/src/window_QT.h

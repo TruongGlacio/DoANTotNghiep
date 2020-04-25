@@ -62,6 +62,5 @@ int main(int argc, char *argv[])
 
   processThread.quit();
   processThread.wait();
-
   return 0;
 }
