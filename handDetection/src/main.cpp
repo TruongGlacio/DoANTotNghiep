@@ -30,7 +30,7 @@ int main(int argc, char *argv[])
 
   QLocale::setDefault(QLocale(QLocale::English, QLocale::UnitedStates));
   QApplication qtApp(argc, argv);
-  qtApp.setStyle(QStyleFactory::create("Fusion"));
+ // qtApp.setStyle(QStyleFactory::create("Fusion"));
   initParameters();
 
   QMainWindow window;
@@ -59,7 +59,6 @@ int main(int argc, char *argv[])
   window.show();
   QMetaObject::invokeMethod(&camCapture, "getFrame");
   qtApp.exec();
-
   processThread.quit();
   processThread.wait();
   return 0;

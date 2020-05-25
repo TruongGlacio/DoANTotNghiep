@@ -5,7 +5,7 @@
 #include "cameramanager.h"
 QVector<processParameter> parametersTable;
 
-CameraManager::CameraManager(QObject *parent) : QObject(parent)
+CameraManager::CameraManager(QObject *parent,QApplication *mApp) : QObject(parent)
 {
     qRegisterMetaType<cv::Mat>();
     qRegisterMetaType<QVector<int>>();
@@ -39,14 +39,15 @@ CameraManager::CameraManager(QObject *parent) : QObject(parent)
     QObject::connect(&processFrame, SIGNAL(sendVector(int, QVector<double>)), &widget, SLOT(getVector(int, QVector<double>)));
 
     window.setCentralWidget(&widget);
-    window.show();
-    QMetaObject::invokeMethod(&camCapture, "getFrame");
-   // qtApp.exec();
-
-
+ //   window.showNormal();
+    bool resultInvolke = QMetaObject::invokeMethod(&camCapture, "getFrame");
+    if(resultInvolke==false)
+    {
+        qDebug()<<" involke false";
+    }
+    mApp->exec();
     processThread.quit();
     processThread.wait();
-    return ;
 }
 
 CameraManager::~CameraManager()

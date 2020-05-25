@@ -17,7 +17,7 @@ signals:
 
 public slots:
 
-
+    void ExcuteCamProcess(QApplication *mApp);
 private:
     MouseController *mMouseController;
     CameraManager *mCameramanager;

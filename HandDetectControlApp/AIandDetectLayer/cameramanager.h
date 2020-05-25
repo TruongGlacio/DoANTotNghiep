@@ -8,13 +8,13 @@
 #include "AIandDetectLayer/global.h"
 #include "AIandDetectLayer/camWidget.h"
 #include "AIandDetectLayer/camProcess.h"
-
+#include <QApplication>
 class CameraManager : public QObject
 {
 
     Q_OBJECT
 public:
-    explicit CameraManager(QObject *parent = nullptr);
+    explicit CameraManager(QObject *parent = nullptr,QApplication *mApp=nullptr);
     ~CameraManager();
     void initParameters();
 public:

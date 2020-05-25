@@ -26,7 +26,7 @@ SOURCES += \
         UserControlLayer/PeopleDetectManager.cpp \
         ConnectLayer/VTIUtility.cpp \
         ConnectLayer/appengine.cpp \
-        dlib/dlib/all/source.cpp \
+      #  dlib/dlib/all/source.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
@@ -52,11 +52,11 @@ HEADERS += \
 
 win32{
 #include path for dlib c++
-INCLUDEPATH += $$PWD/AIandDetectLayer
-INCLUDEPATH += $$PWD/dlib
-LIBS+= -lgdi32 -lcomctl32 -luser32 -lwinmm -lws2_32
-LIBS += -luser32 -lws2_32 -lgdi32 -lcomctl32 -limm32 -lwinmm
-DEPENDPATH += "$$PWD/dlib"
+#INCLUDEPATH += $$PWD/AIandDetectLayer
+#INCLUDEPATH += $$PWD/dlib
+#LIBS+= -lgdi32 -lcomctl32 -luser32 -lwinmm -lws2_32
+#LIBS += -luser32 -lws2_32 -lgdi32 -lcomctl32 -limm32 -lwinmm
+#DEPENDPATH += "$$PWD/dlib"
 
 # include path and lib for opencv
 INCLUDEPATH += $$PWD/../opencv/build_Mingw32/install/include

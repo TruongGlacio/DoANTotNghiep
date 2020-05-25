@@ -3,8 +3,6 @@
 AppEngine::AppEngine(QObject *parent) : QObject(parent)
 {
     mMouseController=new MouseController();
-    mCameramanager=new CameraManager();
-
  //  connect(mCameramanager, SIGNAL(getImagePath(QString)), this, SLOT(ImagePath(QString)));
 //   CaptureImage();
 //   if(mCameramanager->CheckAvaiableCamera()){
@@ -20,4 +18,9 @@ void AppEngine::CaptureImage()
      timer= new QTimer(this);
      connect(timer, SIGNAL(timeout()), mCameramanager, SLOT(takeImage()));
      timer->start(300);
+}
+
+void AppEngine::ExcuteCamProcess(QApplication *mApp)
+{
+    mCameramanager=new CameraManager(mApp);
 }
