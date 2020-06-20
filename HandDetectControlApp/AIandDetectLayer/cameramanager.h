@@ -9,6 +9,7 @@
 #include "AIandDetectLayer/camWidget.h"
 #include "AIandDetectLayer/camProcess.h"
 #include <QApplication>
+#include"UserControlLayer/MouseController.h"
 class CameraManager : public QObject
 {
 
@@ -18,6 +19,12 @@ public:
     ~CameraManager();
     void initParameters();
 public:
+private:
+    camWidget mWidget;
+    cvCamCapture mCamCapture;
+    cvProcessFrame mProcessFrame;
+    MouseController mMouseController;
+    imageBox mimageBox;
 
 };
 

@@ -19,28 +19,27 @@ CameraManager::CameraManager(QObject *parent,QApplication *mApp) : QObject(paren
     QMainWindow window;
     window.setStyleSheet("background-color: rgb(0, 0, 0);");
     qDebug() << "camera running";
-    camWidget widget;
-    cvCamCapture camCapture;
-    cvProcessFrame processFrame;
+
 
     QThread processThread;
     processThread.setParent(&window);
-    processFrame.moveToThread(&processThread);
-    camCapture.moveToThread(&processThread);
+    mProcessFrame.moveToThread(&processThread);
+    mCamCapture.moveToThread(&processThread);
     processThread.start();
 
-    QObject::connect(&widget, SIGNAL(sendParameters(QString,int)), &processFrame, SLOT(getParameters(QString,int)));
-    QObject::connect(&widget, SIGNAL(ready()), &camCapture, SLOT(getFrame()));
-    QObject::connect(&camCapture, SIGNAL(frameReady(cv::Mat)), &processFrame, SLOT(processFrame(cv::Mat)));
-    QObject::connect(&processFrame, SIGNAL(imageReady(QByteArray)), &widget, SLOT(getImage(QByteArray)));
-    QObject::connect(&widget, SIGNAL(sendSamplePosition(int,int)), &processFrame, SLOT(getSamplePosition(int,int)));
-    QObject::connect(&processFrame, SIGNAL(sendCenterPosition(int,int,double)), &widget, SLOT(getCenterPosition(int,int,double)));
-    QObject::connect(&processFrame, SIGNAL(sendFingers(QVector<int>)), &widget, SLOT(getFingers(QVector<int>)));
-    QObject::connect(&processFrame, SIGNAL(sendVector(int, QVector<double>)), &widget, SLOT(getVector(int, QVector<double>)));
+    QObject::connect(&mWidget, SIGNAL(sendParameters(QString,int)), &mProcessFrame, SLOT(getParameters(QString,int)));
+   // QObject::connect(&mimageBox, SIGNAL(GetMouseLocation(QPoint)), &mMouseController, SLOT(SetMouseLocation(QPoint)));
+    QObject::connect(&mWidget, SIGNAL(ready()), &mCamCapture, SLOT(getFrame()));
+    QObject::connect(&mCamCapture, SIGNAL(frameReady(cv::Mat)), &mProcessFrame, SLOT(processFrame(cv::Mat)));
+    QObject::connect(&mProcessFrame, SIGNAL(imageReady(QByteArray)), &mWidget, SLOT(getImage(QByteArray)));
+    QObject::connect(&mWidget, SIGNAL(sendSamplePosition(int,int)), &mProcessFrame, SLOT(getSamplePosition(int,int)));
+    QObject::connect(&mProcessFrame, SIGNAL(sendCenterPosition(int,int,double)), &mWidget, SLOT(getCenterPosition(int,int,double)));
+    QObject::connect(&mProcessFrame, SIGNAL(sendFingers(QVector<int>)), &mWidget, SLOT(getFingers(QVector<int>)));
+    QObject::connect(&mProcessFrame, SIGNAL(sendVector(int, QVector<double>)), &mWidget, SLOT(getVector(int, QVector<double>)));
 
-    window.setCentralWidget(&widget);
- //   window.showNormal();
-    bool resultInvolke = QMetaObject::invokeMethod(&camCapture, "getFrame");
+    window.setCentralWidget(&mWidget);
+    window.showNormal();
+    bool resultInvolke = QMetaObject::invokeMethod(&mCamCapture, "getFrame");
     if(resultInvolke==false)
     {
         qDebug()<<" involke false";

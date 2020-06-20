@@ -46,7 +46,6 @@ signals:
   void sendCenterPosition(const int& _x, const int& _y, const double& _r);
   void sendFingers(const QVector<int>& _fingers);
   void gestureDetected(const int& _angle, const QString& _gesture);
-
 private:
   QTimer* m_timer;
   imageBox* m_imageBox;
@@ -86,6 +85,7 @@ protected:
 
 signals:
   void sendSamplePosition(const int& _x, const int& _y);
+  void GetMouseLocation(QPoint qpoint);
 
 public slots:
   void getCenterPosition(const int& _x, const int& _y, const double& _r);

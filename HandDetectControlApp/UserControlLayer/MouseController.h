@@ -27,10 +27,10 @@ public slots:
     void LocaltionHandle(QPoint qpoint);
     void ErrorHandler(const QList<QSslError> &errors);
     void SetLocationOffSet(QPoint locationMouse);
+    void SetMouseLocation(QPoint qpoint);
+    void CheckLocation(QPoint locationMouse);
 private:
 
-    void CheckLocation(QPoint locationMouse);
-    void SetMouseLocation(QPoint qpoint);
     QPoint mQpointOffsett;
     int mScaleHeight;
     int mScaleWidth;

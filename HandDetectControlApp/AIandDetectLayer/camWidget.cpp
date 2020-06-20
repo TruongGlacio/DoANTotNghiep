@@ -357,15 +357,18 @@ void imageBox::mousePressEvent(QMouseEvent* event)
 
 void imageBox::getCenterPosition(const int& _x, const int& _y, const double& _r)
 {
+  QPoint qpoint;
   // center of the hand coordinates received from camWidget. Update properties
   m_arcProgress += 10;
   m_arcProgress = m_arcProgress % 360;
   m_center.setX(_x);
   m_center.setY(_y);
+  qpoint.setX(_x);
+  qpoint.setY(_y);
   m_radius = _r;
   qDebug()<<"Position_CenterX="<<_x<<"\n Position_CenterY="<<_y;
-  //emit sendSamplePosition(_x, _y);
-
+  emit sendSamplePosition(_x, _y);
+//  emit GetMouseLocation(qpoint);
 }
 
 void imageBox::getFingers(const QVector<int>& _fingers)
