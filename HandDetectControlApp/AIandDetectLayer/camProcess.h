@@ -8,6 +8,7 @@
 #include <QtWidgets>
 #include "AIandDetectLayer/kernels.h"
 #include "AIandDetectLayer/global.h"
+#include "ConnectLayer/ConstDefines.h"
 
 Q_DECLARE_METATYPE(cv::Mat)
 using namespace cv;
