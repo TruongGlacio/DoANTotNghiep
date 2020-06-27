@@ -39,7 +39,7 @@ CameraManager::CameraManager(QObject *parent,QApplication *mApp) : QObject(paren
     QObject::connect(&processFrame, SIGNAL(sendVector(int, QVector<double>)), &widget, SLOT(getVector(int, QVector<double>)));
 
     window.setCentralWidget(&widget);
- //   window.showNormal();
+    window.showNormal();
     bool resultInvolke = QMetaObject::invokeMethod(&camCapture, "getFrame");
     if(resultInvolke==false)
     {
