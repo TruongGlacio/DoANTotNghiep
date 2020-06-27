@@ -10,6 +10,7 @@
 #include <QtGui>
 #include <QtCharts/QLineSeries>
 #include<QVector>
+
 QT_CHARTS_USE_NAMESPACE
 
 class imageBox;
@@ -46,6 +47,7 @@ signals:
   void sendCenterPosition(const int& _x, const int& _y, const double& _r);
   void sendFingers(const QVector<int>& _fingers);
   void gestureDetected(const int& _angle, const QString& _gesture);
+  void GetMouseLocation(QPoint qpoint);
 
 private:
   QTimer* m_timer;
@@ -86,6 +88,7 @@ protected:
 
 signals:
   void sendSamplePosition(const int& _x, const int& _y);
+  void GetMouseLocation(QPoint qpoint);
 
 public slots:
   void getCenterPosition(const int& _x, const int& _y, const double& _r);

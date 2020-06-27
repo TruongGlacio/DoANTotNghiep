@@ -22,7 +22,8 @@ CameraManager::CameraManager(QObject *parent,QApplication *mApp) : QObject(paren
     camWidget widget;
     cvCamCapture camCapture;
     cvProcessFrame processFrame;
-
+    MouseController mMouseController;
+    imageBox mimageBox;
     QThread processThread;
     processThread.setParent(&window);
     processFrame.moveToThread(&processThread);
@@ -30,6 +31,8 @@ CameraManager::CameraManager(QObject *parent,QApplication *mApp) : QObject(paren
     processThread.start();
 
     QObject::connect(&widget, SIGNAL(sendParameters(QString,int)), &processFrame, SLOT(getParameters(QString,int)));
+    QObject::connect(&mimageBox, SIGNAL(GetMouseLocation(QPoint)), &mMouseController, SLOT(SetMouseLocation(QPoint)));
+    QObject::connect(&widget, SIGNAL(GetMouseLocation(QPoint)), &mMouseController, SLOT(SetMouseLocation(QPoint)));
     QObject::connect(&widget, SIGNAL(ready()), &camCapture, SLOT(getFrame()));
     QObject::connect(&camCapture, SIGNAL(frameReady(cv::Mat)), &processFrame, SLOT(processFrame(cv::Mat)));
     QObject::connect(&processFrame, SIGNAL(imageReady(QByteArray)), &widget, SLOT(getImage(QByteArray)));
@@ -39,7 +42,7 @@ CameraManager::CameraManager(QObject *parent,QApplication *mApp) : QObject(paren
     QObject::connect(&processFrame, SIGNAL(sendVector(int, QVector<double>)), &widget, SLOT(getVector(int, QVector<double>)));
 
     window.setCentralWidget(&widget);
-    window.showNormal();
+    window.showMaximized();
     bool resultInvolke = QMetaObject::invokeMethod(&camCapture, "getFrame");
     if(resultInvolke==false)
     {

@@ -3,6 +3,7 @@
 #include <QGuiApplication>
 #include <QScreen>
 #include <QDebug>
+#include"ConnectLayer/ConstDefines.h"
 MouseController::MouseController(QObject *parent):QObject (parent)
 {
     SetMouseSourse(ICON_HAND);
@@ -76,8 +77,8 @@ void MouseController::SetLocationOffSet(QPoint locationMouse)
     QRect  screenGeometry = screen->geometry();
     QPoint qpointOffset=QPoint(screenGeometry.x(),screenGeometry.y());
     this->mQpointOffsett = qpointOffset;
-    this->mScaleHeight = recDesktop.height()/screenGeometry.height();
-    this->mScaleWidth = recDesktop.width()/screenGeometry.width();
+    this->mScaleHeight = recDesktop.height()/CAM_HEIGHT;
+    this->mScaleWidth = recDesktop.width()/CAM_WIDTH;
     qDebug() << "OffsetX="<<qpointOffset.x()<<"\n OffsetY="<<qpointOffset.y()<<"\n scaleHeight="<<this->mScaleHeight<<"\n scaleWidth="<<this->mScaleWidth<<endl;
 
 }
@@ -86,7 +87,8 @@ void MouseController::SetMouseLocation(QPoint qpoint)
 {
     qDebug() << "qpointmouseX="<<qpoint.x()<<"\n qpointmouseY="<<qpoint.y()<<endl;
     SetLocationOffSet(qpoint);
-    mQcusor.setPos(this->mQpointOffsett.x()+qpoint.x()/mScaleWidth,this->mQpointOffsett.y()+qpoint.y()/mScaleHeight);
+    mQcusor.setPos(this->mQpointOffsett.x()+qpoint.x()*DESKTOP_PIXEL_WIDTH/CAM_WIDTH,this->mQpointOffsett.y()+qpoint.y()*DESKTOP_PIXEL_HEIGHT/CAM_HEIGHT);
+   // mQcusor.setPos(qpoint.x(),qpoint.y());
     //CheckLocation(qcusor.pos());
     qDebug() << "mouseX="<<mQcusor.pos().x()<<"\n mouseY="<<mQcusor.pos().y()<<endl;
 }
