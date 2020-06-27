@@ -1,0 +1,5 @@
+add_subdirectory(blas)
+aux_source_directory(. LIBLINEAR_CPPS)
+add_library(liblinear SHARED ${LIBLINEAR_CPPS})
+target_link_libraries(liblinear blas)
+install(TARGETS liblinear LIBRARY DESTINATION lib)
