@@ -1,3 +1,5 @@
+#define FACE_DOWNSAMPLE_RATIO 2
+#define SKIP_FRAMES 4
 #include "eyesleepdetectclass.h"
 #include<QDebug>
 #include <dlib/image_processing/frontal_face_detector.h>
@@ -43,19 +45,27 @@ int EyeSleepDetectClass:: StartDetectEyeSleep()
         while (!win.is_closed()) {
             // Grab a frame
             cv::Mat temp;
+            cv::Mat im_small, im_display;
             if (!m_videoCapture->read(temp)) {
                 break;
             }
-
-            cv_image<bgr_pixel> cimg(temp);
+            cv::resize(temp, im_small, cv::Size(), 1.0/FACE_DOWNSAMPLE_RATIO, 1.0/FACE_DOWNSAMPLE_RATIO);
+            cv_image<bgr_pixel> cimg(im_small);
+            cv_image<bgr_pixel> cimgForView(temp);
+            // Resize image for face detection
             full_object_detection shape;
 
             // Detect faces
-            std::vector<dlib::rectangle> faces = detector(cimg);
-            qDebug()<< "Number of faces detected: " << faces.size() << endl;
+            std::vector<dlib::rectangle> faces;
+            if ( count % SKIP_FRAMES == 0 )
+            {
+                faces = detector(cimg);
+                qDebug()<< "Number of faces detected: " << faces.size() << endl;
+            }
+           // qDebug()<< "Number of faces detected: " << faces.size() << endl;
 
             win.clear_overlay();
-            win.set_image(cimg);
+           // win.set_image(cimgForView);
 
             // Find the pose of each face.
             if (faces.size() > 0) {
@@ -63,13 +73,13 @@ int EyeSleepDetectClass:: StartDetectEyeSleep()
                 shape = sp(cimg, faces[0]); //work only with 1 face
 
                 for (int b = 36; b < 42; ++b) {
-                    p.x = shape.part(b).x();
-                    p.y = shape.part(b).y();
+                    p.x = shape.part(b).x()*FACE_DOWNSAMPLE_RATIO;
+                    p.y = shape.part(b).y()*FACE_DOWNSAMPLE_RATIO;
                     lefteye.push_back(p);
                 }
                 for (int b = 42; b < 48; ++b) {
-                    p.x = shape.part(b).x();
-                    p.y = shape.part(b).y();
+                    p.x = shape.part(b).x()*FACE_DOWNSAMPLE_RATIO;
+                    p.y = shape.part(b).y()*FACE_DOWNSAMPLE_RATIO;
                     righteye.push_back(p);
                 }
                 //Compute Eye aspect ration for eyes
@@ -78,18 +88,29 @@ int EyeSleepDetectClass:: StartDetectEyeSleep()
 
                 //if the avarage eye aspect ratio of lef and right eye less than 0.2, the status is sleeping.
                 if ((right_ear + left_ear) / 2 < 0.2)
-                    win.add_overlay(dlib::image_window::overlay_rect(faces[0], rgb_pixel(255, 255, 255), "Sleeping"));
+                {
+                    qDebug()<< "Sleeping" << endl;
+                   // win.add_overlay(dlib::image_window::overlay_rect(faces[0], rgb_pixel(255, 255, 255), "Sleeping"));
+                }
                 else
-                    win.add_overlay(dlib::image_window::overlay_rect(faces[0], rgb_pixel(255, 255, 255), "Not sleeping"));
+                {
+                     qDebug()<< "Not sleeping" << endl;
+                   // win.add_overlay(dlib::image_window::overlay_rect(faces[0], rgb_pixel(255, 255, 255), "Not sleeping"));
+                }
 
                 righteye.clear();
                 lefteye.clear();
 
-                win.add_overlay(render_face_detections(shape));
+               // win.add_overlay(render_face_detections(shape));
 
                 c = (char)waitKey(30);
                 if (c == 27)
                     break;
+            }
+            count ++;
+            if(count ==100)
+            {
+                count =0;
             }
         }
     }
