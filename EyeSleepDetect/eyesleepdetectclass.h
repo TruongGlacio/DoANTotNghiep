@@ -3,7 +3,7 @@
 
 #define CAM_WIDTH 640
 #define CAM_HEIGHT 480
-#define SHAPE_PREDIRTOR_68_FACE_LANDMARK "D:\Projects\GitProjects\DoAnTotNghiep\DoANTotNghiep\dlib\shape_predictor_68_face_landmarks.dat"
+#define SHAPE_PREDIRTOR_68_FACE_LANDMARK "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\dlib\\shape_predictor_68_face_landmarks.dat"
 #include <QObject>
 #include <dlib/opencv.h>
 #include <opencv2/highgui/highgui.hpp>
@@ -36,6 +36,7 @@ private:
   std::vector<cv::Point> lefteye;
   char c;
   cv::Point p;
+  int count=0;
 
 };
 

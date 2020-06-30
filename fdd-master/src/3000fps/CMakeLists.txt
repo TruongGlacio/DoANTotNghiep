@@ -1,0 +1,5 @@
+add_subdirectory(liblinear)
+aux_source_directory(. LBFREGRESSOR_CPPS)
+add_library(3000fps SHARED ${LBFREGRESSOR_CPPS})
+target_link_libraries(3000fps liblinear ${OpenCV_LIBRARIES})
+install(TARGETS 3000fps LIBRARY DESTINATION lib)

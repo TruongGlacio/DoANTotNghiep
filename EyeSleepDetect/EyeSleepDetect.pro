@@ -1,6 +1,8 @@
 QT += core widgets gui quick multimedia websockets concurrent network
 
 CONFIG += c++11
+QMAKE_CXXFLAGS_RELEASE += -mavx
+QMAKE_CXXFLAGS_DEBUG += -mavx
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -30,11 +32,11 @@ QML_IMPORT_PATH =
 
 # Additional import path used to resolve QML modules just for Qt Quick Designer
 QML_DESIGNER_IMPORT_PATH =
-
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
 win32{
 #include path for dlib c++
 #INCLUDEPATH += $$PWD/AIandDetectLayer
