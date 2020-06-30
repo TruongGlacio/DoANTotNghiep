@@ -2,10 +2,7 @@
 #define GLOBAL_H
 
 #include <QtWidgets>
-
-#define CAM_WIDTH 640
-#define CAM_HEIGHT 480
-
+#include "ConnectLayer/ConstDefines.h"
 #define THETA_VECTOR 0
 #define VICTORY_CORR 1
 #define RNR_CORR 2

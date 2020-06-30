@@ -3,7 +3,7 @@ import QtQuick.Window 2.1
 
 Window {
     visible: true
-    width: 640
-    height: 480
+    width: 1366
+    height: 768
     title: qsTr("Hello World")
 }

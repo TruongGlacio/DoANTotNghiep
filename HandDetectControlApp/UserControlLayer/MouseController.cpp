@@ -87,7 +87,7 @@ void MouseController::SetMouseLocation(QPoint qpoint)
 {
     qDebug() << "qpointmouseX="<<qpoint.x()<<"\n qpointmouseY="<<qpoint.y()<<endl;
     SetLocationOffSet(qpoint);
-    mQcusor.setPos(this->mQpointOffsett.x()+qpoint.x()*DESKTOP_PIXEL_WIDTH/CAM_WIDTH,this->mQpointOffsett.y()+qpoint.y()*DESKTOP_PIXEL_HEIGHT/CAM_HEIGHT);
+    mQcusor.setPos(qpoint.x()*DESKTOP_PIXEL_WIDTH/CAM_WIDTH,qpoint.y()*DESKTOP_PIXEL_HEIGHT/CAM_HEIGHT);
    // mQcusor.setPos(qpoint.x(),qpoint.y());
     //CheckLocation(qcusor.pos());
     qDebug() << "mouseX="<<mQcusor.pos().x()<<"\n mouseY="<<mQcusor.pos().y()<<endl;
