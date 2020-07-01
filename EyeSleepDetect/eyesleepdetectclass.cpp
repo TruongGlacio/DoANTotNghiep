@@ -65,7 +65,7 @@ int EyeSleepDetectClass:: StartDetectEyeSleep()
            // qDebug()<< "Number of faces detected: " << faces.size() << endl;
 
             win.clear_overlay();
-           // win.set_image(cimgForView);
+            win.set_image(cimg);
 
             // Find the pose of each face.
             if (faces.size() > 0) {
@@ -90,18 +90,18 @@ int EyeSleepDetectClass:: StartDetectEyeSleep()
                 if ((right_ear + left_ear) / 2 < 0.2)
                 {
                     qDebug()<< "Sleeping" << endl;
-                   // win.add_overlay(dlib::image_window::overlay_rect(faces[0], rgb_pixel(255, 255, 255), "Sleeping"));
+                    win.add_overlay(dlib::image_window::overlay_rect(faces[0], rgb_pixel(255, 255, 255), "Sleeping"));
                 }
                 else
                 {
                      qDebug()<< "Not sleeping" << endl;
-                   // win.add_overlay(dlib::image_window::overlay_rect(faces[0], rgb_pixel(255, 255, 255), "Not sleeping"));
+                     win.add_overlay(dlib::image_window::overlay_rect(faces[0], rgb_pixel(255, 255, 255), "Not sleeping"));
                 }
 
                 righteye.clear();
                 lefteye.clear();
 
-               // win.add_overlay(render_face_detections(shape));
+                win.add_overlay(render_face_detections(shape));
 
                 c = (char)waitKey(30);
                 if (c == 27)
