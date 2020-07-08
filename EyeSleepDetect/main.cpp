@@ -16,7 +16,5 @@ int main(int argc, char *argv[])
     }, Qt::QueuedConnection);
     engine.load(url);
     EyeSleepDetectClass eyeSleeep;
-    eyeSleeep.StartDetectEyeSleep();
-
     return app.exec();
 }
