@@ -12,8 +12,6 @@
 #include <dlib/image_processing.h>
 #include <dlib/gui_widgets.h>
 #include <dlib/image_io.h>
-//#include "opencv2/opencv.hpp"
-//#include"opencv2/videoio.hpp"
 
 using namespace dlib;
 using namespace std;
@@ -25,18 +23,28 @@ class EyeSleepDetectClass : public QObject
     Q_OBJECT
 public:
     explicit EyeSleepDetectClass(QObject *parent = nullptr);
-    double compute_EAR(std::vector<cv::Point> vec);
-    int StartDetectEyeSleep();
+    double computeAveragPositionForEye(std::vector<cv::Point> vec);
+    bool StartWebCam();
+    void InitialFaceDetector(std::string shape_Predirtor);
+    std::vector<image_window::overlay_line> GetSubObjectFromFullFace(full_object_detection shape,int startPoint, int endPoint);
+
 signals:
+    void SendFramegetFromCamera(cv::Mat frame);
+public slots:
+    void DetectEyeSleep(cv::Mat frame);
+    void DetectLip(cv::Mat frame);
+
 private:
   cv::VideoCapture* m_videoCapture;
   image_window win;
-  shape_predictor sp;
-  std::vector<cv::Point> righteye;
-  std::vector<cv::Point> lefteye;
+  shape_predictor landMarkOfFace;
+  std::vector<cv::Point> pointsOfRightEye;
+  std::vector<cv::Point> pointsOfLeftEye;
   char c;
-  cv::Point p;
-  int count=0;
+  cv::Point locationPointsOfEye;
+  int countNumberOfFrame=0;
+  std::string shape_Predirtor;
+  frontal_face_detector detector;
 
 };
 
