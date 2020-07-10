@@ -1,6 +1,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include "eyesleepdetectclass.h"
+#include "FacesDetectClass.h"
+#include"appenginer.h"
 int main(int argc, char *argv[])
 {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
@@ -15,6 +16,7 @@ int main(int argc, char *argv[])
             QCoreApplication::exit(-1);
     }, Qt::QueuedConnection);
     engine.load(url);
-    EyeSleepDetectClass eyeSleeep;
+    AppEnginer mAppEnginer;
+    //FacesDetectClass eyeSleeep;
     return app.exec();
 }

@@ -1,6 +1,4 @@
-#define FACE_DOWNSAMPLE_RATIO 2
-#define SKIP_FRAMES 10
-#include "eyesleepdetectclass.h"
+#include "FacesDetectClass.h"
 #include<QDebug>
 #include <dlib/image_processing/frontal_face_detector.h>
 #include <dlib/image_processing/render_face_detections.h>
@@ -9,15 +7,16 @@
 #include <dlib/image_io.h>
 #include "opencv2/opencv.hpp"
 #include"opencv2/videoio.hpp"
-EyeSleepDetectClass::EyeSleepDetectClass(QObject *parent) : QObject(parent)
+FacesDetectClass::FacesDetectClass(QObject *parent ) : QObject(parent)
 {
-    connect(this, SIGNAL(SendFramegetFromCamera(cv::Mat)),this,SLOT(DetectEyeSleep(cv::Mat)));
+  //  connect(this, SIGNAL(SendFramegetFromCamera(cv::Mat)),this,SLOT(DetectEyeSleep(cv::Mat)));
+
     InitialFaceDetector(SHAPE_PREDIRTOR_68_FACE_LANDMARK);
-    StartWebCam();
+    //  StartWebCam();
 }
 
 // compute eye aspect ratio (ear)
-double EyeSleepDetectClass::computeAveragPositionForEye(std::vector<cv::Point> vec)
+double FacesDetectClass::computeAveragPositionForEye(std::vector<cv::Point> vec)
 {
 
     double a = cv::norm(cv::Mat(vec[1]), cv::Mat(vec[5])); //=|P2-P6|         P2  |  P3
@@ -30,36 +29,38 @@ double EyeSleepDetectClass::computeAveragPositionForEye(std::vector<cv::Point> v
     return ear;
 }
 
-bool EyeSleepDetectClass::StartWebCam()
-{
-    try {
-        cv::VideoCapture cap(0);
-        m_videoCapture = new cv::VideoCapture(0);
-        m_videoCapture->open(0);
-        m_videoCapture->set(CAP_PROP_FRAME_WIDTH, CAM_WIDTH);//use small resolution for fast processing
-        m_videoCapture->set(CAP_PROP_FRAME_HEIGHT, CAM_HEIGHT);
-        if (!m_videoCapture->isOpened()) {
-            qDebug() << "Unable to connect to camera";
-            return false;
-        }
-        while (!win.is_closed()) {
-            // Grab a frame
-            cv::Mat temp;
-            if (!m_videoCapture->read(temp)) {
-                qDebug()<< "videoCapture error " <<endl;
-                break;
-            }
-            else {
-               emit SendFramegetFromCamera( temp);
-            }
-        }
-    }
-    catch (exception& e) {
-        cout << e.what() << endl;
-    }
-}
+//bool FacesDetectClass::StartWebCam()
+//{
+//    try {
+//        cv::VideoCapture cap(0);
+//        m_videoCapture = new cv::VideoCapture(0);
+//        m_videoCapture->open(0);
+//        m_videoCapture->set(CAP_PROP_FRAME_WIDTH, CAM_WIDTH);//use small resolution for fast processing
+//        m_videoCapture->set(CAP_PROP_FRAME_HEIGHT, CAM_HEIGHT);
+//        if (!m_videoCapture->isOpened()) {
+//            qDebug() << "Unable to connect to camera";
+//            return false;
+//        }
+//        while (!mWin->is_closed()) {
+//            // Grab a frame
+//            cv::Mat temp;
+//            if (!m_videoCapture->read(temp)) {
+//                qDebug()<< "videoCapture error " <<endl;
+//                break;
+//            }
+//            else {
+//               emit SendFramegetFromCamera( temp);
+//            }
+//        }
+//    }
+//    catch (exception& e) {
+//        cout << e.what() << endl;
+//        return  false;
+//    }
+//    return true;
+//}
 
-void EyeSleepDetectClass::InitialFaceDetector(std::string shape_Predirtor)
+void FacesDetectClass::InitialFaceDetector(std::string shape_Predirtor)
 {
     this->shape_Predirtor=shape_Predirtor;
     // Load face detection and deserialize face landmarks model.
@@ -67,7 +68,7 @@ void EyeSleepDetectClass::InitialFaceDetector(std::string shape_Predirtor)
     detector = get_frontal_face_detector();
 }
 
-std::vector<image_window::overlay_line> EyeSleepDetectClass::GetSubObjectFromFullFace(full_object_detection shape,int startPoint, int endPoint)
+std::vector<image_window::overlay_line> FacesDetectClass::DrawEyeLineOnFrame(full_object_detection shape,int startPoint, int endPoint)
 {
    // full_object_detection subShape;
     std::vector<image_window::overlay_line> lines;
@@ -81,7 +82,7 @@ std::vector<image_window::overlay_line> EyeSleepDetectClass::GetSubObjectFromFul
     return lines;
 }
 
-void EyeSleepDetectClass::DetectEyeSleep(cv::Mat frame)
+void FacesDetectClass::DetectEyeSleep(cv::Mat frame,  image_window *mWin)
 {
     try{
         cv::Mat im_small, im_display;
@@ -98,8 +99,8 @@ void EyeSleepDetectClass::DetectEyeSleep(cv::Mat frame)
         {
             faces = detector(cimg); // detect the faces from cimg frame
             qDebug()<< "Number of faces detected: " << faces.size() << endl;
-            win.clear_overlay();
-            win.set_image(cimg);
+            mWin->clear_overlay();
+            mWin->set_image(cimg);
 
             // Find the pose of each face.
             if (faces.size() > 0) {
@@ -124,21 +125,21 @@ void EyeSleepDetectClass::DetectEyeSleep(cv::Mat frame)
                 if ((right_ear + left_ear) / 2 < 0.3)//0.2)
                 {
                     qDebug()<< "Sleeping = " <<(right_ear + left_ear)/2<< endl;
-                    win.add_overlay(dlib::image_window::overlay_rect(faces[0], rgb_pixel(255, 255, 255), "Sleeping"));
+                    mWin->add_overlay(dlib::image_window::overlay_rect(faces[0], rgb_pixel(255, 255, 255), "Sleeping"));
                 }
                 else
                 {
                     qDebug()<< "Not sleeping= "<<(right_ear + left_ear)/2 << endl;
-                    win.add_overlay(dlib::image_window::overlay_rect(faces[0], rgb_pixel(255, 255, 255), "Not sleeping"));
+                    mWin->add_overlay(dlib::image_window::overlay_rect(faces[0], rgb_pixel(255, 255, 255), "Not sleeping"));
                 }
 
                 pointsOfRightEye.clear();
                 pointsOfLeftEye.clear();
 
                 // set lines for points of Left eye and right eye
-                std::vector<image_window::overlay_line> lines =GetSubObjectFromFullFace(shape,36,47);
+                std::vector<image_window::overlay_line> lines =DrawEyeLineOnFrame(shape,36,47);
 
-                win.add_overlay(lines);
+                mWin->add_overlay(lines);
                // win.add_overlay(render_face_detections(shape));
 
                // wait for press key in 30ms
@@ -162,7 +163,7 @@ void EyeSleepDetectClass::DetectEyeSleep(cv::Mat frame)
     }
 }
 
-void EyeSleepDetectClass::DetectLip(Mat frame)
+void FacesDetectClass::DetectLip(Mat frame)
 {
 
 }

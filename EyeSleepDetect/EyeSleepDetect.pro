@@ -19,11 +19,18 @@ DEFINES += DLIB_ENABLE_ASSERTS
 DEFINES += QT_DEPRECATED_WARNINGS
 SOURCES += \
         ../dlib/dlib/all/source.cpp \
-        eyesleepdetectclass.cpp \
+    FacesDetectClass.cpp \
+    appenginer.cpp \
+    cameramanager.cpp \
+    handDetectClass.cpp \
         main.cpp \
 
 HEADERS += \
-         eyesleepdetectclass.h \
+    FacesDetectClass.h \
+    GlobalFile.h \
+    appenginer.h \
+    cameramanager.h \ \
+    handDetectClass.h
 
 RESOURCES += qml.qrc \
 
