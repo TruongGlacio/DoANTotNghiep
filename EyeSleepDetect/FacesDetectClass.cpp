@@ -9,10 +9,8 @@
 #include"opencv2/videoio.hpp"
 FacesDetectClass::FacesDetectClass(QObject *parent ) : QObject(parent)
 {
-  //  connect(this, SIGNAL(SendFramegetFromCamera(cv::Mat)),this,SLOT(DetectEyeSleep(cv::Mat)));
-
+    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
     InitialFaceDetector(SHAPE_PREDIRTOR_68_FACE_LANDMARK);
-    //  StartWebCam();
 }
 
 // compute eye aspect ratio (ear)
@@ -20,11 +18,11 @@ double FacesDetectClass::ComputerAspectRatioForEye(std::vector<cv::Point> vec)
 {
 
  //                   left eye                     right eye
- //=|P2-P6|          P38  |   P39                    P44  |  P45
- //=|p3-P5|      P37 -----|----- P40     nose    P43 -----|----- P46
- //=|p1-p4|          P42  |   P41                    P48  |  P47
+ //=|P2-P6|          P38  |  P39                    P44  |  P45
+ //=|p3-P5|      P37 -----|----- P40     nose   P43 -----|----- P46
+ //=|p1-p4|          P42  |  P41                    P48  |  P47
 
-
+    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
     double averageAspectRatio;
 
     double ratioPoint37To39 = cv::norm(cv::Mat(vec[36]), cv::Mat(vec[39])); //=|P37-P39|
@@ -58,6 +56,7 @@ double FacesDetectClass::ComputerAspectRatioForEarAndNose(std::vector<Point> vec
 
                 //  4        31        14
 
+    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
     double averageAspectRatio;
 
     double ratioPoint1To17 = cv::norm(cv::Mat(vec[0]), cv::Mat(vec[27]))/cv::norm(cv::Mat(vec[27]), cv::Mat(vec[16])); //=|(P1-P28)/P28-P17|
@@ -82,6 +81,7 @@ double FacesDetectClass::ComputerAspectRatioForMouth(std::vector<Point> vec)
             //          P60                       P56
             //              P59             P57
 
+    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
     // compute InSideMount
     double ratioPoint61To65 = cv::norm(cv::Mat(vec[60]), cv::Mat(vec[64])); //=|P61-P65|
     double ratioPoint62To68 =0;//= cv::norm(cv::Mat(vec[61]), cv::Mat(vec[67])); //=|P62-P68|
@@ -113,6 +113,7 @@ double FacesDetectClass::ComputerAspectRatioForMouth(std::vector<Point> vec)
 
 void FacesDetectClass::InitialFaceDetector(std::string shape_Predirtor)
 {
+    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
     this->shape_Predirtor=shape_Predirtor;
     // Load face detection and deserialize face landmarks model.
     deserialize(this->shape_Predirtor) >> landMarkOfFace;
@@ -121,6 +122,7 @@ void FacesDetectClass::InitialFaceDetector(std::string shape_Predirtor)
 
 std::vector<image_window::overlay_line> FacesDetectClass::DrawEyeLineOnFrame(full_object_detection shape)
 {
+    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
    // full_object_detection subShape;
     std::vector<image_window::overlay_line> lines;
     const rgb_pixel color = rgb_pixel(0,255,0);
@@ -139,6 +141,8 @@ std::vector<image_window::overlay_line> FacesDetectClass::DrawEyeLineOnFrame(ful
 
 std::vector<image_window::overlay_line> FacesDetectClass::DrawEarAndNoseLineOnFrame(full_object_detection shape)
 {
+    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+
     // full_object_detection subShape;
      std::vector<image_window::overlay_line> lines;
      const rgb_pixel color = rgb_pixel(0,255,0);
@@ -157,6 +161,8 @@ std::vector<image_window::overlay_line> FacesDetectClass::DrawEarAndNoseLineOnFr
 
 std::vector<image_window::overlay_line> FacesDetectClass::DrawMouthLineOnFrame(full_object_detection shape)
 {
+    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+
     std::vector<image_window::overlay_line> lines;
     const rgb_pixel color = rgb_pixel(0,255,0);
     // Lips outer part
@@ -176,6 +182,8 @@ std::vector<image_window::overlay_line> FacesDetectClass::DrawMouthLineOnFrame(f
 
 void FacesDetectClass::DetectEyeSleep(cv::Mat frame,  image_window *mWin)
 {
+    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+
     std::vector<cv::Point> pointsOfFaceResize;
     try{
         cv::Mat im_small, im_display;
@@ -255,6 +263,8 @@ void FacesDetectClass::DetectEyeSleep(cv::Mat frame,  image_window *mWin)
 
 void FacesDetectClass::DetectEarAndNose(cv::Mat frame, image_window *mWin)
 {
+    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+
     std::vector<cv::Point> pointsOfFaceResize;
 
     try{
@@ -281,12 +291,12 @@ void FacesDetectClass::DetectEarAndNose(cv::Mat frame, image_window *mWin)
                 shape = landMarkOfFace(cimg, faces[0]); //work only with 1 face
 
                 for (int b = 0; b < 67; ++b) {
-                                    locationPointsOfEye.x = shape.part(b).x()*FACE_DOWNSAMPLE_RATIO;
-                                    locationPointsOfEye.y = shape.part(b).y()*FACE_DOWNSAMPLE_RATIO;
-                                    pointsOfFaceResize.push_back(locationPointsOfEye);
+                    locationPointsOfEye.x = shape.part(b).x()*FACE_DOWNSAMPLE_RATIO;
+                    locationPointsOfEye.y = shape.part(b).y()*FACE_DOWNSAMPLE_RATIO;
+                    pointsOfFaceResize.push_back(locationPointsOfEye);
                 }
 
-               //Compute ear and nose aspect ration for ear
+                //Compute ear and nose aspect ration for ear
                 double aspectRation = ComputerAspectRatioForEarAndNose(pointsOfFaceResize);
                 qDebug()<< "result compute_EAR : "<<"aspectRation="<< aspectRation<< endl;
 
@@ -308,9 +318,9 @@ void FacesDetectClass::DetectEarAndNose(cv::Mat frame, image_window *mWin)
                 std::vector<image_window::overlay_line> lines =DrawEarAndNoseLineOnFrame(shape);
 
                 mWin->add_overlay(lines);
-               // mWin->add_overlay(render_face_detections(shape));
+                // mWin->add_overlay(render_face_detections(shape));
 
-               // wait for press key in 30ms
+                // wait for press key in 30ms
                 c = (char)waitKey(30);
                 if (c == 27) // if Press ESC key, break
                     return;
@@ -333,6 +343,8 @@ void FacesDetectClass::DetectEarAndNose(cv::Mat frame, image_window *mWin)
 
 void FacesDetectClass::DetectYawnMouth(Mat frame, image_window *mWin)
 {
+    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+
     std::vector<cv::Point> pointsOfFaceResize;
 
     try{

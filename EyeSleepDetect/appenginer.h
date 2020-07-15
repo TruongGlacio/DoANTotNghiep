@@ -3,21 +3,24 @@
 
 #include <QObject>
 #include"FacesDetectClass.h"
-#include"handdetectclass.h"
+#include"handDetectClass.h"
 #include"cameramanager.h"
 #include"GlobalFile.h"
+#include"train_shape_predictor.h"
 class AppEnginer : public QObject
 {
     Q_OBJECT
 public:
 
-    explicit AppEnginer(QObject *parent = nullptr);
+    explicit AppEnginer(QObject *parent = nullptr, CameraManager *mCameraManager=nullptr);
 
 signals:
 private:
     CameraManager mCameraManager;
     FacesDetectClass mFaceDetectClass;
     HandDetectClass mHandDetectClass;
+   // Train_Shape_Predictor mTrain_Shape_Predictor;
+
 
 };
 
