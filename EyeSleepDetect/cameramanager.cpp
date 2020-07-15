@@ -19,7 +19,7 @@ CameraManager::CameraManager(QObject *parent) : QObject(parent)
     qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
     connect(this, SIGNAL(SendTrackingFrameToVideoOutput(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
     connect(&timer,SIGNAL(timeout()), this, SLOT(getFrame()));
-    timer.setInterval(30);
+    timer.setInterval(100);
 }
 
 bool CameraManager::StartWebCam()
@@ -59,7 +59,7 @@ void CameraManager::getFrame()
     if (!frame.empty())
     {
         updateFrame(frame);
-        //  emit  SendFramegetFromCamera(frame,&mWin);
+        emit  SendFramegetFromCamera(frame);
     }
 
     else {

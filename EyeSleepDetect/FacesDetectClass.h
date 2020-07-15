@@ -26,28 +26,29 @@ public:
 
     //bool StartWebCam();
     void InitialFaceDetector(std::string shape_Predirtor);
-    std::vector<image_window::overlay_line> DrawEyeLineOnFrame(full_object_detection shape);
-    std::vector<image_window::overlay_line> DrawEarAndNoseLineOnFrame(full_object_detection shape);
-    std::vector<image_window::overlay_line> DrawMouthLineOnFrame(full_object_detection shape);
+    cv::Mat DrawEyeLineOnFrame(full_object_detection shape,cv::Mat im_small);
+    cv::Mat DrawEarAndNoseLineOnFrame(full_object_detection shape,cv::Mat im_small);
+    cv::Mat DrawMouthLineOnFrame(full_object_detection shape,cv::Mat im_small);
 
 signals:
-    void SendFramegetFromCamera(cv::Mat frame);
+    void SendFrameDrawed(cv::Mat frame);
 public slots:
-    void DetectEyeSleep(cv::Mat frame, image_window *mWin);
-    void DetectEarAndNose(cv::Mat frame, image_window *mWin);
-    void DetectYawnMouth(cv::Mat frame, image_window *mWin);
+    cv::Mat DetectEyeSleep(cv::Mat frame, full_object_detection shape, std::vector<cv::Point> pointsOfFaceResize);
+    cv::Mat DetectEarAndNose(cv::Mat frame, full_object_detection shape, std::vector<cv::Point> pointsOfFaceResize);
+    cv::Mat DetectYawnMouth(cv::Mat frame, full_object_detection shape, std::vector<cv::Point> pointsOfFaceResize);
+    void DetectFace(cv::Mat frame);
 
 
 private:
-  cv::VideoCapture* m_videoCapture;
-  shape_predictor landMarkOfFace;
-  char c;
-  cv::Point locationPointsOfEye;
-  cv::Point locationPointsOfEar;
-  cv::Point locationPointsOfNose;
-  int countNumberOfFrame=0;
-  std::string shape_Predirtor;
-  frontal_face_detector detector;
+    cv::VideoCapture* m_videoCapture;
+    shape_predictor landMarkOfFace;
+    char c;
+    cv::Point locationPointsOfEye;
+    cv::Point locationPointsOfEar;
+    cv::Point locationPointsOfNose;
+    int countNumberOfFrame=0;
+    std::string shape_Predirtor;
+    frontal_face_detector detector;
 
 };
 

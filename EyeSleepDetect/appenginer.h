@@ -19,7 +19,7 @@ private:
     CameraManager mCameraManager;
     FacesDetectClass mFaceDetectClass;
     HandDetectClass mHandDetectClass;
-   // Train_Shape_Predictor mTrain_Shape_Predictor;
+    // Train_Shape_Predictor mTrain_Shape_Predictor;
 
 
 };

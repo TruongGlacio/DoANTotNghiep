@@ -19,7 +19,7 @@ public:
     explicit Train_Shape_Predictor(QObject *parent = nullptr);
     // ----------------------------------------------------------------------------------------
 
-   double interocular_distance (const full_object_detection& det );
+    double interocular_distance (const full_object_detection& det );
     /*!
         ensures
             - returns an object D such that:
