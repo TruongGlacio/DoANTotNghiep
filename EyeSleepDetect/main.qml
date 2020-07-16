@@ -19,9 +19,8 @@ Window {
         anchors.bottomMargin: 50
         visible: true
         fillMode: VideoOutput.PreserveAspectCrop;
+        source: CameraManager;//(radioButton_tracking.checked==true)? CameraManager : null;
 
-
-        source: CameraManager;
     }
     RadioButton {
         id: radioButton_tracking
@@ -30,8 +29,9 @@ Window {
         width: 111
         height: 32
         text: qsTr("StartTracking")
-        checked: false
+        checked: true
         autoExclusive: false
+
     }
     Image {
         id: imageShow

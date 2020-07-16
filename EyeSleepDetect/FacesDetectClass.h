@@ -10,6 +10,7 @@
 #include <dlib/gui_widgets.h>
 #include <dlib/image_io.h>
 #include<GlobalFile.h>
+#include<QDateTime>
 using namespace dlib;
 using namespace std;
 using namespace cv;
@@ -29,7 +30,7 @@ public:
     cv::Mat DrawEyeLineOnFrame(full_object_detection shape,cv::Mat im_small);
     cv::Mat DrawEarAndNoseLineOnFrame(full_object_detection shape,cv::Mat im_small);
     cv::Mat DrawMouthLineOnFrame(full_object_detection shape,cv::Mat im_small);
-
+    cv::Mat DrawDetectStatus(cv::Mat frame,std::string sleepingStatus, std::string yawnMouthStatus,std::string headingPhoneStatus);
 signals:
     void SendFrameDrawed(cv::Mat frame);
 public slots:
@@ -49,6 +50,10 @@ private:
     int countNumberOfFrame=0;
     std::string shape_Predirtor;
     frontal_face_detector detector;
+    std::string mSleepingStatus;
+    std::string mYawnMouthStatus;
+    std::string mHeadingPhoneStatus;
+
 
 };
 

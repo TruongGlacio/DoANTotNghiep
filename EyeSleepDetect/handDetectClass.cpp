@@ -11,7 +11,7 @@
 
 HandDetectClass::HandDetectClass(QObject *parent) : QObject(parent)
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
 
 
 
@@ -20,7 +20,7 @@ HandDetectClass::HandDetectClass(QObject *parent) : QObject(parent)
 void HandDetectClass::DetectHand(cv::Mat frame, image_window *mWin)
 {
 
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
 
     cout << "USAGE : ./handPoseImage <imageFile> " << endl;
     float thresh = 0.01;

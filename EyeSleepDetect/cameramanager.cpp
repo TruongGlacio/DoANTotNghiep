@@ -10,13 +10,15 @@
 #include"opencv2/videoio.hpp"
 QAbstractVideoSurface *CameraManager::videoSurface() const
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
+
     return m_surface;
 }
 
 CameraManager::CameraManager(QObject *parent) : QObject(parent)
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
+
     connect(this, SIGNAL(SendTrackingFrameToVideoOutput(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
     connect(&timer,SIGNAL(timeout()), this, SLOT(getFrame()));
     timer.setInterval(100);
@@ -24,7 +26,8 @@ CameraManager::CameraManager(QObject *parent) : QObject(parent)
 
 bool CameraManager::StartWebCam()
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
+
     try {
         //cv::VideoCapture cap(0);
         int deviceID = 0;             // 0 = open default camera
@@ -32,7 +35,7 @@ bool CameraManager::StartWebCam()
         m_videoCapture = new cv::VideoCapture(0);
 
         // open selected camera using selected API
-        m_videoCapture->open(deviceID, apiID);
+        m_videoCapture->open(deviceID);
         m_videoCapture->set(CAP_PROP_FRAME_WIDTH, CAM_WIDTH);//use small resolution for fast processing
         m_videoCapture->set(CAP_PROP_FRAME_HEIGHT, CAM_HEIGHT);
         if (!m_videoCapture->isOpened()) {
@@ -52,14 +55,21 @@ bool CameraManager::StartWebCam()
 
 void CameraManager::getFrame()
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
+
     cv::Mat frame;
     m_videoCapture->read(frame);
 
     if (!frame.empty())
     {
         updateFrame(frame);
-        emit  SendFramegetFromCamera(frame);
+        if(countFrame%3==0)
+        {
+        emit SendFramegetFromCamera(frame);
+        }
+        countFrame ++;
+        if(countFrame==100)
+            countFrame=0;
     }
 
     else {
@@ -69,7 +79,8 @@ void CameraManager::getFrame()
 
 void CameraManager::onVideoFrameReady(Mat currentFrame)
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
+
     if (!m_surface || currentFrame.empty())
         return;
     cv::Mat continuousFrame;
@@ -91,14 +102,16 @@ void CameraManager::onVideoFrameReady(Mat currentFrame)
 
 void CameraManager::updateFrame(cv::Mat frame)
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
+
     if (!frame.empty())
         Q_EMIT SendTrackingFrameToVideoOutput(frame);
 }
 
 void CameraManager::setVideoSurface(QAbstractVideoSurface *surface)
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
+
     if (m_surface == surface)
         return;
     if(m_surface && m_surface != surface && m_surface->isActive())
@@ -114,7 +127,7 @@ void CameraManager::setVideoSurface(QAbstractVideoSurface *surface)
 
 void CameraManager::setFormat(int width, int height, QVideoFrame::PixelFormat frameFormat)
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
 
     QSize size(width, height);
     QVideoSurfaceFormat format(size, frameFormat);

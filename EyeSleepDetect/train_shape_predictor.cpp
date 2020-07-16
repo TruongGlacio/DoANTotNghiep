@@ -2,13 +2,13 @@
 
 Train_Shape_Predictor::Train_Shape_Predictor(QObject *parent) : QObject(parent)
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
 
 }
 
 double Train_Shape_Predictor::interocular_distance(const full_object_detection &det )
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
 
     dlib::vector<double,2> l, r;
     double cnt = 0;
@@ -37,7 +37,7 @@ double Train_Shape_Predictor::interocular_distance(const full_object_detection &
 
 std::vector<std::vector<double>> Train_Shape_Predictor::get_interocular_distances(const std::vector<std::vector<full_object_detection> > &objects)
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
 
     std::vector<std::vector<double>> temp(objects.size());
     for (unsigned long i = 0; i < objects.size(); ++i)
@@ -52,7 +52,7 @@ std::vector<std::vector<double>> Train_Shape_Predictor::get_interocular_distance
 
 void Train_Shape_Predictor::GeneratedtrainerFile()
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
     try
     {   qDebug() << "Start Generated file hand_Predictor.dat";
         // In this example we are going to train a shape_predictor based on the

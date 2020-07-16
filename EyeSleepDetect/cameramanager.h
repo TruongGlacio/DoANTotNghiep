@@ -56,6 +56,7 @@ public:
     bool m_isFormatSet;
     QImage m_image;
     QTimer timer;
+    int countFrame=0;
 
 
 };

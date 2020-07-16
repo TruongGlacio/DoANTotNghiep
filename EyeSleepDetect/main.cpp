@@ -7,7 +7,7 @@
 
 int main(int argc, char *argv[])
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
 
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 

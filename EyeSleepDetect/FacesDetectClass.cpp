@@ -9,7 +9,7 @@
 #include"opencv2/videoio.hpp"
 FacesDetectClass::FacesDetectClass(QObject *parent ) : QObject(parent)
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
     InitialFaceDetector(SHAPE_PREDIRTOR_68_FACE_LANDMARK);
 }
 
@@ -22,7 +22,8 @@ double FacesDetectClass::ComputerAspectRatioForEye(std::vector<cv::Point> vec)
     //=|p3-P5|      P37 -----|----- P40     nose   P43 -----|----- P46
     //=|p1-p4|          P42  |  P41                    P48  |  P47
 
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
+
     double averageAspectRatio;
 
     double ratioPoint37To39 = cv::norm(cv::Mat(vec[36]), cv::Mat(vec[39])); //=|P37-P39|
@@ -36,9 +37,9 @@ double FacesDetectClass::ComputerAspectRatioForEye(std::vector<cv::Point> vec)
     //compute right EAR
     double ratioPoint43To46 = cv::norm(cv::Mat(vec[42]), cv::Mat(vec[45])); //=|P43-P46|
     double ratioPoint44To48 = cv::norm(cv::Mat(vec[43]), cv::Mat(vec[47])); //=|P44-P48|
-    double ratioPoint45To48 = cv::norm(cv::Mat(vec[44]), cv::Mat(vec[46])); //=|P45-P47|
-    double rigthEar = (ratioPoint44To48 + ratioPoint45To48) / (2.0 * ratioPoint43To46);
-    qDebug() << "compute_EAR:"<<"a="<<ratioPoint43To46<<"\t b="<<ratioPoint44To48<<"\t c="<<ratioPoint45To48<<"\n";
+    double ratioPoint45To47 = cv::norm(cv::Mat(vec[44]), cv::Mat(vec[46])); //=|P45-P47|
+    double rigthEar = (ratioPoint44To48 + ratioPoint45To47) / (2.0 * ratioPoint43To46);
+    qDebug() << "compute_EAR:"<<"a="<<ratioPoint43To46<<"\t b="<<ratioPoint44To48<<"\t c="<<ratioPoint45To47<<"\n";
 
     averageAspectRatio=(leftEar+rigthEar)/2;
 
@@ -56,7 +57,8 @@ double FacesDetectClass::ComputerAspectRatioForEarAndNose(std::vector<Point> vec
 
     //  4        31        14
 
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
+
     double averageAspectRatio;
 
     double ratioPoint1To17 = cv::norm(cv::Mat(vec[0]), cv::Mat(vec[27]))/cv::norm(cv::Mat(vec[27]), cv::Mat(vec[16])); //=|(P1-P28)/P28-P17|
@@ -81,7 +83,8 @@ double FacesDetectClass::ComputerAspectRatioForMouth(std::vector<Point> vec)
     //          P60                       P56
     //              P59             P57
 
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
+
     // compute InSideMount
     double ratioPoint61To65 = cv::norm(cv::Mat(vec[60]), cv::Mat(vec[64])); //=|P61-P65|
     double ratioPoint62To68 =0;//= cv::norm(cv::Mat(vec[61]), cv::Mat(vec[67])); //=|P62-P68|
@@ -113,7 +116,8 @@ double FacesDetectClass::ComputerAspectRatioForMouth(std::vector<Point> vec)
 
 void FacesDetectClass::InitialFaceDetector(std::string shape_Predirtor)
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
+
     this->shape_Predirtor=shape_Predirtor;
     // Load face detection and deserialize face landmarks model.
     deserialize(this->shape_Predirtor) >> landMarkOfFace;
@@ -122,14 +126,15 @@ void FacesDetectClass::InitialFaceDetector(std::string shape_Predirtor)
 
 cv::Mat FacesDetectClass::DrawEyeLineOnFrame(full_object_detection shape,cv::Mat frame)
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
+
     // full_object_detection subShape;
 
     cv::Scalar scalar(0,255,0);
     // Left eye
     for (unsigned long i = 37; i <= 41; ++i){
         // draw with opencv
-        cv::line(frame, cv::Point(shape.part(i).x(),shape.part(i).y()), cv::Point(shape.part(i-1).x(),shape.part(i).y()), scalar, 2, 8, 0);
+        cv::line(frame, cv::Point(shape.part(i).x(),shape.part(i).y()), cv::Point(shape.part(i-1).x(),shape.part(i-1).y()), scalar, 2, 8, 0);
     }
     cv::line(frame, cv::Point(shape.part(36).x(),shape.part(36).y()), cv::Point(shape.part(41).x(),shape.part(41).y()),scalar, 2, 8, 0);
 
@@ -137,7 +142,7 @@ cv::Mat FacesDetectClass::DrawEyeLineOnFrame(full_object_detection shape,cv::Mat
     // Right eye
     for (unsigned long i = 43; i <= 47; ++i)
     {
-        cv::line(frame, cv::Point(shape.part(i).x(),shape.part(i).y()), cv::Point(shape.part(i-1).x(),shape.part(i).y()),scalar, 2, 8, 0);
+        cv::line(frame, cv::Point(shape.part(i).x(),shape.part(i).y()), cv::Point(shape.part(i-1).x(),shape.part(i-1).y()),scalar, 2, 8, 0);
 
     }
     cv::line(frame, cv::Point(shape.part(42).x(),shape.part(42).y()), cv::Point(shape.part(42).x(),shape.part(42).y()),scalar, 2, 8, 0);
@@ -146,38 +151,38 @@ cv::Mat FacesDetectClass::DrawEyeLineOnFrame(full_object_detection shape,cv::Mat
 
 cv::Mat FacesDetectClass::DrawEarAndNoseLineOnFrame(full_object_detection shape,cv::Mat frame)
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
 
     // full_object_detection subShape;
     cv::Scalar scalar(0,255,0);
     // Left eye
     // Around Chin. Ear to Ear
     for (unsigned long i = 1; i <= 4; ++i)
-        cv::line(frame, cv::Point(shape.part(i).x(),shape.part(i).y()), cv::Point(shape.part(i-1).x(),shape.part(i).y()), scalar, 2, 8, 0);
+        cv::line(frame, cv::Point(shape.part(i).x(),shape.part(i).y()), cv::Point(shape.part(i-1).x(),shape.part(i-1).y()), scalar, 2, 8, 0);
     for (unsigned long i = 13; i <= 16; ++i)
-        cv::line(frame, cv::Point(shape.part(i).x(),shape.part(i).y()), cv::Point(shape.part(i-1).x(),shape.part(i).y()), scalar, 2, 8, 0);
+        cv::line(frame, cv::Point(shape.part(i).x(),shape.part(i).y()), cv::Point(shape.part(i-1).x(),shape.part(i-1).y()), scalar, 2, 8, 0);
     // Line on top of nose
     for (unsigned long i = 28; i <= 30; ++i)
-        cv::line(frame, cv::Point(shape.part(i).x(),shape.part(i).y()), cv::Point(shape.part(i-1).x(),shape.part(i).y()), scalar, 2, 8, 0);
+        cv::line(frame, cv::Point(shape.part(i).x(),shape.part(i).y()), cv::Point(shape.part(i-1).x(),shape.part(i-1).y()), scalar, 2, 8, 0);
 
     return frame;
 }
 
 cv::Mat FacesDetectClass::DrawMouthLineOnFrame(full_object_detection shape,cv::Mat frame)
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
 
     cv::Scalar scalar(0,255,0);
 
     // Lips outer part
     for (unsigned long i = 49; i <= 59; ++i)
-    {cv::line(frame, cv::Point(shape.part(i).x(),shape.part(i).y()), cv::Point(shape.part(i-1).x(),shape.part(i).y()), scalar, 2, 8, 0);
+    {cv::line(frame, cv::Point(shape.part(i).x(),shape.part(i).y()), cv::Point(shape.part(i-1).x(),shape.part(i-1).y()), scalar, 2, 8, 0);
     }
     cv::line(frame, cv::Point(shape.part(48).x(),shape.part(48).y()), cv::Point(shape.part(59).x(),shape.part(59).y()), scalar, 2, 8, 0);
 
     // Lips inside part
     for (unsigned long i = 61; i <= 67; ++i)
-    {cv::line(frame, cv::Point(shape.part(i).x(),shape.part(i).y()), cv::Point(shape.part(i-1).x(),shape.part(i).y()), scalar, 2, 8, 0);}
+    {cv::line(frame, cv::Point(shape.part(i).x(),shape.part(i).y()), cv::Point(shape.part(i-1).x(),shape.part(i-1).y()), scalar, 2, 8, 0);}
 
     cv::line(frame, cv::Point(shape.part(60).x(),shape.part(60).y()), cv::Point(shape.part(67).x(),shape.part(67).y()), scalar, 2, 8, 0);
 
@@ -185,18 +190,30 @@ cv::Mat FacesDetectClass::DrawMouthLineOnFrame(full_object_detection shape,cv::M
 
 }
 
-void FacesDetectClass::DetectFace(Mat frame)
+Mat FacesDetectClass::DrawDetectStatus(Mat frame, string sleepingStatus, string yawnMouthStatus, string headingPhoneStatus)
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
+
+    cv::putText(frame, sleepingStatus, cv::Point(20,200), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.0, cv::Scalar(0,255,0),1, cv::LINE_AA);
+    // Coordinates     // Font                       // Scale // BGR Color    // Line Thickness (Optional) and // Anti-alias (Optional)
+    cv::putText(frame, yawnMouthStatus, cv::Point(20,220), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.0, cv::Scalar(0,255,0),1, cv::LINE_AA);
+    cv::putText(frame, headingPhoneStatus, cv::Point(20,240), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.0, cv::Scalar(0,255,0),1, cv::LINE_AA);
+
+    return  frame;
+}
+
+void FacesDetectClass::DetectFace(cv::Mat frame)
+{
+    FUNCTION_LOG();
 
     std::vector<cv::Point> pointsOfFaceResize;
 
     try{
         cv::Mat im_small, im_display;
+        cv::Mat frame1, frame2,frame3,frame4;
         //resize frame to increase performance
         cv::resize(frame, im_small, cv::Size(), 1.0/FACE_DOWNSAMPLE_RATIO, 1.0/FACE_DOWNSAMPLE_RATIO);
         cv_image<bgr_pixel> cimg(im_small);
-        cv_image<bgr_pixel> cimgForView(frame);
         // Resize image for face detection
         full_object_detection shape;
 
@@ -211,24 +228,49 @@ void FacesDetectClass::DetectFace(Mat frame)
 
                 shape = landMarkOfFace(cimg, faces[0]); //work only with 1 face
 
-                for (int b = 0; b < 67; ++b) {
+                for (int b = 0; b < 67; b++) {
                     locationPointsOfEye.x = shape.part(b).x()*FACE_DOWNSAMPLE_RATIO;
                     locationPointsOfEye.y = shape.part(b).y()*FACE_DOWNSAMPLE_RATIO;
                     pointsOfFaceResize.push_back(locationPointsOfEye);
                 }
 
                 // restore size and location of point as fist frame for draw on camera output
+
                 for(unsigned long i=0;i < shape.num_parts();i++){
                     shape.part(i).x()=shape.part(i).x()*FACE_DOWNSAMPLE_RATIO;
                     shape.part(i).y()=shape.part(i).y()*FACE_DOWNSAMPLE_RATIO;
                 }
 
-                frame=DetectEyeSleep(frame,shape,pointsOfFaceResize);
-                frame=DetectYawnMouth(frame,shape,pointsOfFaceResize);
-                frame=DetectEarAndNose(frame,shape,pointsOfFaceResize);
-                emit SendFrameDrawed(frame);
+                frame1=DetectEyeSleep(frame,shape,pointsOfFaceResize);
+                frame1=DetectYawnMouth(frame,shape,pointsOfFaceResize);
+                frame3=DetectEarAndNose(frame,shape,pointsOfFaceResize);
+                frame4=DrawDetectStatus(frame3,mSleepingStatus,mYawnMouthStatus,mHeadingPhoneStatus);
+
+                emit SendFrameDrawed(frame4);
+                if(mSleepingStatus==SLEEPING_STATUS|| mYawnMouthStatus==YAWNING_MOUTH_STATUS)
+                {
+                    //Save detect image file to memory
+                    QDateTime current = QDateTime::currentDateTime();
+                    QString imageFileName=current.toString()+".jpg";//FILE_PATH_SAVE_IMAGE+current.toString()+ ".jpg";
+                    std::string filePath=imageFileName.toStdString();
+                    while (1){
+                        std::size_t pos = filePath.find(TO_REPLACE_STRING);
+                        if (pos != std::string::npos){
+                            filePath.replace(pos, 1, REPLACE_WITH_STRING);
+                        }
+                        else{
+                            break;
+                        }
+                    }
+                    imwrite(filePath, frame4); // A JPG FILE IS BEING SAVED
+                    qDebug()<<"Save detected image frame to memory, file path: "<<imageFileName;
+
+                }
+                pointsOfFaceResize.clear();
+
             }
         }
+
         countNumberOfFrame ++;
         if(countNumberOfFrame ==100)
         {
@@ -247,8 +289,7 @@ void FacesDetectClass::DetectFace(Mat frame)
 
 cv::Mat FacesDetectClass::DetectEyeSleep(cv::Mat frame, full_object_detection shape, std::vector<cv::Point> pointsOfFaceResize)
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
-
+    FUNCTION_LOG();
 
     //Compute Eye aspect ration for eyes
     double averageAspectRatio = ComputerAspectRatioForEye(pointsOfFaceResize);
@@ -256,40 +297,25 @@ cv::Mat FacesDetectClass::DetectEyeSleep(cv::Mat frame, full_object_detection sh
     qDebug()<< "result compute_EAR : "<<"averageAspectRatio="<< averageAspectRatio<< endl;
 
     //if the avarage eye aspect ratio of lef and right eye less than 0.2, the status is sleeping.
-    if (averageAspectRatio < TWO_EYELID_ASPECT_RATIO_STANDARD)//0.2)
+    if (averageAspectRatio < TWO_EYELID_ASPECT_RATIO_STANDARD)//0.3)
     {
-        qDebug()<< "Sleeping = " <<averageAspectRatio<< endl;
-        cv::putText(frame,
-                    "Sleeping",
-                    cv::Point(20,20),//cv::Point(5,5), // Coordinates
-                    cv::FONT_HERSHEY_COMPLEX_SMALL, // Font
-                    1.0, // Scale. 2.0 = 2x bigger
-                    cv::Scalar(0,255,0), // BGR Color
-                    1, // Line Thickness (Optional)
-                    cv::LINE_AA); // Anti-alias (Optional)
+        mSleepingStatus=SLEEPING_STATUS;
     }
     else
     {
-        qDebug()<< "Not sleeping= "<<averageAspectRatio << endl;
-        cv::putText(frame,
-                    "Not Sleeping",
-                    cv::Point(20,20), // Coordinates
-                    cv::FONT_HERSHEY_COMPLEX_SMALL, // Font
-                    1.0, // Scale. 2.0 = 2x bigger
-                    cv::Scalar(0,255,0), // BGR Color
-                    1, // Line Thickness (Optional)
-                    cv::LINE_AA); // Anti-alias (Optional)
+        mSleepingStatus=NOT_SLEEPING_STATUS;
     }
+    qDebug()<< mSleepingStatus.c_str()<<averageAspectRatio << endl;
 
     // set lines for points of Left eye and right eye from point 36 to point 47 in maping 68 point face landmark
+
     frame = DrawEyeLineOnFrame(shape,frame);
     return frame;
-
 }
 
 cv::Mat FacesDetectClass::DetectEarAndNose(cv::Mat frame, full_object_detection shape, std::vector<cv::Point> pointsOfFaceResize)
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
+    FUNCTION_LOG();
 
     //Compute ear and nose aspect ration for ear
     double aspectRation = ComputerAspectRatioForEarAndNose(pointsOfFaceResize);
@@ -298,29 +324,13 @@ cv::Mat FacesDetectClass::DetectEarAndNose(cv::Mat frame, full_object_detection 
     //Check
     if (aspectRation < EAR_ASPECT_RATIO_STANDARD_LOW || aspectRation>EAR_ASPECT_RATIO_STANDARD_HIGH )//0.2)
     {
-        qDebug()<< "Sleeping = " <<aspectRation<< endl;
-        cv::putText(frame,
-                    "Heading Phone",
-                    cv::Point(20,60),//cv::Point(5,5), // Coordinates
-                    cv::FONT_HERSHEY_COMPLEX_SMALL, // Font
-                    1.0, // Scale. 2.0 = 2x bigger
-                    cv::Scalar(0,255,0), // BGR Color
-                    1, // Line Thickness (Optional)
-                    cv::LINE_AA); // Anti-alias (Optional)
-    }
-    else {
-        qDebug()<< "No Sleep = " <<aspectRation<< endl;
-        cv::putText(frame,
-                    "Not heading phone",
-                    cv::Point(20,60),//cv::Point(5,5), // Coordinates
-                    cv::FONT_HERSHEY_COMPLEX_SMALL, // Font
-                    1.0, // Scale. 2.0 = 2x bigger
-                    cv::Scalar(0,255,0), // BGR Color
-                    1, // Line Thickness (Optional)
-                    cv::LINE_AA); // Anti-alias (Optional)
+        mHeadingPhoneStatus= HEADING_PHONE_STATUS;
 
     }
-    pointsOfFaceResize.clear();
+    else {
+        mHeadingPhoneStatus= NOT_HEADING_PHONE_STATUS;
+    }
+    qDebug()<< mHeadingPhoneStatus.c_str() <<aspectRation<< endl;
 
     // set lines for points of Left eye and right eye from point 36 to point 47 in maping 68 point face landmark
     frame = DrawEarAndNoseLineOnFrame(shape,frame);
@@ -330,9 +340,7 @@ cv::Mat FacesDetectClass::DetectEarAndNose(cv::Mat frame, full_object_detection 
 
 cv::Mat FacesDetectClass::DetectYawnMouth(cv::Mat frame, full_object_detection shape, std::vector<cv::Point> pointsOfFaceResize)
 {
-    qDebug()<< "Function name : "<<__FUNCTION__  <<endl;
-
-
+    FUNCTION_LOG();
 
     //Compute ear and nose aspect ration for ear
     double aspectRation = ComputerAspectRatioForMouth(pointsOfFaceResize);
@@ -340,31 +348,17 @@ cv::Mat FacesDetectClass::DetectYawnMouth(cv::Mat frame, full_object_detection s
     //Check
     if (aspectRation > MOUTH_ASPECT_RATIO_STANDARD)
     {
-        qDebug()<< "Yawning mouth = " <<aspectRation<< endl;
-        cv::putText(frame,
-                    "Yawning mouth",
-                    cv::Point(20,40),//cv::Point(5,5), // Coordinates
-                    cv::FONT_HERSHEY_COMPLEX_SMALL, // Font
-                    1.0, // Scale. 2.0 = 2x bigger
-                    cv::Scalar(0,255,0), // BGR Color
-                    1, // Line Thickness (Optional)
-                    cv::LINE_AA); // Anti-alias (Optional)
+        mYawnMouthStatus=YAWNING_MOUTH_STATUS;
+        mSleepingStatus=SLEEPING_STATUS;
     }
     else {
-        qDebug()<< "NotYawning mouth = " <<aspectRation<< endl;
-        cv::putText(frame,
-                    "NotYawning mouth",
-                    cv::Point(20,40),//cv::Point(5,5), // Coordinates
-                    cv::FONT_HERSHEY_COMPLEX_SMALL, // Font
-                    1.0, // Scale. 2.0 = 2x bigger
-                    cv::Scalar(0,255,0), // BGR Color
-                    1, // Line Thickness (Optional)
-                    cv::LINE_AA); // Anti-alias (Optional)
+        mYawnMouthStatus=NOT_YAWNING_MOUTH_STATUS;
 
     }
+    qDebug()<< mYawnMouthStatus.c_str()<<aspectRation<< endl;
+
     // set lines for points of Left eye and right eye from point 36 to point 47 in maping 68 point face landmark
     frame = DrawMouthLineOnFrame(shape,frame);
+
     return frame;
-
-
 }
