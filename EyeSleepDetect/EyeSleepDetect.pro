@@ -76,7 +76,7 @@ LIBS += -llibopencv_video430 -llibopencv_videoio430
 }
 linux{
 INCLUDEPATH += $$PWD/../dlib/
-QMAKE_CXXFLAGS_RELEASE += /arch:AVX
+#QMAKE_CXXFLAGS_RELEASE += /arch:AVX
 
 LIBS+= -lgdi32 -lcomctl32 -luser32 -lwinmm -lws2_32
 LIBS += -luser32 -lws2_32 -lgdi32 -lcomctl32 -limm32 -lwinmm

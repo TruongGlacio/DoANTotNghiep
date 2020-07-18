@@ -1,8 +1,0 @@
-if(WITH_SOUND)
-    add_definitions(-DWITH_SOUND)
-endif(WITH_SOUND)
-aux_source_directory(. SRC_LIST)
-add_executable(ExecuteResultProcessor ExecuteResultProcessor.cpp ResultProcessor.cpp)
-target_link_libraries(ExecuteResultProcessor MessageQueue ${OpenCV_LIBRARIES} config++ glog)
-add_executable(TestResultProcessor TestResultProcessor.cpp)
-target_link_libraries(TestResultProcessor MessageQueue ${OpenCV_LIBRARIES})
