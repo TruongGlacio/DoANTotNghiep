@@ -11,7 +11,7 @@
 #define EAR_ASPECT_RATIO_STANDARD_LOW 0.8
 #define EAR_ASPECT_RATIO_STANDARD_HIGH 1.25
 #define MOUTH_ASPECT_RATIO_STANDARD  0.45
-#if Q_OS_LINUX
+#if __linux__
 
 #define SHAPE_PREDIRTOR_68_FACE_LANDMARK "..\\dlib\\shape_predictor_68_face_landmarks.dat"//"D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\dlib\\shape_predictor_68_face_landmarks.dat"
 #define PROTO_FILE "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\dlib\\pose_deploy.prototxt"
