@@ -5,6 +5,7 @@
 #include"appenginer.h"
 #include <QQmlContext>
 #include <QtQml>
+#include <QQmlEngine>
 int main(int argc, char *argv[])
 {
     FUNCTION_LOG();
@@ -16,8 +17,9 @@ int main(int argc, char *argv[])
     QScopedPointer<CameraManager> service(mCameramanager);
    // QScopedPointer<QString> serviceGetImage((mCameramanager->ImagePathForView()));
     qmlRegisterSingletonInstance<CameraManager>("Application.CameraManager", 1, 0, "CameraManager", service.get());
+//    qmlRegisterSingletonType<CameraManager>("Application.CameraManager", 1, 0, "CameraManager", service.get());
    // qmlRegisterSingletonType<QString>,("Application.CameraManager", 1, 0, "ImagePathForView",mCameramanager->mImagepathForView );
-    qmlRegisterTypeNotAvailable("Application.CameraManager", 1, 0, "ImagePathForView", mCameramanager->mImagepathForView);
+  //  qmlRegisterTypeNotAvailable("Application.CameraManager", 1, 0, "ImagePathForView", mCameramanager->mImagepathForView);
 
     QQmlApplicationEngine engine;
     const QUrl url(QStringLiteral("qrc:/main.qml"));

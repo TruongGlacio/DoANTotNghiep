@@ -18,10 +18,11 @@ QAbstractVideoSurface *CameraManager::videoSurface() const
 CameraManager::CameraManager(QObject *parent) : QObject(parent)
 {
     FUNCTION_LOG();
-
+    timer=new QTimer();
     connect(this, SIGNAL(SendTrackingFrameToVideoOutput(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
-    connect(&timer,SIGNAL(timeout()), this, SLOT(getFrame()));
-    timer.setInterval(100);
+
+    connect(timer,SIGNAL(timeout()), this, SLOT(getFrame()));
+    timer->setInterval(100);
 }
 
 bool CameraManager::StartWebCam()
@@ -43,7 +44,8 @@ bool CameraManager::StartWebCam()
             return false;
         }
         qDebug()<< "camera started " <<endl;
-        timer.start();
+        connect(timer,SIGNAL(timeout()), this, SLOT(getFrame()));
+        timer->start();
 
     }
     catch (exception& e) {
@@ -58,12 +60,30 @@ void CameraManager::StopWebCam()
 {
         FUNCTION_LOG();
         m_videoCapture->release();
-        timer.stop();
+        disconnect(timer,SIGNAL(timeout()), this, SLOT(getFrame()));
+        connect(this, SIGNAL(SendFrameForImageView(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
+
+        timer->stop();
+
+        if(timer->isActive())
+        {
+
+            qDebug() << "Can't stop timer";
+        }
+        else
+        {
+            qDebug() << "Timer stoped";
+        }
         qDebug() << "m_videoCapture close";
 }
 
 void CameraManager::SetImagePathForView(bool distance)
 {
+    if(mFolderPathSaveImage.isEmpty()){
+        QString rootFolderPath=QDir::currentPath();
+        qDebug()<<"rootFolderPath is : "<<rootFolderPath;
+        mFolderPathSaveImage=rootFolderPath+FOLDER_PATH_SAVE_IMAGE;
+    }
     if(!QDir(mFolderPathSaveImage).exists())
     {
         qDebug()<<"Folder Path for Save Image not exit"<<endl;
@@ -87,15 +107,18 @@ void CameraManager::SetImagePathForView(bool distance)
         qDebug()<<"Folder Image path is empty"<<endl;
         return;
     }
-    mImagepathForView=imagesList.at(mImageFileIndex);
-
+    mImagepathForView=mFolderPathSaveImage + '/'+imagesList.at(mImageFileIndex);
+    qDebug()<<"image file path sahll show on "<<mImagepathForView<<endl;
+   // mImagepathForView= mFolderPathSaveImage+
+    Mat imageFrame;
+    imageFrame = cv::imread(mImagepathForView.toStdString(), 1 );
+    if(!imageFrame.data)
+    {
+      qDebug()<<"Can't load frame from image file"<<endl;
+      return;
+    }
+    emit SendFrameForImageView(imageFrame);
 }
-
-//QString CameraManager::ImagePathForView()
-//{
-//    return mImagepathForView;
-//}
-
 void CameraManager::getFrame()
 {
     FUNCTION_LOG();

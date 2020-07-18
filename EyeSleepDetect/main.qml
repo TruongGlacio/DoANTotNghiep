@@ -39,10 +39,9 @@ Window {
             {
                 mainWindow.qmlStopCameraSignal()
                 radioButton_tracking.text=qsTr("Stoped")
-                viewTrackingVideo.source=null;
-                viewTrackingVideo.visible=false;
-                imageShow.visible=true;
-                imageShow.source="qrc:/qtquickplugin/images/template_image.png"
+                viewTrackingVideo.source=CameraManager;
+                buttonBack.visible=true
+                buttonNext.visible=true
                 console.log("Stop camera");
             }
             else
@@ -50,48 +49,38 @@ Window {
                 mainWindow.qmlStartCameraSignal()
                 radioButton_tracking.text=qsTr("Started")
                 viewTrackingVideo.source=CameraManager;
-                viewTrackingVideo.visible=true;
-                imageShow.visible=false;
+                buttonBack.visible=false
+                buttonNext.visible=false
                 console.log("Start camera");
             }
         }
         autoExclusive: false
 
     }
-    Image {
-        id: imageShow
-        x: 8
-        y: 8
-        width: 624
-        height: 480
-        anchors.bottomMargin: 50
-        fillMode: Image.PreserveAspectFit
-        source:ImagePathForView
-        visible: false
-    }
 
     Button {
         id: buttonBack
-        x: 211
+        x: 158
         y: 494
         width: 50
         height: 30
         text: qsTr("Back")
+        visible: false
         onClicked:
         {
-
             mainWindow.qmlSwitchImage(false)
-            imageShow.source=ImagePathForView
         }
     }
     Button {
         id: buttonNext
-        x: 317
+        x: 371
         y: 494
         width: 50
         height: 30
+        visible: false
         text: qsTr("Next")
-        onClicked: mainWindow.qmlSwitchImage(true)
+        onClicked:
+        {mainWindow.qmlSwitchImage(true)}
 
     }
 }
