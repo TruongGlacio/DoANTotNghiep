@@ -15,10 +15,6 @@ Window {
     signal qmlStartCameraSignal()
     signal qmlSwitchImage(bool distance)
 
-
-    CameraManager{
-
-    }
     VideoOutput {
         id:viewTrackingVideo
         clip: false

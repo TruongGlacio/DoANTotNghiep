@@ -179,7 +179,7 @@ void CameraManager::onVideoFrameReady(Mat currentFrame)
     }
     m_image = QImage(continuousFrame.data, continuousFrame.cols, continuousFrame.rows,continuousFrame.step, QImage::Format_RGB888);
     m_image = m_image.rgbSwapped();
-    m_image.convertTo(QVideoFrame::imageFormatFromPixelFormat(QVideoFrame::Format_RGB32));
+    m_image=m_image.convertToFormat(QVideoFrame::imageFormatFromPixelFormat(QVideoFrame::Format_RGB32));
     m_surface->present(QVideoFrame(m_image));
 }
 

@@ -4,7 +4,7 @@
 #include"cameramanager.h"
 #include"appenginer.h"
 #include <QQmlContext>
-
+#include <QtQml>
 int main(int argc, char *argv[])
 {
     FUNCTION_LOG();
