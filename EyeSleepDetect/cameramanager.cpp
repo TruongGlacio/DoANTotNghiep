@@ -35,7 +35,7 @@ bool CameraManager::StartWebCam()
         m_videoCapture = new cv::VideoCapture(0);
 
         // open selected camera using selected API
-        m_videoCapture->open(deviceID);
+        m_videoCapture->open(deviceID,apiID);
         m_videoCapture->set(CAP_PROP_FRAME_WIDTH, CAM_WIDTH);//use small resolution for fast processing
         m_videoCapture->set(CAP_PROP_FRAME_HEIGHT, CAM_HEIGHT);
         if (!m_videoCapture->isOpened()) {
@@ -53,17 +53,62 @@ bool CameraManager::StartWebCam()
     return true;
 }
 
+void CameraManager::StopWebCam()
+
+{
+        FUNCTION_LOG();
+        m_videoCapture->release();
+        timer.stop();
+        qDebug() << "m_videoCapture close";
+}
+
+void CameraManager::SetImagePathForView(bool distance)
+{
+    if(!QDir(mFolderPathSaveImage).exists())
+    {
+        qDebug()<<"Folder Path for Save Image not exit"<<endl;
+        return;
+    }
+    QDir directoryImage(mFolderPathSaveImage);
+    QStringList imagesList = directoryImage.entryList(QStringList() << "*.jpg" << "*.JPG",QDir::Files);
+
+    if(distance) // button next image clicked
+    {
+        mImageFileIndex++;
+    }
+    else {
+        mImageFileIndex--;
+    }
+    if(mImageFileIndex >= imagesList.size()) mImageFileIndex=imagesList.size()-1;
+
+    if(mImageFileIndex<=0)  mImageFileIndex=0;
+    if (imagesList.isEmpty())
+    {
+        qDebug()<<"Folder Image path is empty"<<endl;
+        return;
+    }
+    mImagepathForView=imagesList.at(mImageFileIndex);
+
+}
+
+//QString CameraManager::ImagePathForView()
+//{
+//    return mImagepathForView;
+//}
+
 void CameraManager::getFrame()
 {
     FUNCTION_LOG();
 
     cv::Mat frame;
+    if (!m_videoCapture->isOpened())
+        return;
     m_videoCapture->read(frame);
 
     if (!frame.empty())
     {
         updateFrame(frame);
-        if(countFrame%3==0)
+        if(countFrame%SKIP_FRAMES1==0)
         {
         emit SendFramegetFromCamera(frame);
         }
@@ -75,6 +120,44 @@ void CameraManager::getFrame()
     else {
         qDebug()<< "Frame is empty " <<endl;
     }
+}
+
+void CameraManager::SaveImageToFile(Mat frame)
+{
+    //Save detect image file to memory
+    QDateTime current = QDateTime::currentDateTime();
+    QString rootFolderPath=QDir::currentPath();
+    qDebug()<<"rootFolderPath is : "<<rootFolderPath;
+
+    QString folderPathsaveImage=rootFolderPath+FOLDER_PATH_SAVE_IMAGE;
+    if(!QDir(folderPathsaveImage).exists())
+         {
+          qDebug()<<"Creat a new folder for save image if folder don't exit"<<folderPathsaveImage<<endl;
+          QDir().mkpath(folderPathsaveImage);
+         }
+    mFolderPathSaveImage=folderPathsaveImage;
+    QString imageFileName=current.toString()+".jpg";//FILE_PATH_SAVE_IMAGE+current.toString()+ ".jpg";
+    std::string fileName=imageFileName.toStdString();
+    while (1){
+        std::size_t pos = fileName.find(TO_REPLACE_STRING);
+        std::size_t pos1 = fileName.find(TO_REPLACE_STRING1);
+        if (pos != std::string::npos){
+            fileName.replace(pos, 1, REPLACE_WITH_STRING);
+        }
+        else{
+            if (pos1 != std::string::npos){
+                fileName.replace(pos1, 1, REPLACE_WITH_STRING);
+            }
+            else{
+                break;
+            }
+        }
+
+    }
+    std::string filePath=folderPathsaveImage.toStdString()+'/'+fileName;
+    qDebug()<<"Save detected image frame to memory, file path: "<<filePath.c_str();
+    imwrite(filePath, frame); // A JPG FILE IS BEING SAVED
+
 }
 
 void CameraManager::onVideoFrameReady(Mat currentFrame)

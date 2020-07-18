@@ -6,11 +6,19 @@ import Application.CameraManager 1.0
 import QtQuick.Controls 2.13
 
 Window {
+    id: mainWindow
     visible: true
     width: 640
     height: 530
     title: qsTr("Hello World")
+    signal qmlStopCameraSignal()
+    signal qmlStartCameraSignal()
+    signal qmlSwitchImage(bool distance)
 
+
+    CameraManager{
+
+    }
     VideoOutput {
         id:viewTrackingVideo
         clip: false
@@ -24,12 +32,33 @@ Window {
     }
     RadioButton {
         id: radioButton_tracking
-        x: 255
+        x: 260
         y: 494
-        width: 111
-        height: 32
-        text: qsTr("StartTracking")
+        width: 60
+        height: 30
+        text: qsTr("")
         checked: true
+        onClicked: {
+            if(radioButton_tracking.checked==false)
+            {
+                mainWindow.qmlStopCameraSignal()
+                radioButton_tracking.text=qsTr("Stoped")
+                viewTrackingVideo.source=null;
+                viewTrackingVideo.visible=false;
+                imageShow.visible=true;
+                imageShow.source="qrc:/qtquickplugin/images/template_image.png"
+                console.log("Stop camera");
+            }
+            else
+            {
+                mainWindow.qmlStartCameraSignal()
+                radioButton_tracking.text=qsTr("Started")
+                viewTrackingVideo.source=CameraManager;
+                viewTrackingVideo.visible=true;
+                imageShow.visible=false;
+                console.log("Start camera");
+            }
+        }
         autoExclusive: false
 
     }
@@ -41,7 +70,32 @@ Window {
         height: 480
         anchors.bottomMargin: 50
         fillMode: Image.PreserveAspectFit
-        //source: "qrc:/qtquickplugin/images/template_image.png"
+        source:ImagePathForView
         visible: false
+    }
+
+    Button {
+        id: buttonBack
+        x: 211
+        y: 494
+        width: 50
+        height: 30
+        text: qsTr("Back")
+        onClicked:
+        {
+
+            mainWindow.qmlSwitchImage(false)
+            imageShow.source=ImagePathForView
+        }
+    }
+    Button {
+        id: buttonNext
+        x: 317
+        y: 494
+        width: 50
+        height: 30
+        text: qsTr("Next")
+        onClicked: mainWindow.qmlSwitchImage(true)
+
     }
 }

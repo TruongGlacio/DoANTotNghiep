@@ -1,8 +1,7 @@
 QT += core widgets gui quick multimedia websockets concurrent network
 
 CONFIG += c++11
-QMAKE_CXXFLAGS_RELEASE += -mavx
-QMAKE_CXXFLAGS_DEBUG += -mavx
+
 
 # The following define makes your compiler emit warnings if you use
 # any Qt feature that has been marked deprecated (the exact warnings
@@ -56,8 +55,9 @@ win32{
 #include path for dlib c++
 INCLUDEPATH += $$PWD/../dlib/
 QMAKE_CXXFLAGS_RELEASE += /arch:AVX
+QMAKE_CXXFLAGS_RELEASE += -mavx
+QMAKE_CXXFLAGS_DEBUG += -mavx
 
-#INCLUDEPATH += $$PWD/../dlib/dlib/external/
 LIBS+= -lgdi32 -lcomctl32 -luser32 -lwinmm -lws2_32
 LIBS += -luser32 -lws2_32 -lgdi32 -lcomctl32 -limm32 -lwinmm
 
@@ -73,6 +73,30 @@ LIBS += -llibopencv_flann430 -llibopencv_gapi430 -llibopencv_highgui430
 LIBS +=-llibopencv_imgcodecs430 -llibopencv_imgproc430 -llibopencv_ml430
 LIBS += -llibopencv_objdetect430 -llibopencv_photo430 -llibopencv_stitching430
 LIBS += -llibopencv_video430 -llibopencv_videoio430
+}
+linux{
+INCLUDEPATH += $$PWD/../dlib/
+QMAKE_CXXFLAGS_RELEASE += /arch:AVX
+
+LIBS+= -lgdi32 -lcomctl32 -luser32 -lwinmm -lws2_32
+LIBS += -luser32 -lws2_32 -lgdi32 -lcomctl32 -limm32 -lwinmm
+
+LIBS += -pthread
+CONFIG += link_pkgconfig
+PKGCONFIG += x11
+
+# include path and lib for opencv
+INCLUDEPATH += $$PWD/../opencv/build_Mingw32/install/include
+DEPENDPATH += $$PWD/../opencv/build_Mingw32/install/include
+
+LIBS +=  -L$$PWD/../opencv/build_Mingw32/install/x64/mingw/bin/
+LIBS += -llibopencv_calib3d430 -llibopencv_core430
+LIBS += -llibopencv_dnn430 -llibopencv_features2d430
+LIBS += -llibopencv_flann430 -llibopencv_gapi430 -llibopencv_highgui430
+LIBS +=-llibopencv_imgcodecs430 -llibopencv_imgproc430 -llibopencv_ml430
+LIBS += -llibopencv_objdetect430 -llibopencv_photo430 -llibopencv_stitching430
+LIBS += -llibopencv_video430 -llibopencv_videoio430
+
 }
 
 

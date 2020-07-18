@@ -33,6 +33,7 @@ public:
     cv::Mat DrawDetectStatus(cv::Mat frame,std::string sleepingStatus, std::string yawnMouthStatus,std::string headingPhoneStatus);
 signals:
     void SendFrameDrawed(cv::Mat frame);
+    void GetFrameForSaveToFile(cv::Mat frame);
 public slots:
     cv::Mat DetectEyeSleep(cv::Mat frame, full_object_detection shape, std::vector<cv::Point> pointsOfFaceResize);
     cv::Mat DetectEarAndNose(cv::Mat frame, full_object_detection shape, std::vector<cv::Point> pointsOfFaceResize);

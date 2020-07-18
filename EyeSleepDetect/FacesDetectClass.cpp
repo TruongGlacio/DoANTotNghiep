@@ -249,25 +249,10 @@ void FacesDetectClass::DetectFace(cv::Mat frame)
                 emit SendFrameDrawed(frame4);
                 if(mSleepingStatus==SLEEPING_STATUS|| mYawnMouthStatus==YAWNING_MOUTH_STATUS)
                 {
-                    //Save detect image file to memory
-                    QDateTime current = QDateTime::currentDateTime();
-                    QString imageFileName=current.toString()+".jpg";//FILE_PATH_SAVE_IMAGE+current.toString()+ ".jpg";
-                    std::string filePath=imageFileName.toStdString();
-                    while (1){
-                        std::size_t pos = filePath.find(TO_REPLACE_STRING);
-                        if (pos != std::string::npos){
-                            filePath.replace(pos, 1, REPLACE_WITH_STRING);
-                        }
-                        else{
-                            break;
-                        }
-                    }
-                    imwrite(filePath, frame4); // A JPG FILE IS BEING SAVED
-                    qDebug()<<"Save detected image frame to memory, file path: "<<imageFileName;
-
+                    emit GetFrameForSaveToFile(frame4);
                 }
                 pointsOfFaceResize.clear();
-
+                c = (char)waitKey(70);
             }
         }
 

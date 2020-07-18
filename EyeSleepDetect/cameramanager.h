@@ -17,7 +17,9 @@
 #include <opencv2/videoio.hpp>
 #include<GlobalFile.h>
 #include<QDebug>
+#include<QDateTime>
 #include <QTimer>
+#include <QDir>
 
 using namespace dlib;
 using namespace std;
@@ -31,7 +33,6 @@ class CameraManager : public QObject
 
 public:
     explicit CameraManager(QObject *parent = nullptr);
-    bool StartWebCam();
 signals:
     void SendFramegetFromCamera(cv::Mat frame);
 
@@ -44,6 +45,14 @@ private Q_SLOTS:
 public Q_SLOTS:
     void setVideoSurface(QAbstractVideoSurface* surface);
     void getFrame();
+    void SaveImageToFile(cv::Mat frame);
+    bool StartWebCam();
+    void StopWebCam();
+    void SetImagePathForView(bool distance);
+   // QString ImagePathForView();
+
+
+
 private:
     void setFormat(int width, int height, QVideoFrame::PixelFormat frameFormat);
 
@@ -57,6 +66,9 @@ public:
     QImage m_image;
     QTimer timer;
     int countFrame=0;
+    QString mImagepathForView;
+    QString mFolderPathSaveImage;
+    int mImageFileIndex =0;
 
 
 };
