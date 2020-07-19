@@ -13,17 +13,17 @@
 #define MOUTH_ASPECT_RATIO_STANDARD  0.45
 #if __linux__
 
-#define SHAPE_PREDIRTOR_68_FACE_LANDMARK "..\\dlib\\shape_predictor_68_face_landmarks.dat"//"D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\dlib\\shape_predictor_68_face_landmarks.dat"
-#define PROTO_FILE "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\dlib\\pose_deploy.prototxt"
-#define WEIGHTS_FILE "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\dlib\\pose_iter_102000.caffemodel"
-#define FILE_PATH_FOR_TRAIN "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\GenerateHandDataSet\\Hands-Detection-master\\images_training\\hands_training.xml"
-#define FOLDER_PATH_SAVE_IMAGE "\ImageSave"
+#define SHAPE_PREDIRTOR_68_FACE_LANDMARK "../dlib/shape_predictor_68_face_landmarks.dat"
+#define PROTO_FILE "../dlib/pose_deploy.prototxt"
+#define WEIGHTS_FILE "../dlib/pose_iter_102000.caffemodel"
+#define FILE_PATH_FOR_TRAIN "../GenerateHandDataSet/Hands-Detection-master/images_training/hands_training.xml"
+#define FOLDER_PATH_SAVE_IMAGE "/ImageSave"
 #else
 
 #define SHAPE_PREDIRTOR_68_FACE_LANDMARK "..\\dlib\\shape_predictor_68_face_landmarks.dat"
-#define PROTO_FILE "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\dlib\\pose_deploy.prototxt"
-#define WEIGHTS_FILE "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\dlib\\pose_iter_102000.caffemodel"
-#define FILE_PATH_FOR_TRAIN "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\GenerateHandDataSet\\Hands-Detection-master\\images_training\\hands_training.xml"
+#define PROTO_FILE "..\\dlib\\pose_deploy.prototxt"
+#define WEIGHTS_FILE "..\\dlib\\pose_iter_102000.caffemodel"
+#define FILE_PATH_FOR_TRAIN "..\\GenerateHandDataSet\\Hands-Detection-master\\images_training\\hands_training.xml"
 #define FOLDER_PATH_SAVE_IMAGE "/ImageSave"
 #endif
 

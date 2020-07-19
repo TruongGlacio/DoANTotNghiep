@@ -127,7 +127,11 @@ void CameraManager::SetImagePathForView(bool distance)
         qDebug()<<"Folder Image path is empty"<<endl;
         return;
     }
+#if __linux__
+    mImagepathForView=mFolderPathSaveImage + '\'+imagesList.at(mImageFileIndex);
+#else
     mImagepathForView=mFolderPathSaveImage + '/'+imagesList.at(mImageFileIndex);
+#endif
     qDebug()<<"image file path sahll show on "<<mImagepathForView<<endl;
     // mImagepathForView= mFolderPathSaveImage+
     Mat imageFrame;
@@ -202,7 +206,11 @@ void CameraManager::SaveImageToFile(Mat frame)
         }
 
     }
+#if __linux__
+    std::string filePath=folderPathsaveImage.toStdString()+'\'+fileName;
+#else
     std::string filePath=folderPathsaveImage.toStdString()+'/'+fileName;
+#endif
     qDebug()<<"Save detected image frame to memory, file path: "<<filePath.c_str();
     imwrite(filePath, frame); // A JPG FILE IS BEING SAVED
 
