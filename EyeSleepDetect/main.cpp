@@ -15,13 +15,13 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
     CameraManager *mCameramanager=new CameraManager();
     QScopedPointer<CameraManager> service(mCameramanager);
-   // QScopedPointer<QString> serviceGetImage((mCameramanager->ImagePathForView()));
     qmlRegisterSingletonInstance<CameraManager>("Application.CameraManager", 1, 0, "CameraManager", service.get());
-//    qmlRegisterSingletonType<CameraManager>("Application.CameraManager", 1, 0, "CameraManager", service.get());
    // qmlRegisterSingletonType<QString>,("Application.CameraManager", 1, 0, "ImagePathForView",mCameramanager->mImagepathForView );
   //  qmlRegisterTypeNotAvailable("Application.CameraManager", 1, 0, "ImagePathForView", mCameramanager->mImagepathForView);
+   // qmlRegisterType<CameraManager>("Application.CameraManager", 1, 0, "CameraManager");
 
     QQmlApplicationEngine engine;
+
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     QObject::connect(&engine, &QQmlApplicationEngine::objectCreated,
                      &app, [url](QObject *obj, const QUrl &objUrl) {

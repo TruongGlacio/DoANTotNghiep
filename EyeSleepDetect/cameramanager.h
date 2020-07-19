@@ -34,7 +34,8 @@ class CameraManager : public QObject
 public:
     explicit CameraManager(QObject *parent = nullptr);
 signals:
-    void SendFramegetFromCamera(cv::Mat frame);    
+    void SendFrameGetFromCameraForDetect(cv::Mat frame);
+    void SendNormalFrameGetFromCamera(cv::Mat frame);
 
 Q_SIGNALS:
     void SendTrackingFrameToVideoOutput(cv::Mat currentFrame);

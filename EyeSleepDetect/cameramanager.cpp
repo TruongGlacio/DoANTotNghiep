@@ -20,8 +20,9 @@ CameraManager::CameraManager(QObject *parent) : QObject(parent)
     FUNCTION_LOG();
     timer=new QTimer();
     connect(this, SIGNAL(SendTrackingFrameToVideoOutput(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
-
+    connect(this, SIGNAL(SendNormalFrameGetFromCamera(cv::Mat)), this,SLOT(updateFrame(cv::Mat)));
     connect(timer,SIGNAL(timeout()), this, SLOT(getFrame()));
+    disconnect(this, SIGNAL(SendFrameForImageView(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
     timer->setInterval(100);
 }
 
@@ -44,7 +45,11 @@ bool CameraManager::StartWebCam()
             return false;
         }
         qDebug()<< "camera started " <<endl;
+
         connect(timer,SIGNAL(timeout()), this, SLOT(getFrame()));
+        connect(this, SIGNAL(SendTrackingFrameToVideoOutput(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
+        disconnect(this, SIGNAL(SendFrameForImageView(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
+
         timer->start();
 
     }
@@ -58,23 +63,38 @@ bool CameraManager::StartWebCam()
 void CameraManager::StopWebCam()
 
 {
-        FUNCTION_LOG();
-        m_videoCapture->release();
-        disconnect(timer,SIGNAL(timeout()), this, SLOT(getFrame()));
-        connect(this, SIGNAL(SendFrameForImageView(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
+    FUNCTION_LOG();
+    m_videoCapture->release();
+    disconnect(timer,SIGNAL(timeout()), this, SLOT(getFrame()));
+    connect(this, SIGNAL(SendFrameForImageView(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
+    disconnect(this, SIGNAL(SendTrackingFrameToVideoOutput(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
 
-        timer->stop();
+    timer->stop();
 
-        if(timer->isActive())
-        {
+    if(timer->isActive())
+    {
 
-            qDebug() << "Can't stop timer";
-        }
-        else
-        {
-            qDebug() << "Timer stoped";
-        }
-        qDebug() << "m_videoCapture close";
+        qDebug() << "Can't stop timer";
+    }
+    else
+    {
+        qDebug() << "Timer stoped";
+    }
+    qDebug() << "m_videoCapture close";
+
+    if(mFolderPathSaveImage.isEmpty()){
+        QString rootFolderPath=QDir::currentPath();
+        qDebug()<<"rootFolderPath is : "<<rootFolderPath;
+        mFolderPathSaveImage=rootFolderPath+FOLDER_PATH_SAVE_IMAGE;
+    }
+    if(!QDir(mFolderPathSaveImage).exists())
+    {
+        qDebug()<<"Folder Path for Save Image not exit"<<endl;
+        return;
+    }
+    QDir directoryImage(mFolderPathSaveImage);
+    QStringList imagesList = directoryImage.entryList(QStringList() << "*.jpg" << "*.JPG",QDir::Files);
+    mImageFileIndex=imagesList.size()-1;
 }
 
 void CameraManager::SetImagePathForView(bool distance)
@@ -109,13 +129,13 @@ void CameraManager::SetImagePathForView(bool distance)
     }
     mImagepathForView=mFolderPathSaveImage + '/'+imagesList.at(mImageFileIndex);
     qDebug()<<"image file path sahll show on "<<mImagepathForView<<endl;
-   // mImagepathForView= mFolderPathSaveImage+
+    // mImagepathForView= mFolderPathSaveImage+
     Mat imageFrame;
     imageFrame = cv::imread(mImagepathForView.toStdString(), 1 );
     if(!imageFrame.data)
     {
-      qDebug()<<"Can't load frame from image file"<<endl;
-      return;
+        qDebug()<<"Can't load frame from image file"<<endl;
+        return;
     }
     emit SendFrameForImageView(imageFrame);
 }
@@ -130,10 +150,10 @@ void CameraManager::getFrame()
 
     if (!frame.empty())
     {
-        updateFrame(frame);
+        emit SendNormalFrameGetFromCamera(frame);
         if(countFrame%SKIP_FRAMES1==0)
         {
-        emit SendFramegetFromCamera(frame);
+            emit SendFrameGetFromCameraForDetect(frame);
         }
         countFrame ++;
         if(countFrame==100)
@@ -154,10 +174,15 @@ void CameraManager::SaveImageToFile(Mat frame)
 
     QString folderPathsaveImage=rootFolderPath+FOLDER_PATH_SAVE_IMAGE;
     if(!QDir(folderPathsaveImage).exists())
-         {
-          qDebug()<<"Creat a new folder for save image if folder don't exit"<<folderPathsaveImage<<endl;
-          QDir().mkpath(folderPathsaveImage);
-         }
+    {
+        qDebug()<<"Creat a new folder for save image if folder don't exit"<<folderPathsaveImage<<endl;
+        QDir().mkpath(folderPathsaveImage);
+    }
+    if(frame.empty())
+    {
+        qDebug()<<"Frame is empty, return "<<endl;
+        return;
+    }
     mFolderPathSaveImage=folderPathsaveImage;
     QString imageFileName=current.toString()+".jpg";//FILE_PATH_SAVE_IMAGE+current.toString()+ ".jpg";
     std::string fileName=imageFileName.toStdString();

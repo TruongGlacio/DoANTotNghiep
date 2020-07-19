@@ -30,9 +30,9 @@ Window {
         id: radioButton_tracking
         x: 260
         y: 494
-        width: 60
+        width: 83
         height: 30
-        text: qsTr("")
+        text: qsTr("Started")
         checked: true
         onClicked: {
             if(radioButton_tracking.checked==false)
@@ -60,7 +60,7 @@ Window {
 
     Button {
         id: buttonBack
-        x: 158
+        x: 174
         y: 494
         width: 50
         height: 30
