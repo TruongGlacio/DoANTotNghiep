@@ -22,6 +22,7 @@ Window {
         anchors.fill: parent;
         anchors.bottomMargin: 50
         visible: true
+
         fillMode: VideoOutput.PreserveAspectCrop;
         source: CameraManager;
 
@@ -103,9 +104,3 @@ Window {
 
 
 }
-
-/*##^##
-Designer {
-    D{i:4;anchors_x:174}
-}
-##^##*/

@@ -20,30 +20,37 @@ using namespace dlib;
 using namespace std;
 using namespace cv;
 using namespace cv::dnn;
+typedef scan_fhog_pyramid<pyramid_down<6> > image_scanner_type;
+
 class HandDetectClass : public QObject
 {
     Q_OBJECT
 public:
     explicit HandDetectClass(QObject *parent = nullptr);
-public slots:
-    void DetectHand(cv::Mat frame, image_window *mWin);
-private:
-    const int POSE_PAIRS[20][2] =
-    {
-        {0,1}, {1,2}, {2,3}, {3,4},         // thumb
-        {0,5}, {5,6}, {6,7}, {7,8},         // index
-        {0,9}, {9,10}, {10,11}, {11,12},    // middle
-        {0,13}, {13,14}, {14,15}, {15,16},  // ring
-        {0,17}, {17,18}, {18,19}, {19,20}   // small
-    };
-
-    string protoFile = PROTO_FILE;
-    string weightsFile = WEIGHTS_FILE;
-    int countNumberOfFrame=0;
-    int nPoints = 22;
-    double t=0;
 
 signals:
+        void SendHandFrameDrawed(cv::Mat frame);
+        void GetFrameForSaveToFile(cv::Mat frame);
+public slots:
+    void DetectHand(cv::Mat frame);
+    void InitialFaceDetector(std::string shapeLandMarkPredirtorPath,std::string shapeHandDetectorPath);
+    cv::Mat DrawEyeLineOnFrame(full_object_detection shape,cv::Mat frame);
+    cv::Mat DrawHandDetectStatus(cv::Mat frame, std::string handdetectStatus);
+    std::vector<dlib::rectangle> resizeBoxes(std::vector<dlib::rectangle> rects, int scaleFactor);
+
+
+private:
+
+    int countNumberOfFrame=0;
+    std::string shapeLandMarkPredirtorPath;
+    std::string shapeHandDetectorPath;
+
+    cv::Point locationPointsOfHand;
+    frontal_face_detector detector;
+    shape_predictor landMarkOfHand;
+
+    object_detector<image_scanner_type> handDetector;
+    std::string mHandDetectStatus;
 
 };
 

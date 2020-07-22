@@ -61,7 +61,6 @@ public:
     QPointer<QAbstractVideoSurface> m_surface;
     //QScopedPointer<Backend> m_backend;
     QVideoSurfaceFormat m_format;
-    bool m_isFormatSet;
     QImage m_image;
     QTimer *timer;
     int countFrame=0;

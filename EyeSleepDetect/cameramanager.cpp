@@ -219,20 +219,19 @@ void CameraManager::SaveImageToFile(Mat frame)
 void CameraManager::onVideoFrameReady(Mat currentFrame)
 {
     FUNCTION_LOG();
-
+   // qDebug()<<"Recived frame for view on gui "<<endl;
     if (!m_surface || currentFrame.empty())
+    {
+        qDebug()<<"m_surface or currentFrame is null "<<endl;
         return;
+    }
     cv::Mat continuousFrame;
     if (!currentFrame.isContinuous())
         continuousFrame = currentFrame.clone();
     else
         continuousFrame = currentFrame;
-    if (!m_isFormatSet) {
-        setFormat(continuousFrame.cols,
-                  continuousFrame.rows,
-                  QVideoFrame::Format_RGB32);
-        m_isFormatSet = true;
-    }
+     setFormat(continuousFrame.cols, continuousFrame.rows, QVideoFrame::Format_RGB32);
+
     m_image = QImage(continuousFrame.data, continuousFrame.cols, continuousFrame.rows,continuousFrame.step, QImage::Format_RGB888);
     m_image = m_image.rgbSwapped();
     m_image=m_image.convertToFormat(QVideoFrame::imageFormatFromPixelFormat(QVideoFrame::Format_RGB32));
@@ -252,9 +251,15 @@ void CameraManager::setVideoSurface(QAbstractVideoSurface *surface)
     FUNCTION_LOG();
 
     if (m_surface == surface)
+    {
+        qDebug()<<"m_surface = surface"<<endl;
         return;
+    }
     if(m_surface && m_surface != surface && m_surface->isActive())
+      {
+        qDebug()<<"m_surface stop"<<endl;
         m_surface->stop();
+    }
     m_surface = surface;
     Q_EMIT surfaceChanged(m_surface);
     this->StartWebCam();

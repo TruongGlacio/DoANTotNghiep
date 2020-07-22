@@ -54,7 +54,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 win32{
 #include path for dlib c++
 INCLUDEPATH += $$PWD/../dlib/
-QMAKE_CXXFLAGS_RELEASE += /arch:AVX
+#QMAKE_CXXFLAGS_RELEASE += /arch:AVX
 QMAKE_CXXFLAGS_RELEASE += -mavx
 QMAKE_CXXFLAGS_DEBUG += -mavx
 
@@ -98,5 +98,3 @@ LIBS += -llibopencv_objdetect430 -llibopencv_photo430 -llibopencv_stitching430
 LIBS += -llibopencv_video430 -llibopencv_videoio430
 
 }
-
-

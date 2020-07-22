@@ -27,9 +27,9 @@ public:
 
     //bool StartWebCam();
     void InitialFaceDetector(std::string shape_Predirtor);
-    cv::Mat DrawEyeLineOnFrame(full_object_detection shape,cv::Mat im_small);
-    cv::Mat DrawEarAndNoseLineOnFrame(full_object_detection shape,cv::Mat im_small);
-    cv::Mat DrawMouthLineOnFrame(full_object_detection shape,cv::Mat im_small);
+    cv::Mat DrawEyeLineOnFrame(full_object_detection shape,cv::Mat frame);
+    cv::Mat DrawEarAndNoseLineOnFrame(full_object_detection shape,cv::Mat frame);
+    cv::Mat DrawMouthLineOnFrame(full_object_detection shape,cv::Mat frame);
     cv::Mat DrawDetectStatus(cv::Mat frame,std::string sleepingStatus, std::string yawnMouthStatus,std::string headingPhoneStatus);
 signals:
     void SendFrameDrawed(cv::Mat frame);
@@ -45,7 +45,7 @@ private:
     cv::VideoCapture* m_videoCapture;
     shape_predictor landMarkOfFace;
     char c;
-    cv::Point locationPointsOfEye;
+    cv::Point locationPointsOfFace;
     cv::Point locationPointsOfEar;
     cv::Point locationPointsOfNose;
     int countNumberOfFrame=0;

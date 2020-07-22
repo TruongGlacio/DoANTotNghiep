@@ -232,9 +232,9 @@ void FacesDetectClass::DetectFace(cv::Mat frame)
                 shape = landMarkOfFace(cimg, faces[0]); //work only with 1 face
 
                 for (int b = 0; b < 67; b++) {
-                    locationPointsOfEye.x = shape.part(b).x()*FACE_DOWNSAMPLE_RATIO;
-                    locationPointsOfEye.y = shape.part(b).y()*FACE_DOWNSAMPLE_RATIO;
-                    pointsOfFaceResize.push_back(locationPointsOfEye);
+                    locationPointsOfFace.x = shape.part(b).x()*FACE_DOWNSAMPLE_RATIO;
+                    locationPointsOfFace.y = shape.part(b).y()*FACE_DOWNSAMPLE_RATIO;
+                    pointsOfFaceResize.push_back(locationPointsOfFace);
                 }
 
                 // restore size and location of point as fist frame for draw on camera output
