@@ -207,7 +207,7 @@ void CameraManager::SaveImageToFile(Mat frame)
 
     }
 #if __linux__
-    std::string filePath=folderPathsaveImage.toStdString()+'\'+fileName;
+    std::string filePath=folderPathsaveImage.toStdString()+'/'+fileName;
 #else
     std::string filePath=folderPathsaveImage.toStdString()+'/'+fileName;
 #endif
