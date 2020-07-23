@@ -128,7 +128,7 @@ void CameraManager::SetImagePathForView(bool distance)
         return;
     }
 #if __linux__
-    mImagepathForView=mFolderPathSaveImage + '\'+imagesList.at(mImageFileIndex);
+    mImagepathForView=mFolderPathSaveImage + '/'+imagesList.at(mImageFileIndex);
 #else
     mImagepathForView=mFolderPathSaveImage + '/'+imagesList.at(mImageFileIndex);
 #endif
