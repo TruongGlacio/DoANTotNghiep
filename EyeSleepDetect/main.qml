@@ -1,9 +1,12 @@
+
 import QtQuick 2.14
 import QtQuick.Window 2.14
 import QtMultimedia 5.14
-
-import Application.CameraManager 1.0
 import QtQuick.Controls 2.13
+
+/*comment import lib if system is linux*///Qt.platform.os == "linux"
+
+//import Application.CameraManager 1.0;
 
 Window {
     id: mainWindow
@@ -11,6 +14,7 @@ Window {
     width: 640
     height: 530
     title: qsTr("Hello World")
+
     signal qmlStopCameraSignal()
     signal qmlStartCameraSignal()
     signal qmlSwitchImage(bool distance)
