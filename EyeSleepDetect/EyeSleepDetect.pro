@@ -85,17 +85,25 @@ CONFIG += link_pkgconfig
 PKGCONFIG += x11
 
 # include path and lib for opencv
-INCLUDEPATH += $$PWD/../opencv/build_Mingw32/install/include
-DEPENDPATH += $$PWD/../opencv/build_Mingw32/install/include
+#INCLUDEPATH += $$PWD/../opencv/sources/build_Linux/include
+#INCLUDEPATH += /usr/local/include/opencv4/
 
-LIBS +=  -L$$PWD/../opencv/build_Mingw32/install/x64/mingw/bin/
-LIBS += -llibopencv_calib3d430 -llibopencv_core430
-LIBS += -llibopencv_dnn430 -llibopencv_features2d430
-LIBS += -llibopencv_flann430 -llibopencv_gapi430 -llibopencv_highgui430
-LIBS += -llibopencv_imgcodecs430 -llibopencv_imgproc430 -llibopencv_ml430
-LIBS += -llibopencv_objdetect430 -llibopencv_photo430 -llibopencv_stitching430
-LIBS += -llibopencv_video430 -llibopencv_videoio430
-LIBS += pkg-config --libs opencv
+#INCLUDEPATH += $$PWD/../opencv/build_Linux/include
+#INCLUDEPATH += $$PWD/../../../../usr/local/include
 
+INCLUDEPATH += $$PWD/../opencv/build_Linux/include
+INCLUDEPATH += $$PWD/../opencv/build_Linux/opencv4
 
+DEPENDPATH += $$PWD/../opencv/build_Linux/include
+
+#LIBS += -L$$PWD/../../../../usr/local/lib/
+LIBS += -L$$PWD/../opencv/build_Linux/lib/
+LIBS += -lopencv_calib3d -lopencv_core
+LIBS += -lopencv_dnn -lopencv_features2d
+LIBS += -lopencv_flann -lopencv_gapi -lopencv_highgui
+LIBS += -lopencv_imgcodecs -lopencv_imgproc -lopencv_ml
+LIBS += -lopencv_objdetect -lopencv_photo -lopencv_stitching
+LIBS += -lopencv_video -lopencv_videoio
+#LIB+=$(shell pkg-config opencv --lib)
 }
+
