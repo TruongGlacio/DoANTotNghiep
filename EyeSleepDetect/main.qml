@@ -1,8 +1,8 @@
 
-import QtQuick 2.14
-import QtQuick.Window 2.14
-import QtMultimedia 5.14
-import QtQuick.Controls 2.13
+import QtQuick 2.11
+import QtQuick.Window 2.4
+import QtMultimedia 5.11
+import QtQuick.Controls 2.4
 
 /*comment import lib if system is linux*///Qt.platform.os == "linux"
 

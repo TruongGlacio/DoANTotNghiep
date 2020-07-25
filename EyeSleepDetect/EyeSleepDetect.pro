@@ -85,25 +85,27 @@ CONFIG += link_pkgconfig
 PKGCONFIG += x11
 
 # include path and lib for opencv
-#INCLUDEPATH += $$PWD/../opencv/sources/build_Linux/include
-#INCLUDEPATH += /usr/local/include/opencv4/
+INCLUDEPATH += /usr/local/include/opencv4/
 
 #INCLUDEPATH += $$PWD/../opencv/build_Linux/include
-#INCLUDEPATH += $$PWD/../../../../usr/local/include
+#INCLUDEPATH += $$PWD/../opencv/build_Linux/opencv4
 
-INCLUDEPATH += $$PWD/../opencv/build_Linux/include
-INCLUDEPATH += $$PWD/../opencv/build_Linux/opencv4
+#DEPENDPATH += $$PWD/../opencv/build_Linux/include
 
-DEPENDPATH += $$PWD/../opencv/build_Linux/include
+LIBS += -L$$PWD/../../../../usr/local/lib/
+#sudo apt install qml-module-qtquick-controls2
 
-#LIBS += -L$$PWD/../../../../usr/local/lib/
-LIBS += -L$$PWD/../opencv/build_Linux/lib/
+INCLUDEPATH += $$PWD/../../../../usr/local/include
+DEPENDPATH += $$PWD/../../../../usr/local/include
+#LIBS += -L$$PWD/../opencv/build_Linux/lib/
 LIBS += -lopencv_calib3d -lopencv_core
 LIBS += -lopencv_dnn -lopencv_features2d
 LIBS += -lopencv_flann -lopencv_gapi -lopencv_highgui
 LIBS += -lopencv_imgcodecs -lopencv_imgproc -lopencv_ml
 LIBS += -lopencv_objdetect -lopencv_photo -lopencv_stitching
 LIBS += -lopencv_video -lopencv_videoio
-#LIB+=$(shell pkg-config opencv --lib)
+LIBS+=$(shell pkg-config opencv --lib)
 }
+
+
 
