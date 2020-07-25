@@ -119,9 +119,19 @@ void FacesDetectClass::InitialFaceDetector(std::string shape_Predirtor)
     FUNCTION_LOG();
 
     this->shape_Predirtor=shape_Predirtor;
+
     // Load face detection and deserialize face landmarks model.
+    try{
     deserialize(this->shape_Predirtor) >> landMarkOfFace;
     detector = get_frontal_face_detector();
+    }
+    catch (serialization_error& e) {
+        cout << "Check the path to dlib's default face landmarking model file to run this example." << endl;
+        cout << "You can get it from the following URL: " << endl;
+        cout << "   http://dlib.net/files/shape_predictor_68_face_landmarks.dat.bz2" << endl;
+        cout << endl
+             << e.what() << endl;
+    }
 }
 
 cv::Mat FacesDetectClass::DrawEyeLineOnFrame(full_object_detection shape,cv::Mat frame)

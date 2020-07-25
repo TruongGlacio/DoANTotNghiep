@@ -15,9 +15,9 @@
 #define MOUTH_ASPECT_RATIO_STANDARD  0.45
 #if __linux__
 
-#define SHAPE_PREDIRTOR_68_FACE_LANDMARK "../dlib/shape_predictor_68_face_landmarks.dat"
+#define SHAPE_PREDIRTOR_68_FACE_LANDMARK "..//dlib//shape_predictor_68_face_landmarks.dat"
 #define FILE_PATH_FOR_TRAIN "../GenerateHandDataSet/Hands-Detection-master/images_training/hands_training.xml"
-#define SHAPE_PREDIRTOR_HAND_LANDMARK "../dlib/handModels/Hand_9_Landmarks_Detector.dat"
+#define SHAPE_PREDIRTOR_HAND_LANDMARK "..//dlib//handModels//Hand_9_Landmarks_Detector.dat"
 #define SHAPE_HAND_DETECTOR_PATH "../dlib/handModels/HandDetector.svm"
 #define FOLDER_PATH_SAVE_IMAGE "/ImageSave"
 
