@@ -84,6 +84,18 @@ LIBS += -pthread
 CONFIG += link_pkgconfig
 PKGCONFIG += x11
 
+#apply for linux system
+
+#install qt creator by :
+#sudo apt-get install qtcreator
+#sudo apt install qml-module-qtquick-controls2
+
+#build and install opencv by :
+#cmake -G "Unix makefile" ..
+#cmake --build . --target install --config Release
+#sudo make install
+#copy folder opencv4 from /usr/local/opencv4 to fle opencv/build_Linux if it not exit
+
 # include path and lib for opencv
 INCLUDEPATH += /usr/local/include/opencv4/
 
@@ -93,7 +105,6 @@ INCLUDEPATH += /usr/local/include/opencv4/
 #DEPENDPATH += $$PWD/../opencv/build_Linux/include
 
 LIBS += -L$$PWD/../../../../usr/local/lib/
-#sudo apt install qml-module-qtquick-controls2
 
 INCLUDEPATH += $$PWD/../../../../usr/local/include
 DEPENDPATH += $$PWD/../../../../usr/local/include
