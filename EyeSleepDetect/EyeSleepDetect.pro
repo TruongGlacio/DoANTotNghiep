@@ -1,6 +1,6 @@
 QT += core widgets gui quick multimedia websockets concurrent network
 
-CONFIG += c++11
+CONFIG += c++11 release
 
 
 # The following define makes your compiler emit warnings if you use
@@ -95,20 +95,22 @@ PKGCONFIG += x11
 #cmake --build . --target install --config Release
 #sudo make install
 #copy folder opencv4 from /usr/local/opencv4 to fle opencv/build_Linux if it not exit
+#sudo apt install qml-module-qtquick-controls2
+#sudo apt-get install qml-module-qtmultimedia
 
 # include path and lib for opencv
-INCLUDEPATH += /usr/local/include/opencv4/
+#INCLUDEPATH += /usr/local/include/opencv4/
 
-#INCLUDEPATH += $$PWD/../opencv/build_Linux/include
-#INCLUDEPATH += $$PWD/../opencv/build_Linux/opencv4
+INCLUDEPATH += $$PWD/../opencv/build_Linux/include
+INCLUDEPATH += $$PWD/../opencv/build_Linux/opencv4
 
 #DEPENDPATH += $$PWD/../opencv/build_Linux/include
 
-LIBS += -L$$PWD/../../../../usr/local/lib/
+#LIBS += -L$$PWD/../../../../usr/local/lib/
 
-INCLUDEPATH += $$PWD/../../../../usr/local/include
-DEPENDPATH += $$PWD/../../../../usr/local/include
-#LIBS += -L$$PWD/../opencv/build_Linux/lib/
+#INCLUDEPATH += $$PWD/../../../../usr/local/include
+#DEPENDPATH += $$PWD/../../../../usr/local/include
+LIBS += -L$$PWD/../opencv/build_Linux/lib/
 LIBS += -lopencv_calib3d -lopencv_core
 LIBS += -lopencv_dnn -lopencv_features2d
 LIBS += -lopencv_flann -lopencv_gapi -lopencv_highgui
@@ -117,6 +119,3 @@ LIBS += -lopencv_objdetect -lopencv_photo -lopencv_stitching
 LIBS += -lopencv_video -lopencv_videoio
 LIBS+=$(shell pkg-config opencv --lib)
 }
-
-
-
