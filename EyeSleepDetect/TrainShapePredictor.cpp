@@ -1,4 +1,4 @@
-#include "train_shape_predictor.h"
+#include "TrainShapePredictor.h"
 
 Train_Shape_Predictor::Train_Shape_Predictor(QObject *parent) : QObject(parent)
 {
@@ -50,7 +50,7 @@ std::vector<std::vector<double>> Train_Shape_Predictor::get_interocular_distance
     return temp;
 }
 
-void Train_Shape_Predictor::GeneratedtrainerFile()
+void Train_Shape_Predictor::GeneratedtrainerFile(QString PredictorDatFile)
 {
     FUNCTION_LOG();
     try
@@ -142,7 +142,7 @@ void Train_Shape_Predictor::GeneratedtrainerFile()
         cout << "mean testing error:  "<< test_shape_predictor(hand_Predictor, images_test, faces_test, get_interocular_distances(faces_test)) << endl;
 
         // Finally, we save the model to disk so we can use it later.
-        serialize("hand_Predictor.dat") << hand_Predictor;
+        serialize(PredictorDatFile.toStdString()) << hand_Predictor;
         qDebug() << "Finish Generated file hand_Predictor.dat";
     }
     catch (exception& e)

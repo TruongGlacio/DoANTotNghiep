@@ -25,10 +25,11 @@ QMAKE_CXXFLAGS += -std=c++11 -DDLIB_ENABLE_ASSERTS #-DDLIB_JPEG_SUPPORT -DNEED_S
 SOURCES += \
         ../dlib/dlib/all/source.cpp \
     FacesDetectClass.cpp \
+    TrainObjectDetector.cpp \
+    TrainShapePredictor.cpp \
     appenginer.cpp \
     cameramanager.cpp \
     handDetectClass.cpp \
-    train_shape_predictor.cpp\
     main.cpp \
 
 HEADERS += \
@@ -37,7 +38,8 @@ HEADERS += \
     appenginer.h \
     cameramanager.h \ \
     handDetectClass.h \
-    train_shape_predictor.h\
+    TrainShapePredictor.h\ \
+    TrainObjectDetector.h
 
 RESOURCES += qml.qrc \
 

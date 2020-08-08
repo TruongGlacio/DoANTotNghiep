@@ -29,7 +29,7 @@ public:
 
     // ----------------------------------------------------------------------------------------
     std::vector<std::vector<double> > get_interocular_distances (const std::vector<std::vector<full_object_detection> > &objects );
-    void GeneratedtrainerFile();
+    void GeneratedtrainerFile(QString PredictorDatFile);
 signals:
 
 

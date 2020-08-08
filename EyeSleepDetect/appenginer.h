@@ -6,7 +6,7 @@
 #include"handDetectClass.h"
 #include"cameramanager.h"
 #include"GlobalFile.h"
-#include"train_shape_predictor.h"
+#include"TrainShapePredictor.h"
 class AppEnginer : public QObject
 {
     Q_OBJECT
@@ -19,6 +19,7 @@ private:
     CameraManager mCameraManager;
     FacesDetectClass mFaceDetectClass;
     HandDetectClass mHandDetectClass;
+    Train_Shape_Predictor mTrain_Shape_Predictor;
 
 };
 

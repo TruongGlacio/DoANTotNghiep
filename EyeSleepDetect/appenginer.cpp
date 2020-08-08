@@ -17,6 +17,10 @@ AppEnginer::AppEnginer(QObject *parent,CameraManager *mCameraManager) : QObject(
     connect(parent, SIGNAL(qmlStopCameraSignal()),mCameraManager,SLOT(StopWebCam()));
     connect(parent, SIGNAL(qmlStartCameraSignal()),mCameraManager,SLOT(StartWebCam()));
     connect(parent, SIGNAL(qmlSwitchImage(bool)),mCameraManager,SLOT(SetImagePathForView(bool)));
+    QString datFile= HAND_PREDICTO_DAT_FILE_NAME;
+    mTrain_Shape_Predictor.GeneratedtrainerFile(datFile);
+
+
 
 
 
