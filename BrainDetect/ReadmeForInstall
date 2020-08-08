@@ -1,0 +1,20 @@
+for python3
+
+python3 -m notebook
+
+pip3 install --upgrade ipykernel ipython3 
+
+sudo pip3 install --upgrade jupyter_core ipykernel jupyter_client jupyter_console tornado
+sudo pip3 install --upgrade ipykernel jupyter_core ipykernel ipython jupyter_client jupyter_console tornado==4.5.3 plotly tensorflow keras==2.1.5 opencv-python matplotlib scikit-learn pillow imutils
+
+
+
+
+
+for python2.7
+python2.7 -m notebook
+sudo pip2.7 install --upgrade ipykernel jupyter_core ipykernel ipython jupyter_client jupyter_console tornado==4.5.3 plotly tensorflow keras==2.1.5 opencv-python matplotlib scikit-learn pillow imutils
+
+
+
+
