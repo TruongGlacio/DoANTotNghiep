@@ -7,6 +7,7 @@
 #include"cameramanager.h"
 #include"GlobalFile.h"
 #include"TrainShapePredictor.h"
+#include"DetectionWithDNN.h"
 class AppEnginer : public QObject
 {
     Q_OBJECT
@@ -20,6 +21,7 @@ private:
     FacesDetectClass mFaceDetectClass;
     HandDetectClass mHandDetectClass;
     Train_Shape_Predictor mTrain_Shape_Predictor;
+    DetectionWithDNN mDetectionWithDNN;
 
 };
 

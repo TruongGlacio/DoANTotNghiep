@@ -24,8 +24,9 @@ LIBS += -pthread
 QMAKE_CXXFLAGS += -std=c++11 -DDLIB_ENABLE_ASSERTS #-DDLIB_JPEG_SUPPORT -DNEED_SHORT_EXTERNAL_NAMES -DDLIB_JPEG_STATIC #-DHAVE_PROTOTYPES
 SOURCES += \
         ../dlib/dlib/all/source.cpp \
+    DetectionWithDNN.cpp \
     FacesDetectClass.cpp \
-    TrainObjectDetector.cpp \
+    #TrainObjectDetector.cpp \
     TrainShapePredictor.cpp \
     appenginer.cpp \
     cameramanager.cpp \
@@ -33,13 +34,14 @@ SOURCES += \
     main.cpp \
 
 HEADERS += \
+    DetectionWithDNN.h \
     FacesDetectClass.h \
     GlobalFile.h \
     appenginer.h \
-    cameramanager.h \ \
+    cameramanager.h \
     handDetectClass.h \
-    TrainShapePredictor.h\ \
-    TrainObjectDetector.h
+    TrainShapePredictor.h\
+    #TrainObjectDetector.h
 
 RESOURCES += qml.qrc \
 

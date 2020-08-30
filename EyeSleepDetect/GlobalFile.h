@@ -1,6 +1,8 @@
 #ifndef GLOBALFILE_H
 #define GLOBALFILE_H
+
 #include<QtDebug>
+
 #define CAM_WIDTH 640
 #define CAM_HEIGHT 480
 #define FACE_DOWNSAMPLE_RATIO 0.5
@@ -14,6 +16,7 @@
 #define EAR_ASPECT_RATIO_STANDARD_LOW 0.8
 #define EAR_ASPECT_RATIO_STANDARD_HIGH 1.25
 #define MOUTH_ASPECT_RATIO_STANDARD  0.45
+
 #if __linux__
 
 #define SHAPE_PREDIRTOR_68_FACE_LANDMARK "..//dlib//shape_predictor_68_face_landmarks.dat"
@@ -29,6 +32,7 @@
 #define SHAPE_HAND_DETECTOR_PATH "..\\dlib\\handModels\\HandDetector.svm"
 #define FILE_PATH_FOR_TRAIN "..\\GenerateHandDataSet\\Hands-Detection-master\\images_training\\hands_training.xml"
 #define FOLDER_PATH_SAVE_IMAGE "/ImageSave"
+#define PREDIRTOR_WITH_DNN "..\\dlib\\mmod_human_face_detector.dat"
 #endif
 
 #define TO_REPLACE_STRING ":"

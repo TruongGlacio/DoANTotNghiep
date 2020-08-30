@@ -6,7 +6,7 @@ import QtQuick.Controls 2.4
 
 /*comment import lib if system is linux*///Qt.platform.os == "linux"
 
-import Application.CameraManager 1.0;
+//import Application.CameraManager 1.0;
 
 Window {
     id: mainWindow
