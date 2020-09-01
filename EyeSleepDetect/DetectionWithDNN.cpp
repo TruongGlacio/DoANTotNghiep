@@ -50,7 +50,7 @@ void DetectionWithDNN::DetectWithDNN(Mat frame)
 //        while(matrix.size() > 1800*1800)
 //        {
 //            qDebug()<<"Pyup net Frame, matrix size="<<matrix.size();
-        pyramid_up(matrix);
+       // pyramid_up(matrix);
 //        }
 
         // Note that you can process a bunch of images in a std::vector at once and it runs

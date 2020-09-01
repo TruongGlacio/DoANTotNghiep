@@ -8,6 +8,7 @@
 #include"GlobalFile.h"
 #include"TrainShapePredictor.h"
 #include"DetectionWithDNN.h"
+#include"DetectionWithHOG.h"
 class AppEnginer : public QObject
 {
     Q_OBJECT
@@ -22,6 +23,7 @@ private:
     HandDetectClass mHandDetectClass;
     Train_Shape_Predictor mTrain_Shape_Predictor;
     DetectionWithDNN mDetectionWithDNN;
+    DetectionWithHOG mDetectionWithHOG;
 
 };
 
