@@ -21,9 +21,9 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("CameraManager", mCameramanager);
 #else
     /*using for windown*/
-    engine.rootContext()->setContextProperty("CameraManager", mCameramanager);
-   // QScopedPointer<CameraManager> service(mCameramanager);
-   // qmlRegisterSingletonInstance<CameraManager>("Application.CameraManager", 1, 0, "CameraManager", service.get());
+    //engine.rootContext()->setContextProperty("CameraManager", mCameramanager);
+    QScopedPointer<CameraManager> service(mCameramanager);
+    qmlRegisterSingletonInstance<CameraManager>("Application.CameraManager", 1, 0, "CameraManager", service.get());
 #endif
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));

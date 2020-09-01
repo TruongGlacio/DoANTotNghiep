@@ -23,7 +23,7 @@ CameraManager::CameraManager(QObject *parent) : QObject(parent)
     connect(this, SIGNAL(SendNormalFrameGetFromCamera(cv::Mat)), this,SLOT(updateFrame(cv::Mat)));
     connect(timer,SIGNAL(timeout()), this, SLOT(getFrame()));
     disconnect(this, SIGNAL(SendFrameForImageView(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
-    timer->setInterval(100);
+    timer->setInterval(1000);
 }
 
 bool CameraManager::StartWebCam()

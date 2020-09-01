@@ -35,8 +35,11 @@ void DetectionWithDNN::DetectWithDNN(Mat frame)
         net_type net=mNet;
 
         //image_window win;
-        cv_image<bgr_pixel>image(frame);
+        cv::Mat im_small, im_display;
         matrix<rgb_pixel> matrix;
+        cv::resize(frame, im_small, cv::Size(), 1.0/FACE_DOWNSAMPLE_RATIO, 1.0/FACE_DOWNSAMPLE_RATIO);
+
+        cv_image<bgr_pixel>image(im_small);
         assign_image(matrix,image);
         qDebug()<<"assign_image Frame";
 
@@ -44,10 +47,11 @@ void DetectionWithDNN::DetectWithDNN(Mat frame)
 
         // Upsampling the image will allow us to detect smaller faces but will cause the
         // program to use more RAM and run longer.
-        while(matrix.size() < 1800*1800)
-        {qDebug()<<"Pyup net Frame";
-            pyramid_up(matrix);
-        }
+//        while(matrix.size() > 1800*1800)
+//        {
+//            qDebug()<<"Pyup net Frame, matrix size="<<matrix.size();
+        pyramid_up(matrix);
+//        }
 
         // Note that you can process a bunch of images in a std::vector at once and it runs
         // much faster, since this will form mini-batches of images and therefore get
@@ -59,9 +63,11 @@ void DetectionWithDNN::DetectWithDNN(Mat frame)
         //win.clear_overlay();
         //win.set_image(matrix);
         cv::Rect rect;
+        if(dets.size()<=0)
+            qDebug()<<"Can't detect any face";
         for (auto&& d : dets)
         {
-            rect=Rect(d.rect.left(),d.rect.top(),d.rect.width(),d.rect.height());
+            rect=Rect(d.rect.left(),d.rect.top(),d.rect.width()*FACE_DOWNSAMPLE_RATIO,d.rect.height()*FACE_DOWNSAMPLE_RATIO);
             cv::rectangle(frame,rect,Scalar(255,0,0));
         }
         qDebug()<<"Send Frame to camera manager";

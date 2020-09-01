@@ -25,6 +25,7 @@ QMAKE_CXXFLAGS += -std=c++11 -DDLIB_ENABLE_ASSERTS #-DDLIB_JPEG_SUPPORT -DNEED_S
 SOURCES += \
         ../dlib/dlib/all/source.cpp \
     DetectionWithDNN.cpp \
+    DetectionWithHOG.cpp \
     FacesDetectClass.cpp \
     #TrainObjectDetector.cpp \
     TrainShapePredictor.cpp \
@@ -35,6 +36,7 @@ SOURCES += \
 
 HEADERS += \
     DetectionWithDNN.h \
+    DetectionWithHOG.h \
     FacesDetectClass.h \
     GlobalFile.h \
     appenginer.h \
