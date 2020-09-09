@@ -19,7 +19,7 @@
 using namespace dlib;
 using namespace std;
 using namespace cv;
-using namespace cv::dnn;
+//using namespace cv::dnn;
 typedef scan_fhog_pyramid<pyramid_down<6> > image_scanner_type;
 
 class HandDetectClass : public QObject

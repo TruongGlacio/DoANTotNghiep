@@ -28,6 +28,8 @@ SOURCES += \
     DetectionWithHOG.cpp \
     FacesDetectClass.cpp \
     #TrainObjectDetector.cpp \
+    Filemanager.cpp \
+    Imageproccessing.cpp \
     TrainShapePredictor.cpp \
     appenginer.cpp \
     cameramanager.cpp \
@@ -38,7 +40,9 @@ HEADERS += \
     DetectionWithDNN.h \
     DetectionWithHOG.h \
     FacesDetectClass.h \
+    Filemanager.h \
     GlobalFile.h \
+    Imageproccessing.h \
     appenginer.h \
     cameramanager.h \
     handDetectClass.h \

@@ -9,9 +9,9 @@
 #define HAND_DOWNSAMPLE_RATIO 0.5
 #define HAND_IMAGE_SCALE_RESIZE 3
 #define HAND_PREDICTO_DAT_FILE_NAME "hand_Predictor.dat"
-#define SKIP_FRAMES 2
-#define SKIP_FRAMES1 2
-#define SKIP_FRAMES_HAND 30
+#define SKIP_FRAMES 1
+#define SKIP_FRAMES1 1
+#define SKIP_FRAMES_HAND 1
 #define TWO_EYELID_ASPECT_RATIO_STANDARD 0.2
 #define EAR_ASPECT_RATIO_STANDARD_LOW 0.8
 #define EAR_ASPECT_RATIO_STANDARD_HIGH 1.25
@@ -38,7 +38,7 @@
 #define TO_REPLACE_STRING ":"
 #define TO_REPLACE_STRING1 " "
 #define REPLACE_WITH_STRING "_"
-#define FUNCTION_LOG() //(qDebug()<<"Function name: "<<__FUNCTION__ <<endl)
+#define FUNCTION_LOG() (qDebug()<<"Function name: "<<__FUNCTION__ <<endl)
 
 //define status
 #define SLEEPING_STATUS "Sleeping"

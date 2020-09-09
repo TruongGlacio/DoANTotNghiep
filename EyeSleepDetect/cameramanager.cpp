@@ -29,6 +29,8 @@ CameraManager::CameraManager(QObject *parent) : QObject(parent)
 bool CameraManager::StartWebCam()
 {
     FUNCTION_LOG();
+    if(mCameraStatus)
+        return mCameraStatus;
 
     try {
         //cv::VideoCapture cap(0);
@@ -42,32 +44,39 @@ bool CameraManager::StartWebCam()
         m_videoCapture->set(CAP_PROP_FRAME_HEIGHT, CAM_HEIGHT);
         if (!m_videoCapture->isOpened()) {
             qDebug() << "Unable to connect to camera";
-            return false;
+            mCameraStatus=false;
+            return mCameraStatus;
         }
         qDebug()<< "camera started " <<endl;
 
         connect(timer,SIGNAL(timeout()), this, SLOT(getFrame()));
         connect(this, SIGNAL(SendTrackingFrameToVideoOutput(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
-        disconnect(this, SIGNAL(SendFrameForImageView(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
+        //disconnect(this, SIGNAL(SendFrameForImageView(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
 
         timer->start();
+        mCameraStatus=true;
 
     }
     catch (exception& e) {
         cout << e.what() << endl;
         qDebug()<< "catch error: "<<e.what()<<endl;
     }
-    return true;
+    return mCameraStatus;
 }
 
 void CameraManager::StopWebCam()
 
 {
     FUNCTION_LOG();
+    if(!mCameraStatus)
+       {
+        qDebug()<<"camera is close"<<endl;
+        return;
+       }
     m_videoCapture->release();
     disconnect(timer,SIGNAL(timeout()), this, SLOT(getFrame()));
     connect(this, SIGNAL(SendFrameForImageView(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
-    disconnect(this, SIGNAL(SendTrackingFrameToVideoOutput(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
+    //disconnect(this, SIGNAL(SendTrackingFrameToVideoOutput(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
 
     timer->stop();
 
@@ -75,10 +84,12 @@ void CameraManager::StopWebCam()
     {
 
         qDebug() << "Can't stop timer";
+        mCameraStatus=true;
     }
     else
     {
         qDebug() << "Timer stoped";
+        mCameraStatus=false;
     }
     qDebug() << "m_videoCapture close";
 
@@ -99,6 +110,8 @@ void CameraManager::StopWebCam()
 
 void CameraManager::SetImagePathForView(bool distance)
 {
+    FUNCTION_LOG();
+
     if(mFolderPathSaveImage.isEmpty()){
         QString rootFolderPath=QDir::currentPath();
         qDebug()<<"rootFolderPath is : "<<rootFolderPath;
@@ -132,7 +145,7 @@ void CameraManager::SetImagePathForView(bool distance)
 #else
     mImagepathForView=mFolderPathSaveImage + '/'+imagesList.at(mImageFileIndex);
 #endif
-    qDebug()<<"image file path sahll show on "<<mImagepathForView<<endl;
+    qDebug()<<"image file path shall show on "<<mImagepathForView<<endl;
     // mImagepathForView= mFolderPathSaveImage+
     Mat imageFrame;
     imageFrame = cv::imread(mImagepathForView.toStdString(), 1 );
@@ -142,6 +155,22 @@ void CameraManager::SetImagePathForView(bool distance)
         return;
     }
     emit SendFrameForImageView(imageFrame);
+}
+
+void CameraManager::UpdateCurrentIndex(int currentIndex)
+{
+    if(currentIndex<0)
+        return;
+    mImageFileIndex=currentIndex;
+}
+
+void CameraManager::UpdateImageFolderPathToView(QString folderPath)
+{
+    FUNCTION_LOG();
+    if(folderPath.isEmpty())
+        return;
+    mFolderPathSaveImage=folderPath;
+    emit sendUpdateFolderPathToQml(mFolderPathSaveImage);
 }
 void CameraManager::getFrame()
 {
@@ -154,7 +183,7 @@ void CameraManager::getFrame()
 
     if (!frame.empty())
     {
-        emit SendNormalFrameGetFromCamera(frame);
+        //  emit SendNormalFrameGetFromCamera(frame);
         if(countFrame%SKIP_FRAMES1==0)
         {
             emit SendFrameGetFromCameraForDetect(frame);
@@ -187,7 +216,12 @@ void CameraManager::SaveImageToFile(Mat frame)
         qDebug()<<"Frame is empty, return "<<endl;
         return;
     }
-    mFolderPathSaveImage=folderPathsaveImage;
+    if(mFolderPathSaveImage.isEmpty())
+    {
+        qDebug()<<"folder path is empty, set to defaul folder "<<endl;
+        mFolderPathSaveImage=folderPathsaveImage;
+    }
+
     QString imageFileName=current.toString()+".jpg";//FILE_PATH_SAVE_IMAGE+current.toString()+ ".jpg";
     std::string fileName=imageFileName.toStdString();
     while (1){
@@ -209,7 +243,7 @@ void CameraManager::SaveImageToFile(Mat frame)
 #if __linux__
     std::string filePath=folderPathsaveImage.toStdString()+'/'+fileName;
 #else
-    std::string filePath=folderPathsaveImage.toStdString()+'/'+fileName;
+    std::string filePath=mFolderPathSaveImage.toStdString()+'/'+fileName;
 #endif
     qDebug()<<"Save detected image frame to memory, file path: "<<filePath.c_str();
     imwrite(filePath, frame); // A JPG FILE IS BEING SAVED
@@ -219,7 +253,7 @@ void CameraManager::SaveImageToFile(Mat frame)
 void CameraManager::onVideoFrameReady(Mat currentFrame)
 {
     FUNCTION_LOG();
-   // qDebug()<<"Recived frame for view on gui "<<endl;
+    // qDebug()<<"Recived frame for view on gui "<<endl;
     if (!m_surface || currentFrame.empty())
     {
         qDebug()<<"m_surface or currentFrame is null "<<endl;
@@ -230,7 +264,7 @@ void CameraManager::onVideoFrameReady(Mat currentFrame)
         continuousFrame = currentFrame.clone();
     else
         continuousFrame = currentFrame;
-     setFormat(continuousFrame.cols, continuousFrame.rows, QVideoFrame::Format_RGB32);
+    setFormat(continuousFrame.cols, continuousFrame.rows, QVideoFrame::Format_RGB32);
 
     m_image = QImage(continuousFrame.data, continuousFrame.cols, continuousFrame.rows,continuousFrame.step, QImage::Format_RGB888);
     m_image = m_image.rgbSwapped();
@@ -241,9 +275,16 @@ void CameraManager::onVideoFrameReady(Mat currentFrame)
 void CameraManager::updateFrame(cv::Mat frame)
 {
     FUNCTION_LOG();
-
     if (!frame.empty())
-        Q_EMIT SendTrackingFrameToVideoOutput(frame);
+    {
+        qDebug()<<"Send frame to VideoOutput "<<endl;
+
+        emit SendTrackingFrameToVideoOutput(frame);
+    }
+    else
+    {
+        qDebug()<<"Frame is empty "<<endl;
+    }
 }
 
 void CameraManager::setVideoSurface(QAbstractVideoSurface *surface)
@@ -256,7 +297,7 @@ void CameraManager::setVideoSurface(QAbstractVideoSurface *surface)
         return;
     }
     if(m_surface && m_surface != surface && m_surface->isActive())
-      {
+    {
         qDebug()<<"m_surface stop"<<endl;
         m_surface->stop();
     }

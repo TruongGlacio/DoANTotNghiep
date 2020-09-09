@@ -30,20 +30,22 @@ class CameraManager : public QObject
     Q_OBJECT
     Q_PROPERTY(QAbstractVideoSurface* videoSurface READ videoSurface WRITE setVideoSurface NOTIFY surfaceChanged)
     QAbstractVideoSurface* videoSurface() const;
+    Q_PROPERTY(QString folderPath MEMBER mFolderPathSaveImage NOTIFY sendUpdateFolderPathToQml)
+
 
 public:
     explicit CameraManager(QObject *parent = nullptr);
 signals:
     void SendFrameGetFromCameraForDetect(cv::Mat frame);
     void SendNormalFrameGetFromCamera(cv::Mat frame);
-
-Q_SIGNALS:
     void SendTrackingFrameToVideoOutput(cv::Mat currentFrame);
     void SendFrameForImageView(cv::Mat currentFrame);
     void surfaceChanged(QAbstractVideoSurface* surface);
+    void sendUpdateFolderPathToQml(QString folderPath);
 private Q_SLOTS:
     void onVideoFrameReady(cv::Mat currentFrame);
     void updateFrame(cv::Mat frame);
+
 public Q_SLOTS:
     void setVideoSurface(QAbstractVideoSurface* surface);
     void getFrame();
@@ -51,6 +53,8 @@ public Q_SLOTS:
     bool StartWebCam();
     void StopWebCam();
     void SetImagePathForView(bool distance);
+    void UpdateCurrentIndex(int currentIndex);
+    void UpdateImageFolderPathToView(QString folderPath);
 
 private:
     void setFormat(int width, int height, QVideoFrame::PixelFormat frameFormat);
@@ -67,6 +71,7 @@ public:
     QString mImagepathForView;
     QString mFolderPathSaveImage;
     int mImageFileIndex =0;
+    bool mCameraStatus=false;
 
 
 };

@@ -9,6 +9,8 @@
 #include"TrainShapePredictor.h"
 #include"DetectionWithDNN.h"
 #include"DetectionWithHOG.h"
+#include "Imageproccessing.h"
+#include"Filemanager.h"
 class AppEnginer : public QObject
 {
     Q_OBJECT
@@ -24,6 +26,8 @@ private:
     Train_Shape_Predictor mTrain_Shape_Predictor;
     DetectionWithDNN mDetectionWithDNN;
     DetectionWithHOG mDetectionWithHOG;
+    ImageProccessing mImageProccessing;
+    FileManager mFileManager;
 
 };
 
