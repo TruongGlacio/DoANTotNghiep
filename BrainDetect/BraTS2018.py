@@ -41,6 +41,19 @@ class BraTS2018:
         global label_num
         global LR
         global smooth
+        
+        #initial folder path and file path for this project
+        global BRAT2019_DATA_PATH_HGG  
+        global WEIGHTS_FULL_BEST_FILE_PATH
+        global WEIGHTS_CORE_BEST_FILE_PATH
+        global WEIGHTS_ET_BEST_FILE_PATH  
+        
+        BRAT2019_DATA_PATH_HGG = "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\MICCAI_BraTS_2019_Data_Training\\HGG\\"  
+        
+        WEIGHTS_FULL_BEST_FILE_PATH= "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-full-best.h5"    
+        WEIGHTS_CORE_BEST_FILE_PATH= "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-core-best.h5"     
+        WEIGHTS_ET_BEST_FILE_PATH="D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-ET-best.h5"        
+        
         img_size = 240      #original img size is 240*240
         smooth = 0.005 
         num_of_aug = 2
@@ -61,6 +74,7 @@ class BraTS2018:
         
     # function to read all data (training and label) and transform into numpy array    
     def create_data(self,src, mask, label=False):
+        
         print("Function create_data");       
         resize=(155,img_size,img_size)
         files = glob.glob(src + mask, recursive=True)
@@ -159,18 +173,14 @@ class BraTS2018:
     #read one subject to show slices    
     def Function2(self):
         print("Function2"); 
-        global BRAT2019_DATA_PATH_HGG 
         global Flair
         global T1
         global T2
-        global T1c
-        
+        global T1c   
         global Label_full
         global Label_core
         global Label_ET
         global Label_all
-        
-        BRAT2019_DATA_PATH_HGG = "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\MICCAI_BraTS_2018_Data_Training\\HGG\\"
         
         count = 106
         pul_seq = 'flair'
@@ -312,10 +322,8 @@ class BraTS2018:
         return model   
     
     def Function3(self):
-        print("Function3");  
-        global WEIGHTS_FULL_BEST_FILE_PATH
-        global pred_full
-        WEIGHTS_FULL_BEST_FILE_PATH= 'D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-full-best.h5'
+        print("Function3"); 
+        global pred_full        
         model = self.unet_model()
         model.load_weights(WEIGHTS_FULL_BEST_FILE_PATH)
       #  history = model.fit(x, y, batch_size=16, validation_split=0,validation_data = (val_x,val_y) ,epochs = 40,callbacks = callbacks_list ,verbose=1, shuffle=True)
@@ -512,14 +520,12 @@ class BraTS2018:
     
     def Function5(self):
         print("Function5");  
-        global WEIGHTS_CORE_BEST_FILE_PATH
-        global WEIGHTS_ET_BEST_FILE_PATH
+
         global pred_core
         global pred_ET
-        WEIGHTS_FULL_BEST_FILE_PATH=  "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-core-best.h5"     
-        WEIGHTS_ET_BEST_FILE_PATH="D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-ET-best.h5"
+       
         model_core = self.unet_model_nec3()
-        model_core.load_weights(WEIGHTS_FULL_BEST_FILE_PATH)
+        model_core.load_weights(WEIGHTS_CORE_BEST_FILE_PATH)
         model_ET = self.unet_model_nec3()
         model_ET.load_weights(WEIGHTS_ET_BEST_FILE_PATH)
         pred_core = model_core.predict(crop)
