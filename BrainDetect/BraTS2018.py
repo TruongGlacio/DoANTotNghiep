@@ -32,6 +32,7 @@ from skimage.data import image_fetcher
 class BraTS2018:
 
     def Function1(self):
+        print("Function1");
         
         #K.set_image_dim_ordering("th")
         K.set_image_data_format('channels_first')        
@@ -60,6 +61,7 @@ class BraTS2018:
         
     # function to read all data (training and label) and transform into numpy array    
     def create_data(self,src, mask, label=False):
+        print("Function create_data");       
         resize=(155,img_size,img_size)
         files = glob.glob(src + mask, recursive=True)
         r.seed(9)
@@ -101,6 +103,7 @@ class BraTS2018:
     #function to read one subject data
     def create_data_onesubject_val(self,src, mask,count, label=False):
         
+        print("Function create_data_onesubject_val");               
         print ("src+mask",src + mask)
         files = glob.glob(src + mask, recursive=True)
         
@@ -155,12 +158,19 @@ class BraTS2018:
     
     #read one subject to show slices    
     def Function2(self):
+        print("Function2"); 
         global BRAT2019_DATA_PATH_HGG 
         global Flair
+        global T1
         global T2
+        global T1c
+        
         global Label_full
-        #BRAT2019_DATA_PATH_HGG = 'D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/BrainDetect/projectClone/MICCAI_BraTS_2019_Data_Training/HGG/'
-        BRAT2019_DATA_PATH_HGG = "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\MICCAI_BraTS_2019_Data_Training\\HGG\\"
+        global Label_core
+        global Label_ET
+        global Label_all
+        
+        BRAT2019_DATA_PATH_HGG = "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\MICCAI_BraTS_2018_Data_Training\\HGG\\"
         
         count = 106
         pul_seq = 'flair'
@@ -224,6 +234,7 @@ class BraTS2018:
         
         plt.show()
     def dice_coef(self,y_true, y_pred):
+        print("Function dice_coef");         
         y_true_f = K.flatten(y_true)
         y_pred_f = K.flatten(y_pred)
         intersection = K.sum(y_true_f * y_pred_f)
@@ -231,8 +242,10 @@ class BraTS2018:
     
     
     def dice_coef_loss(self,y_true, y_pred):
+        print("Function dice_coef_loss");  
         return 1-self.dice_coef(y_true, y_pred)
     def unet_model(self):
+        print("Function unet_model");  
         print("image_size=",img_size)
         inputs = Input((2, img_size, img_size))
         conv1 = Conv2D(64, (3, 3), activation='relu', padding='same') (inputs)
@@ -299,12 +312,13 @@ class BraTS2018:
         return model   
     
     def Function3(self):
+        print("Function3");  
         global WEIGHTS_FULL_BEST_FILE_PATH
         global pred_full
         WEIGHTS_FULL_BEST_FILE_PATH= 'D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-full-best.h5'
         model = self.unet_model()
         model.load_weights(WEIGHTS_FULL_BEST_FILE_PATH)
-        #history = model.fit(x, y, batch_size=16, validation_split=0,validation_data = (val_x,val_y) ,epochs = 40,callbacks = callbacks_list ,verbose=1, shuffle=True)
+      #  history = model.fit(x, y, batch_size=16, validation_split=0,validation_data = (val_x,val_y) ,epochs = 40,callbacks = callbacks_list ,verbose=1, shuffle=True)
         
         #using Flair and T2 as input for full tumor segmentation
         x = np.zeros((1,2,240,240),np.float32)
@@ -340,6 +354,7 @@ class BraTS2018:
     
     # cropping function
     def crop_tumor_tissue(self,x, pred, size):   #   input: x:T1c image , pred:prediction of full tumor ,size default  64x64
+        print("Function crop_tumor_tissue");  
         crop_x = []
         list_xy = []
         p_tmp = pred[0,:,:]
@@ -420,13 +435,16 @@ class BraTS2018:
         return np.array(crop_x) , list_xy   #(y,x)        
    
     def Function4(self,):
+        print("Function4 ");  
+        global crop
+        global li
         # cropping prediction part for tumor core and enhancing tumor segmentation
         crop , li = self.crop_tumor_tissue(T1c[90,:,:,:],pred_full[0,:,:,:],64)
         crop.shape[0]
         
         # U-net for Tumor core and ET        
     def unet_model_nec3(self,):
-        
+        print("Function unet_model_nec3 ");  
         img_size_nec = 64        
         inputs = Input((1, img_size_nec, img_size_nec))
         conv1 = Conv2D(64, (3, 3), activation='relu', padding='same') (inputs)
@@ -487,16 +505,19 @@ class BraTS2018:
     
         model = Model(inputs=[inputs], outputs=[conv10])
     
-        model.compile(optimizer=Adam(lr=LR), loss=dice_coef_loss, metrics=[dice_coef])
+        model.compile(optimizer=Adam(lr=LR), loss=self.dice_coef_loss, metrics=[self.dice_coef])
     
         return model
     
     
     def Function5(self):
+        print("Function5");  
         global WEIGHTS_CORE_BEST_FILE_PATH
         global WEIGHTS_ET_BEST_FILE_PATH
-        WEIGHTS_FULL_BEST_FILE_PATH=  "D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/BrainDetect/projectClone/weights/weights-core-best.h5"     
-        WEIGHTS_ET_BEST_FILE_PATH=" D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/BrainDetect/projectClone/weights/weights-ET-best.h5"
+        global pred_core
+        global pred_ET
+        WEIGHTS_FULL_BEST_FILE_PATH=  "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-core-best.h5"     
+        WEIGHTS_ET_BEST_FILE_PATH="D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-ET-best.h5"
         model_core = self.unet_model_nec3()
         model_core.load_weights(WEIGHTS_FULL_BEST_FILE_PATH)
         model_ET = self.unet_model_nec3()
@@ -505,6 +526,7 @@ class BraTS2018:
         pred_ET = model_ET.predict(crop)
     
     def paint_color_algo(self,pred_full, pred_core , pred_ET , li):   #input image is [n,1, y, x]
+        print("Function paint_color_algo");  
         # first put the pred_full on T1c
         pred_full[pred_full > 0.2] = 2      #240x240
         pred_full[pred_full != 2] = 0
@@ -528,7 +550,7 @@ class BraTS2018:
         return total
     
     def Function6(self):
-        
+        print("Function6 "); 
         tmp = self.paint_color_algo(pred_full[0,:,:,:], pred_core, pred_ET, li)
         
         core = np.zeros((1,240,240),np.float32)
@@ -601,6 +623,7 @@ class BraTS2018:
         
         plt.show()        
     def BraTS2018Function(self):
+        print("Function BraTS2018Function "); 
         self.Function1()
         self.Function2()
         self.Function3()
