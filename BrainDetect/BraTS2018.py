@@ -48,11 +48,11 @@ class BraTS2018:
         global WEIGHTS_CORE_BEST_FILE_PATH
         global WEIGHTS_ET_BEST_FILE_PATH  
         
-        BRAT2019_DATA_PATH_HGG = "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\MICCAI_BraTS_2019_Data_Training\\HGG\\"  
+        BRAT2019_DATA_PATH_HGG = "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\MICCAI_BraTS2020_TrainingData\\"#HGG\\"  
         
         WEIGHTS_FULL_BEST_FILE_PATH= "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-full-best.h5"    
         WEIGHTS_CORE_BEST_FILE_PATH= "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-core-best.h5"     
-        WEIGHTS_ET_BEST_FILE_PATH="D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-ET-best.h5"        
+        WEIGHTS_ET_BEST_FILE_PATH= "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-ET-best.h5"        
         
         img_size = 240      #original img size is 240*240
         smooth = 0.005 
@@ -136,6 +136,8 @@ class BraTS2018:
         k = len(files) - count -1
         print("length of files path len=", len(files))        
         imgs = []
+        if k<=0:
+            return
         file = files[k]
         print('Processing---', mask,'--',file)
         

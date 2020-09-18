@@ -398,7 +398,7 @@ class BrainDetectFunction:
         x = Dense(1, activation='sigmoid')(x) 
         model = Model(inputs = X_input, outputs = x)
         
-        return model,x
+        return model
     
     def Function6(self):
         print("Function Function6");
@@ -411,10 +411,10 @@ class BrainDetectFunction:
         
         
         IMG_SHAPE = (IMG_WIDTH, IMG_HEIGHT, 3)
-        model=self.build_model(IMG_SHAPE)
+        model =self.build_model(IMG_SHAPE)
         model.summary()
         model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-        print("xtrain1=", X_train, "YTrain1=", Y_train,"X_Val=", X_val, "Y_Val=",Y_val)
+        print("Xtrain1=", X_train, "YTrain1=", Y_train,"X_Val=", X_val, "Y_Val=",Y_val)
         
         model.fit(x=X_train, y=Y_train, batch_size=32, epochs=22, validation_data=(X_val, Y_val))
         history = model.history.history
