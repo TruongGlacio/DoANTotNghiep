@@ -44,13 +44,13 @@ class BrainDetectFunction:
         augmented_yes =augmented_data_path+'yes'
         augmented_no = augmented_data_path+'no'
         IMG_SIZE = (224,224);     
-        
-        if os.path.isdir(outPutImageDir):
-            return
-        
-        os.makedirs(outPutImageDir)
-        os.makedirs(outPutImageDirYes)
-        os.makedirs(outPutImageDirNo)
+        checkexitfolder=False
+        if not os.path.isdir(outPutImageDir):
+            os.makedirs(outPutImageDir)
+        if not os.path.isdir(outPutImageDirYes):
+            os.makedirs(outPutImageDirYes)
+        if not os.path.isdir(outPutImageDirNo):
+            os.makedirs(outPutImageDirNo)
             
     def augment_data(self,file_dir, n_generated_samples, save_to_dir):
         print("Function augment_data");
@@ -82,9 +82,9 @@ class BrainDetectFunction:
         if len(dir) == 0: 
         
             # augment data for the examples with label equal to 'yes' representing tumurous examples
-            augment_data(file_dir=image_dir+'yes',n_generated_samples=6, save_to_dir=augmented_data_path+'yes')
+            self.augment_data(file_dir=image_dir+'yes',n_generated_samples=6, save_to_dir=augmented_data_path+'yes')
             # augment data for the examples with label equal to 'no' representing non-tumurous examples
-            augment_data(file_dir=image_dir+'no', n_generated_samples=9, save_to_dir=augmented_data_path+'no')
+            self.augment_data(file_dir=image_dir+'no', n_generated_samples=9, save_to_dir=augmented_data_path+'no')
         else:
             print(len(dir))   
             
@@ -153,7 +153,7 @@ class BrainDetectFunction:
         
         global X_train,Y_train 
         X_train, Y_train = self.load_data([augmented_yes, augmented_no])
-        self.plot_samples(X_train, Y_train, ['yes','no'], 20)    
+        self.plot_samples(X_train, Y_train, ['No','Yes'], 20)    
         
     def crop_brain_contour(self,image, plot=False):
         
@@ -191,8 +191,8 @@ class BrainDetectFunction:
             plt.title('Cropped Image')
             print("image show2,Original and Cropped image")        
             plt.show()
-        else:
-            print("Not show image show2,Original and Cropped image")        
+        #else:
+           # print("Not show image show2,Original and Cropped image")        
             
         return new_image
     
@@ -283,7 +283,7 @@ class BrainDetectFunction:
         x = np.array(x)
         
         print("plot crop image sample");    
-        self.plot_samples(x, Y_train, ['yes','no'], 20)
+        self.plot_samples(x, Y_train, ['No','Yes'], 20)
         return x
         
         
@@ -303,7 +303,7 @@ class BrainDetectFunction:
             image = image / 255.
             # convert image to numpy array and append it to X
             count=count+1
-            print('append image,count=',count)     
+           # print('append image,count=',count)     
             #if count==110:
              #   break
             x.append(image)
@@ -328,7 +328,7 @@ class BrainDetectFunction:
         X = self.Resize_Data(X,IMG_WIDTH,IMG_HEIGHT)
         y = Y_train
         Y = y;
-        self.plot_samples(X, Y_train, ['yes','no'],10)
+        self.plot_samples(X, Y_train, ['No','Yes'],10)
         
     def split_data(self,x, y, test_size=0.2):
     

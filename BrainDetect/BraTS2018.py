@@ -41,7 +41,7 @@ class BraTS2018:
         global label_num
         global LR
         global smooth
-        
+        global imageIndex
         #initial folder path and file path for this project
         global BRAT2019_DATA_PATH_HGG  
         global WEIGHTS_FULL_BEST_FILE_PATH
@@ -53,7 +53,7 @@ class BraTS2018:
         WEIGHTS_FULL_BEST_FILE_PATH= "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-full-best.h5"    
         WEIGHTS_CORE_BEST_FILE_PATH= "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-core-best.h5"     
         WEIGHTS_ET_BEST_FILE_PATH= "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-ET-best.h5"        
-        
+        imageIndex=3
         img_size = 240      #original img size is 240*240
         smooth = 0.005 
         num_of_aug = 2
@@ -184,7 +184,7 @@ class BraTS2018:
         global Label_ET
         global Label_all
         
-        count = 106
+        count = imageIndex
         pul_seq = 'flair'
         Flair = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*{}.nii.gz'.format(pul_seq), count, label=False)
         pul_seq = 't1ce'
@@ -202,49 +202,49 @@ class BraTS2018:
         label_num = 3
         Label_all = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*seg.nii.gz', count, label=True)  
         
-        plt.figure(figsize=(15,10))
+        #plt.figure(figsize=(15,10))
         
-        plt.subplot(241)
-        plt.title('T1')
-        plt.axis('off')
-        plt.imshow(T1[90, 0, :, :],cmap='gray')
+        #plt.subplot(241)
+        #plt.title('T1')
+        #plt.axis('off')
+        #plt.imshow(T1[90, 0, :, :],cmap='gray')
         
-        plt.subplot(242)
-        plt.title('T2')
-        plt.axis('off')
-        plt.imshow(T2[90, 0, :, :],cmap='gray')
+        #plt.subplot(242)
+        #plt.title('T2')
+        #plt.axis('off')
+        #plt.imshow(T2[90, 0, :, :],cmap='gray')
             
-        plt.subplot(243)
-        plt.title('Flair')
-        plt.axis('off')
-        plt.imshow(Flair[90, 0, :, :],cmap='gray')
+        #plt.subplot(243)
+        #plt.title('Flair')
+        #plt.axis('off')
+        #plt.imshow(Flair[90, 0, :, :],cmap='gray')
         
-        plt.subplot(244)
-        plt.title('T1c')
-        plt.axis('off')
-        plt.imshow(T1c[90, 0, :, :],cmap='gray')
+        #plt.subplot(244)
+        #plt.title('T1c')
+        #plt.axis('off')
+        #plt.imshow(T1c[90, 0, :, :],cmap='gray')
         
-        plt.subplot(245)
-        plt.title('Ground Truth(Full)')
-        plt.axis('off')
-        plt.imshow(Label_full[90, 0, :, :],cmap='gray')
+        #plt.subplot(245)
+        #plt.title('Ground Truth(Full)')
+        #plt.axis('off')
+        #plt.imshow(Label_full[90, 0, :, :],cmap='gray')
         
-        plt.subplot(246)
-        plt.title('Ground Truth(Core)')
-        plt.axis('off')
-        plt.imshow(Label_core[90, 0, :, :],cmap='gray')
+        #plt.subplot(246)
+        #plt.title('Ground Truth(Core)')
+        #plt.axis('off')
+        #plt.imshow(Label_core[90, 0, :, :],cmap='gray')
         
-        plt.subplot(247)
-        plt.title('Ground Truth(ET)')
-        plt.axis('off')
-        plt.imshow(Label_ET[90, 0, :, :],cmap='gray')
+        #plt.subplot(247)
+        #plt.title('Ground Truth(ET)')
+        #plt.axis('off')
+        #plt.imshow(Label_ET[90, 0, :, :],cmap='gray')
         
-        plt.subplot(248)
-        plt.title('Ground Truth(All)')
-        plt.axis('off')
-        plt.imshow(Label_all[90, 0, :, :],cmap='gray')
+        #plt.subplot(248)
+        #plt.title('Ground Truth(All)')
+        #plt.axis('off')
+        #plt.imshow(Label_all[90, 0, :, :],cmap='gray')
         
-        plt.show()
+        #plt.show()
     def dice_coef(self,y_true, y_pred):
         print("Function dice_coef");         
         y_true_f = K.flatten(y_true)
@@ -338,29 +338,29 @@ class BraTS2018:
         print("x=",x)
         
         pred_full = model.predict(x)
-        plt.figure(figsize=(15,10))
+        #plt.figure(figsize=(15,10))
         
-        plt.subplot(141)
-        plt.title('T2')
-        plt.axis('off')
-        plt.imshow(T2[90, 0, :, :],cmap='gray')
+        #plt.subplot(141)
+        #plt.title('T2')
+        #plt.axis('off')
+        #plt.imshow(T2[90, 0, :, :],cmap='gray')
             
-        plt.subplot(142)
-        plt.title('Flair')
-        plt.axis('off')
-        plt.imshow(Flair[90, 0, :, :],cmap='gray')
+        #plt.subplot(142)
+        #plt.title('Flair')
+        #plt.axis('off')
+        #plt.imshow(Flair[90, 0, :, :],cmap='gray')
         
-        plt.subplot(143)
-        plt.title('Ground Truth(full)')
-        plt.axis('off')
-        plt.imshow(Label_full[90, 0, :, :],cmap='gray')
+        #plt.subplot(143)
+        #plt.title('Ground Truth(full)')
+        #plt.axis('off')
+        #plt.imshow(Label_full[90, 0, :, :],cmap='gray')
         
-        plt.subplot(144)
-        plt.title('prediction(full)')
-        plt.axis('off')
-        plt.imshow(pred_full[0, 0, :, :],cmap='gray')
+        #plt.subplot(144)
+        #plt.title('prediction(full)')
+        #plt.axis('off')
+        #plt.imshow(pred_full[0, 0, :, :],cmap='gray')
         
-        plt.show()
+        #plt.show()
     
     # cropping function
     def crop_tumor_tissue(self,x, pred, size):   #   input: x:T1c image , pred:prediction of full tumor ,size default  64x64
