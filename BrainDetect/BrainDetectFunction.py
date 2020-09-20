@@ -32,7 +32,10 @@ class BrainDetectFunction:
         global outPutImageDirYes;
         global outPutImageDirNo; 
         global IMG_SIZE;
+        global IMAGE_SIZE_FOR_BUILDMODEL;
+        global EXAMPLE_IMAGENAME;
         
+        #os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'        
         image_dir="data/input/brain-mri-images-for-brain-tumor-detection/"
         augmented_data_path="";
         outPutImageDir= "data/output/kaggle/working/augmented-images/"
@@ -43,7 +46,9 @@ class BrainDetectFunction:
         
         augmented_yes =augmented_data_path+'yes'
         augmented_no = augmented_data_path+'no'
-        IMG_SIZE = (224,224);     
+        IMG_SIZE = (224,224);  
+        IMAGE_SIZE_FOR_BUILDMODEL=180
+        EXAMPLE_IMAGENAME='/brain_tumor_dataset/yes/Y1.jpg'
         
         if not os.path.isdir(outPutImageDir):
             os.makedirs(outPutImageDir)
@@ -51,6 +56,7 @@ class BrainDetectFunction:
             os.makedirs(outPutImageDirYes)
         if not os.path.isdir(outPutImageDirNo):
             os.makedirs(outPutImageDirNo)
+            
             
     def augment_data(self,file_dir, n_generated_samples, save_to_dir):
         print("Function augment_data");
@@ -199,7 +205,7 @@ class BrainDetectFunction:
         global img_cnt;
         global img_pnt;
         global new_img;
-        img = cv2.imread(image_dir+'/brain_tumor_dataset/yes/Y108.jpg')#'../input/brain-mri-images-for-brain-tumor-detection/brain_tumor_dataset/yes/Y108.jpg')
+        img = cv2.imread(image_dir+EXAMPLE_IMAGENAME)#'../input/brain-mri-images-for-brain-tumor-detection/brain_tumor_dataset/yes/Y108.jpg')
         img = cv2.resize(
                     img,
                     dsize=IMG_SIZE,
@@ -289,7 +295,7 @@ class BrainDetectFunction:
         y = []
     
     
-        IMG_WIDTH, IMG_HEIGHT = (240, 240)
+        IMG_WIDTH, IMG_HEIGHT = (IMAGE_SIZE_FOR_BUILDMODEL, IMAGE_SIZE_FOR_BUILDMODEL)
         count=0
         print ("length of image array= ",len(train))   
         for img in train:
@@ -322,7 +328,7 @@ class BrainDetectFunction:
         augmented_yes =augmented_data_path+'yes'
         augmented_no = augmented_data_path+'no'
         
-        IMG_WIDTH, IMG_HEIGHT = (240, 240)
+        #IMG_WIDTH, IMG_HEIGHT = (240, 240)
         X = self.Resize_Data(X)#,IMG_WIDTH,IMG_HEIGHT)
         Y = Y_train;
         self.plot_samples(X, Y_train, ['No','Yes'],10)
@@ -406,8 +412,13 @@ class BrainDetectFunction:
     def Function6(self):
         print("Function Function6");
         
-        IMG_WIDTH = 240
-        IMG_HEIGHT =240
+        global history
+        global model
+        physical_devices = tf.config.experimental.list_physical_devices('GPU')
+        if len(physical_devices) > 0:
+           tf.config.experimental.set_memory_growth(physical_devices[0], True)        
+        IMG_WIDTH = IMAGE_SIZE_FOR_BUILDMODEL
+        IMG_HEIGHT =IMAGE_SIZE_FOR_BUILDMODEL
           
         IMG_SHAPE = (IMG_WIDTH, IMG_HEIGHT, 3)
         model =self.build_model(IMG_SHAPE)
@@ -415,7 +426,7 @@ class BrainDetectFunction:
         model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
         print("Xtrain1=", X_train_, "YTrain1=", Y_train_,"X_Val=", X_val_, "Y_Val=",Y_val_)
         
-        model.fit(x=X_train_, y=Y_train_, batch_size=32, epochs=22, validation_data=(X_val_, Y_val_))
+        model.fit(x=X_train_, y=Y_train_, batch_size=12, epochs=22, validation_data=(X_val_, Y_val_))#steps_per_epoch=100, validation_steps=10)
         history = model.history.history
         
     def plot_metrics(self,history):
@@ -483,23 +494,35 @@ class BrainDetectFunction:
         print("Function Function8");
         labels = ['yes','no']
         # validate on val set
-        predictions = model.predict(X_val)
+        predictions = model.predict(X_val_)
         predictions = [1 if x>0.5 else 0 for x in predictions]
         
-        accuracy = accuracy_score(y_val, predictions)
+        accuracy = accuracy_score(Y_val_, predictions)
         print('Val Accuracy = %.2f' % accuracy)
         
-        confusion_mtx = confusion_matrix(y_val, predictions) 
+        confusion_mtx = confusion_matrix(Y_val_, predictions) 
         cm = self.plot_confusion_matrix(confusion_mtx, classes = labels, normalize=False)
+        
+        # validate on val set
+        predictions = model.predict(X_test_)
+        predictions = [1 if x>0.5 else 0 for x in predictions]
+    
+        accuracy = accuracy_score(Y_test_, predictions)
+        print('Val Accuracy = %.2f' % accuracy)
+    
+        confusion_mtx = confusion_matrix(Y_test_, predictions) 
+        cm = self.plot_confusion_matrix(confusion_mtx, classes = labels, normalize=False)
+        
         for i in range(5):
             plt.figure(3)
-            plt.imshow(X_test[i])
+            plt.imshow(X_test_[i])
             plt.xticks([])
             plt.yticks([])
-            #plt.title(f'Actual class: {y_test[i]}\nPredicted class: {predictions[i]}')
+            plt.title(f'Actual class: {Y_test_[i]}\nPredicted class: {predictions[i]}')
             print("image show6, Accuracy and Predicted")
             
-            plt.show()          
+            plt.show()
+      
             
     def BrainDetectFunction(self):
         print("Function main");
@@ -508,13 +531,13 @@ class BrainDetectFunction:
         self.LoadDataAndPlotSample();
         self.Funtionc1();
         self.Function2();
-    #    Function3();
+        #Function3();
         self.Function4();
         self.Function5();
         self.Function6();
         self.Function7();
         self.Function8();
-        print("Hello World!")    
+        print("End programs!")    
         
         
     def __init__(self):
