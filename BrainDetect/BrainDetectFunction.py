@@ -44,7 +44,7 @@ class BrainDetectFunction:
         augmented_yes =augmented_data_path+'yes'
         augmented_no = augmented_data_path+'no'
         IMG_SIZE = (224,224);     
-        checkexitfolder=False
+        
         if not os.path.isdir(outPutImageDir):
             os.makedirs(outPutImageDir)
         if not os.path.isdir(outPutImageDirYes):
@@ -99,11 +99,6 @@ class BrainDetectFunction:
         for directory in dir_list:
             for filename in listdir(directory):
                 image = cv2.imread(directory+'/'+filename)
-    #             image = crop_brain_contour(image, plot=False)
-    #             image = cv2.resize(image, dsize=(image_width, image_height), interpolation=cv2.INTER_CUBIC)
-    #             # normalize values
-    #             image = image / 255.
-    #             # convert image to numpy array and append it to x
                 x.append(image)
                 # append a value of 1 to the target array if the image
                 # is in the folder named 'yes', otherwise append 0.
@@ -118,9 +113,9 @@ class BrainDetectFunction:
         # Shuffle the data
         x, y = shuffle(x, y)
         
-        #print f'Number of examples is: {len(X)}'
-        #print f'X shape is: {X.shape}'
-        #print(f'y shape is: {y.shape}')
+        print (f'Number of examples is: {len(x)}')
+        print (f'X shape is: {x.shape}')
+        print(f'y shape is: {y.shape}')
         
         return x, y;
     def plot_samples(self,x, y, labels_dict, n=50):
@@ -151,7 +146,8 @@ class BrainDetectFunction:
         
         print("Function LoadDataAndPlotSample");
         
-        global X_train,Y_train 
+        global X_train
+        global Y_train 
         X_train, Y_train = self.load_data([augmented_yes, augmented_no])
         self.plot_samples(X_train, Y_train, ['No','Yes'], 20)    
         
@@ -282,12 +278,11 @@ class BrainDetectFunction:
         
         x = np.array(x)
         
-        print("plot crop image sample");    
-        self.plot_samples(x, Y_train, ['No','Yes'], 20)
+       
         return x
         
         
-    def Resize_Data(self,train,iMG_WIDTH,iMG_HEIGHT):
+    def Resize_Data(self,train):
         print("Function Resize_Data");
         # load all images in a directory
         x = []
@@ -298,7 +293,7 @@ class BrainDetectFunction:
         count=0
         print ("length of image array= ",len(train))   
         for img in train:
-            image = cv2.resize(img, dsize=(iMG_WIDTH, iMG_HEIGHT), interpolation=cv2.INTER_CUBIC)
+            image = cv2.resize(img, dsize=(IMG_WIDTH, IMG_HEIGHT), interpolation=cv2.INTER_CUBIC)
             # normalize values
             image = image / 255.
             # convert image to numpy array and append it to X
@@ -321,13 +316,15 @@ class BrainDetectFunction:
         global Y;
         X = self.Croping_Data(X_train);
         
+        print("plot crop image sample");    
+        self.plot_samples(X, Y_train, ['No','Yes'], 20)  
+        
         augmented_yes =augmented_data_path+'yes'
         augmented_no = augmented_data_path+'no'
         
         IMG_WIDTH, IMG_HEIGHT = (240, 240)
-        X = self.Resize_Data(X,IMG_WIDTH,IMG_HEIGHT)
-        y = Y_train
-        Y = y;
+        X = self.Resize_Data(X)#,IMG_WIDTH,IMG_HEIGHT)
+        Y = Y_train;
         self.plot_samples(X, Y_train, ['No','Yes'],10)
         
     def split_data(self,x, y, test_size=0.2):
@@ -343,19 +340,25 @@ class BrainDetectFunction:
         global X_val;
         global Y_val;
         global X_test;
-        global Y_test;    
+        global Y_test;  
+        global X_train_
+        global Y_train_
+        global X_val_
+        global Y_val_
+        global X_test_
+        global Y_test_
         print("Function Function5");
         y=Y;
     
         
-        X_train, Y_train, X_val, Y_val, X_test, Y_test = self.split_data(X, y, test_size=0.3)
+        X_train_, Y_train_, X_val_, Y_val_, X_test_, Y_test_ = self.split_data(X, y, test_size=0.3)
         print ("number of training examples = " + str(X_train.shape[0]))
-        print ("number of validation examples = " + str(X_val.shape[0]))
-        print ("number of test examples = " + str(X_test.shape[0]))
+        print ("number of validation examples = " + str(X_val_.shape[0]))
+        print ("number of test examples = " + str(X_test_.shape[0]))
         y = dict()
         y[0] = []
         y[1] = []
-        for set_name in (Y_train, Y_val, Y_test):
+        for set_name in (Y_train_, Y_val_, Y_test_):
             y[0].append(np.sum(set_name == 0))
             y[1].append(np.sum(set_name == 1))
         
@@ -403,20 +406,16 @@ class BrainDetectFunction:
     def Function6(self):
         print("Function Function6");
         
-        IMG_WIDTH, IMG_HEIGHT = (240, 240)
-        #X_train1 #= np.asarray(X_train).astype(np.ndarray);
-       # X_train1= np.array(X_train)#,dtype=np.float)
-        #Y_train1 #= np.asarray(Y_train).astype(np.ndarray)
-        #Y_train1= np.array(Y_train)#,dtype=np.float)
-        
-        
+        IMG_WIDTH = 240
+        IMG_HEIGHT =240
+          
         IMG_SHAPE = (IMG_WIDTH, IMG_HEIGHT, 3)
         model =self.build_model(IMG_SHAPE)
         model.summary()
         model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-        print("Xtrain1=", X_train, "YTrain1=", Y_train,"X_Val=", X_val, "Y_Val=",Y_val)
+        print("Xtrain1=", X_train_, "YTrain1=", Y_train_,"X_Val=", X_val_, "Y_Val=",Y_val_)
         
-        model.fit(x=X_train, y=Y_train, batch_size=32, epochs=22, validation_data=(X_val, Y_val))
+        model.fit(x=X_train_, y=Y_train_, batch_size=32, epochs=22, validation_data=(X_val_, Y_val_))
         history = model.history.history
         
     def plot_metrics(self,history):

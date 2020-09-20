@@ -120,23 +120,15 @@ class BraTS2018:
         print("Function create_data_onesubject_val");               
         print ("src+mask",src + mask)
         files = glob.glob(src + mask, recursive=True)
-        
-        #files= Path(src).rglob(mask)
-        #files=[]
-        #countPath=0
-        #for path in Path(src).rglob(mask):
-            #files.append(path)
-            #print("count =",countPath,  "file path=",files[countPath])        
-            #countPath=countPath+1
-       
+        print("length of files path len=", len(files))        
+      
         print("files path=", files)
         
         r.seed(9)
         r.shuffle(files)    # shuffle patients
-        k = len(files) - count -1
-        print("length of files path len=", len(files))        
+        k = count #len(files) - count -1
         imgs = []
-        if k<=0:
+        if k<=0 or k>=len(files)-1:
             return
         file = files[k]
         print('Processing---', mask,'--',file)
@@ -332,10 +324,10 @@ class BraTS2018:
         
         #using Flair and T2 as input for full tumor segmentation
         x = np.zeros((1,2,240,240),np.float32)
-        print("Flair=",Flair ,"T2=",T2)
+       # print("Flair=",Flair ,"T2=",T2)
         x[:,:1,:,:] = Flair[89:90,:,:,:]   #choosing 90th slice as example
         x[:,1:,:,:] = T2[89:90,:,:,:] 
-        print("x=",x)
+        #print("x=",x)
         
         pred_full = model.predict(x)
         #plt.figure(figsize=(15,10))
