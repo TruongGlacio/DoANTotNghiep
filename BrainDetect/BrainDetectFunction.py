@@ -263,7 +263,6 @@ class BrainDetectFunction:
         plt.xticks([])
         plt.yticks([])
         plt.title('Step 3. Find the extreme points')
-        plt.subplot(144)
         plt.imshow(new_img)
         plt.xticks([])
         plt.yticks([])
@@ -323,7 +322,7 @@ class BrainDetectFunction:
         X = self.Croping_Data(X_train);
         
         print("plot crop image sample");    
-        self.plot_samples(X, Y_train, ['No','Yes'], 20)  
+        #self.plot_samples(X, Y_train, ['No','Yes'], 20)  
         
         augmented_yes =augmented_data_path+'yes'
         augmented_no = augmented_data_path+'no'
@@ -513,16 +512,16 @@ class BrainDetectFunction:
         confusion_mtx = confusion_matrix(Y_test_, predictions) 
         cm = self.plot_confusion_matrix(confusion_mtx, classes = labels, normalize=False)
         
-        for i in range(5):
-            plt.figure(3)
+        plt.figure(3)        
+        for i in range(20):
+            plt.subplot(4, 6, i+1)         
             plt.imshow(X_test_[i])
             plt.xticks([])
             plt.yticks([])
-            plt.title(f'Actual class: {Y_test_[i]}\nPredicted class: {predictions[i]}')
+            plt.title(f'Tumor Actual class: {Y_test_[i]}\n Tumor Predicted class: {predictions[i]}')
             print("image show6, Accuracy and Predicted")
-            
-            plt.show()
-      
+        plt.show()
+        
             
     def BrainDetectFunction(self):
         print("Function main");
