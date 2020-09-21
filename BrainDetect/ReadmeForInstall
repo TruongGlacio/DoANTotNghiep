@@ -16,6 +16,6 @@ python-3.7.8-amd64.exe
 2. cudnn-10.1-windows10-x64-v8.0.3.33
 3. cuda_10.1.243_426.00_win10
 
-pip3.7 install --upgrade numpy==1.18.5 pandas plotly matplotlib opencv-python Tensorflow 2.1.1 imutils scikit-learn sklearn ipython scikit-image SimpleITK
+pip3.7 install --upgrade numpy==1.18.5 pandas plotly matplotlib opencv-python Tensorflow==2.1.1 imutils scikit-learn sklearn ipython scikit-image SimpleITK
 
 ERROR: tensorflow 2.3.0 has requirement numpy<1.19.0,>=1.16.0, but you'll have numpy 1.19.1 which is incompatible.
