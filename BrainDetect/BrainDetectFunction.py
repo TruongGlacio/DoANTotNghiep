@@ -34,6 +34,7 @@ class BrainDetectFunction:
         global IMG_SIZE;
         global IMAGE_SIZE_FOR_BUILDMODEL;
         global EXAMPLE_IMAGENAME;
+        global timerForShowImage
         
         #os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'        
         image_dir="data/input/brain-mri-images-for-brain-tumor-detection/"
@@ -48,6 +49,7 @@ class BrainDetectFunction:
         augmented_no = augmented_data_path+'no'
         IMG_SIZE = (224,224);  
         IMAGE_SIZE_FOR_BUILDMODEL=180
+        timerForShowImage=3
         EXAMPLE_IMAGENAME='/brain_tumor_dataset/yes/Y1.jpg'
         
         if not os.path.isdir(outPutImageDir):
@@ -92,7 +94,7 @@ class BrainDetectFunction:
             # augment data for the examples with label equal to 'no' representing non-tumurous examples
             self.augment_data(file_dir=image_dir+'no', n_generated_samples=9, save_to_dir=augmented_data_path+'no')
         else:
-            print(len(dir))   
+            print("Number of file in load folder= %d",len(dir))   
             
     def load_data(self,dir_list):
     
@@ -127,26 +129,31 @@ class BrainDetectFunction:
     def plot_samples(self,x, y, labels_dict, n=50):
         print("Function plot_samples");
         """
+        
         Creates a gridplot for desired number of images (n) from the specified set
         """
+        plt.figure(2)
+          
+        #plt.figure(2)#figsize=(15,6))        
         for index in range(len(labels_dict)):
             print('index=',index)
             imgs = x[np.argwhere(y == index)][:n]
             j = 10
             i = int(n/j)
     
-            plt.figure(1)#figsize=(15,6))
             c = 1
             for img in imgs:
                 plt.subplot(i,j,c)
                 plt.imshow(img[0])
-    
                 plt.xticks([])
                 plt.yticks([])
-                c += 1
+                c += 1    
             plt.suptitle('Tumor: {}'.format(labels_dict[index]))
             print("image show1,Tumor")  
-            plt.show()                
+            plt.show(block=False)
+            plt.pause(timerForShowImage)
+            plt.close()                                  
+
             
     def LoadDataAndPlotSample(self):
         
@@ -198,19 +205,15 @@ class BrainDetectFunction:
             
         return new_image
     
-    def Funtionc1(self):
-        print("Function Funtionc1");
+    def ImageProccessFuntionc(self,imagePath):
+        print("Function ImageProccessFuntionc");
         
         global img;
         global img_cnt;
         global img_pnt;
         global new_img;
-        img = cv2.imread(image_dir+EXAMPLE_IMAGENAME)#'../input/brain-mri-images-for-brain-tumor-detection/brain_tumor_dataset/yes/Y108.jpg')
-        img = cv2.resize(
-                    img,
-                    dsize=IMG_SIZE,
-                    interpolation=cv2.INTER_CUBIC
-                )
+        img = cv2.imread(imagePath)#'../input/brain-mri-images-for-brain-tumor-detection/brain_tumor_dataset/yes/Y108.jpg')
+        img = cv2.resize(img, dsize=IMG_SIZE,interpolation=cv2.INTER_CUBIC)
         gray = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
         gray = cv2.GaussianBlur(gray, (5, 5), 0)
         
@@ -243,8 +246,9 @@ class BrainDetectFunction:
         # crop
         ADD_PIXELS = 0
         new_img = img[extTop[1]-ADD_PIXELS:extBot[1]+ADD_PIXELS, extLeft[0]-ADD_PIXELS:extRight[0]+ADD_PIXELS].copy()
+        return new_img
         
-    def Function2(self):
+    def ShowImageCropFunction(self):
         
         print("Function Function2");
         plt.figure(figsize=(15,6))
@@ -268,7 +272,10 @@ class BrainDetectFunction:
         plt.yticks([])
         plt.title('Step 4. Crop the image')
         print("image show3: original, biggest,extreme, extreme  ")    
-        plt.show()
+        #plt.show()
+        plt.show(block=False)
+        plt.pause(timerForShowImage)
+        plt.close()        
         
     def Croping_Data(self,train):
     
@@ -303,27 +310,20 @@ class BrainDetectFunction:
             image = image / 255.
             # convert image to numpy array and append it to X
             count=count+1
-           # print('append image,count=',count)     
-            #if count==110:
-             #   break
-            x.append(image)
-            
-            
+            x.append(image)    
         print("convert image to numpy array  ")            
         x = np.array(x)#.astype(np.float32); #np.array(x)
         print("convert image to numpy array  ")            
     
         return x
     
-    def Function4(self):
+    def ShowDataTrainingAfterCropFunction(self):
         print("Function Function4");
         global X;
         global Y;
         X = self.Croping_Data(X_train);
         
-        print("plot crop image sample");    
-        #self.plot_samples(X, Y_train, ['No','Yes'], 20)  
-        
+        print("plot crop image sample");            
         augmented_yes =augmented_data_path+'yes'
         augmented_no = augmented_data_path+'no'
         
@@ -332,20 +332,15 @@ class BrainDetectFunction:
         Y = Y_train;
         self.plot_samples(X, Y_train, ['No','Yes'],10)
         
-    def split_data(self,x, y, test_size=0.2):
+    def split_data(self,x, y, test_size=0.2,train_size=None):
     
         print("Function split_data");
-        x_train, x_test_val, y_train, y_test_val = train_test_split(x, y, test_size=test_size)
-        x_test, x_val, y_test, y_val = train_test_split(x_test_val, y_test_val, test_size=0.5)
+        x_train, x_test_val, y_train, y_test_val = train_test_split(x, y, test_size=test_size, train_size=train_size, shuffle=False)
+        x_test, x_val, y_test, y_val = train_test_split(x_test_val, y_test_val, test_size=0.5,train_size=train_size)
         
         return x_train, y_train, x_val, y_val, x_test, y_test
     
-    def Function5(self):
-        
-        global X_val;
-        global Y_val;
-        global X_test;
-        global Y_test;  
+    def ShowBarChartFunction(self):
         global X_train_
         global Y_train_
         global X_val_
@@ -408,7 +403,7 @@ class BrainDetectFunction:
         
         return model
     
-    def Function6(self):
+    def BuildTrainingModelFunction(self):
         print("Function Function6");
         
         global history
@@ -424,11 +419,22 @@ class BrainDetectFunction:
         model.summary()
         model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
         print("Xtrain1=", X_train_, "YTrain1=", Y_train_,"X_Val=", X_val_, "Y_Val=",Y_val_)
+        #checkpoint_path = "data/output/cp.ckpt"
+        #checkpoint_dir = os.path.dirname(checkpoint_path)    
+        # Create a callback that saves the model's weights
+        #cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path, save_weights_only=True, verbose=1)        
+        #training data in here out put with the model
+        #model.save_weights(checkpoint_path.format(epoch=0))
         
-        model.fit(x=X_train_, y=Y_train_, batch_size=12, epochs=22, validation_data=(X_val_, Y_val_))#steps_per_epoch=100, validation_steps=10)
+        model.fit(x=X_train_, y=Y_train_, batch_size=12, epochs=22,validation_data=(X_val_, Y_val_))#steps_per_epoch=100, validation_steps=10)
+        
+        test_loss, test_acc = model.evaluate(X_test_, Y_test_, verbose=2)        
+        model.save('BrainDetectModel.h5') 
+        
         history = model.history.history
+        self.plot_accuracy_metrics(history)
         
-    def plot_metrics(self,history):
+    def plot_accuracy_metrics(self,history):
         
         print("Function plot_metrics");
         train_loss = history['loss']
@@ -443,7 +449,9 @@ class BrainDetectFunction:
         plt.title('Loss')
         plt.legend()
         print("image show4: Loss")    
-        plt.show()
+        plt.show(block=False)
+        plt.pause(timerForShowImage)
+        plt.close() 
         
         # Accuracy
         plt.figure(2)
@@ -452,16 +460,11 @@ class BrainDetectFunction:
         plt.title('Accuracy')
         plt.legend()
         print("image show5: Accuracy")    
-        plt.show()
+        plt.show(block=False)
+        plt.pause(timerForShowImage)
+        plt.close()       
         
-    def Function7(self):
-        print("Function Function7");
-        self.plot_metrics(history)
-        
-    def plot_confusion_matrix(self,cm, classes,
-                              normalize=False,
-                              title='Confusion matrix',
-                              cmap=plt.cm.Blues):
+    def plot_confusion_matrix(self,cm, classes, normalize=False, title='Confusion matrix',cmap=plt.cm.Blues):
         print("Function plot_confusion_matrix");
         """
         This function prints and plots the confusion matrix.
@@ -487,20 +490,22 @@ class BrainDetectFunction:
         plt.ylabel('True label')
         plt.xlabel('Predicted label')
         print("image show6, confusion matrix")    
-        plt.show()
+        plt.show(block=False)
+        plt.pause(timerForShowImage)
+        plt.close()         
         
-    def Function8(self): #view result accurary
-        print("Function Function8");
+    def DetectObjectAndShowResultFunction(self): #view result accurary
+        print("Function DetectObjectAndShowResultFunction");
         labels = ['yes','no']
-        # validate on val set
+        # validate on val set 
         predictions = model.predict(X_val_)
-        predictions = [1 if x>0.5 else 0 for x in predictions]
+        predictions = [1 if x> 0.5 else 0 for x in predictions]
         
         accuracy = accuracy_score(Y_val_, predictions)
-        print('Val Accuracy = %.2f' % accuracy)
+        print('Val Accuracy  = %.2f' % accuracy)
         
         confusion_mtx = confusion_matrix(Y_val_, predictions) 
-        cm = self.plot_confusion_matrix(confusion_mtx, classes = labels, normalize=False)
+        cm = self.plot_confusion_matrix(confusion_mtx, classes = labels, normalize=False, title='Confusion matrix With Validation Data')
         
         # validate on val set
         predictions = model.predict(X_test_)
@@ -510,34 +515,69 @@ class BrainDetectFunction:
         print('Val Accuracy = %.2f' % accuracy)
     
         confusion_mtx = confusion_matrix(Y_test_, predictions) 
-        cm = self.plot_confusion_matrix(confusion_mtx, classes = labels, normalize=False)
+        cm = self.plot_confusion_matrix(confusion_mtx, classes = labels, normalize=False, title='Confusion matrix With Test Data')
         
         plt.figure(3)        
         for i in range(20):
-            plt.subplot(4, 6, i+1)         
+            plt.subplot(3, 7, i+1)         
             plt.imshow(X_test_[i])
             plt.xticks([])
             plt.yticks([])
             plt.title(f'Tumor Actual class: {Y_test_[i]}\n Tumor Predicted class: {predictions[i]}')
             print("image show6, Accuracy and Predicted")
-        plt.show()
+        plt.show(block=False)
+        plt.pause(timerForShowImage)
+        plt.close()         
+    #def SaveModelTrained(self, model):
         
-            
+        
     def BrainDetectFunction(self):
         print("Function main");
         self.CreatFolderPaths();    
         self.LoadAgumentData();
         self.LoadDataAndPlotSample();
-        self.Funtionc1();
-        self.Function2();
-        #Function3();
-        self.Function4();
-        self.Function5();
-        self.Function6();
-        self.Function7();
-        self.Function8();
+        self.ImageProccessFuntionc(image_dir+EXAMPLE_IMAGENAME);
+        self.ShowImageCropFunction();
+        self.ShowDataTrainingAfterCropFunction();
+        self.ShowBarChartFunction();
+        self.BuildTrainingModelFunction();
+        self.DetectObjectAndShowResultFunction();
         print("End programs!")    
+    def DetectSpecialImage(self,imagePath):
+        x= []
+        y = [] 
         
+        y.append(1)
+        y.append(1)    
+        y.append(1) 
+        y.append(1) 
+        
+        imageForDetect= self.ImageProccessFuntionc(imagePath);
+        
+        x.append(imageForDetect)
+        x.append(imageForDetect) 
+        x.append(imageForDetect)
+        x.append(imageForDetect) 
+        x = self.Croping_Data(x)  
+        imageForDetectArray2 = self.Resize_Data(x)
+       
+
+        
+        y = np.array(y)
+        imageForDetectArray2, y = shuffle(imageForDetectArray2, y)
+   
+        X_train_, Y_train_, X_val_, Y_val_, X_test_, Y_test_ = self.split_data(imageForDetectArray2, y, test_size=0.5,train_size=0.5)
+        predictions = model.predict(X_val_)        
+        if predictions>0.7:
+           HaveTummor="Detected tumor"
+        else:
+           HaveTummor="Haven't tumor"           
+        plt.figure(4)
+        plt.imshow(imageForDetect)
+        plt.xticks([])
+        plt.yticks([])
+        plt.title(f'Tumor Prediction Rate:{predictions} -->{HaveTummor}')      
+        plt.show()
         
     def __init__(self):
         print("BrainDetectFunction class init")

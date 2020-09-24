@@ -48,6 +48,7 @@ class BraTS2018:
         global WEIGHTS_CORE_BEST_FILE_PATH
         global WEIGHTS_ET_BEST_FILE_PATH  
         
+        
         BRAT2019_DATA_PATH_HGG = "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\MICCAI_BraTS2020_TrainingData\\"#HGG\\"  
         
         WEIGHTS_FULL_BEST_FILE_PATH= "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-full-best.h5"    
@@ -71,7 +72,8 @@ class BraTS2018:
         4: enhancing tumor
         5: full tumor
         '''
-        
+    def GetImagePathForDetectObject(self, imagePath):
+        BRAT2019_DATA_PATH_HGG=imagePath
     # function to read all data (training and label) and transform into numpy array    
     def create_data(self,src, mask, label=False):
         

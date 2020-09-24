@@ -9,16 +9,16 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+
+import sys 
 from PyQt5.QtWidgets import *
-from PyQt5.QtGui import QIcon # import function cho
 
 class MainScreen(QWidget):
     def __init__(self):
         super(MainScreen, self).__init__()
         self.ui = Ui_MainWindow() 				   # tạo một GUI với đối tượng là giao diện MlabDemo đã thiết kế
         self.ui.setupUi(self)
-        self.setWindowTitle('BrainDetect')   # đặt tiêu đề cho giao diện 
-        self.setWindowIcon(QIcon("BrainDetect.ico")) # tải icon cho giao diện 
+        self.setWindowTitle('Brain Detect Using DNN')   # đặt tiêu đề cho giao diện 
         self.center()						   # hàm center() giúp đưa giao diện vào giữa màn hình 
 
     def center(self):	# định nghĩa hàm center() 
@@ -26,32 +26,20 @@ class MainScreen(QWidget):
         cp = QDesktopWidget().availableGeometry().center() # tính toán độ phân giải và tìm ra điểm giữa của màn hình
         qr.moveCenter(cp) # di chuyển điểm giữa của hình chữ nhật tới trùng với điểm giữa của màn hình, 
                             # giữ cho kích thước hình chữ nhật không đổi
-        self.move(qr.topLeft()) # di chuyển màn hình chính của giao diện tới vị trí cửa sổ hình chữ nhật (ở giữa màn hình)
-
-
+        self.move(qr.topLeft()) # di chuyển màn hình chính của giao diện tới vị trí cửa sổ hình chữ nhật (ở giữa màn hình)	
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
-        MainWindow.resize(1333, 782)
+        MainWindow.resize(1333, 247)
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(480, 720, 381, 61))
+        self.horizontalLayoutWidget.setGeometry(QtCore.QRect(450, 170, 381, 61))
         self.horizontalLayoutWidget.setObjectName("horizontalLayoutWidget")
         self.hboxlayout = QtWidgets.QHBoxLayout(self.horizontalLayoutWidget)
         self.hboxlayout.setContentsMargins(0, 0, 0, 0)
         self.hboxlayout.setSpacing(6)
         self.hboxlayout.setObjectName("hboxlayout")
-        self.pushButton_Back = QtWidgets.QPushButton(self.horizontalLayoutWidget)
-        sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Preferred, QtWidgets.QSizePolicy.Preferred)
-        sizePolicy.setHorizontalStretch(0)
-        sizePolicy.setVerticalStretch(0)
-        sizePolicy.setHeightForWidth(self.pushButton_Back.sizePolicy().hasHeightForWidth())
-        self.pushButton_Back.setSizePolicy(sizePolicy)
-        self.pushButton_Back.setMinimumSize(QtCore.QSize(60, 40))
-        self.pushButton_Back.setMaximumSize(QtCore.QSize(60, 40))
-        self.pushButton_Back.setObjectName("pushButton_Back")
-        self.hboxlayout.addWidget(self.pushButton_Back)
         self.pushButton_segmentation = QtWidgets.QPushButton(self.horizontalLayoutWidget)
         self.pushButton_segmentation.setEnabled(True)
         sizePolicy = QtWidgets.QSizePolicy(QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
@@ -63,28 +51,6 @@ class Ui_MainWindow(object):
         self.pushButton_segmentation.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.pushButton_segmentation.setObjectName("pushButton_segmentation")
         self.hboxlayout.addWidget(self.pushButton_segmentation)
-        self.pushButton_Next = QtWidgets.QPushButton(self.horizontalLayoutWidget)
-        self.pushButton_Next.setMaximumSize(QtCore.QSize(60, 40))
-        self.pushButton_Next.setObjectName("pushButton_Next")
-        self.hboxlayout.addWidget(self.pushButton_Next)
-        self.gridLayoutWidget = QtWidgets.QWidget(self.centralwidget)
-        self.gridLayoutWidget.setGeometry(QtCore.QRect(0, 50, 1331, 661))
-        self.gridLayoutWidget.setObjectName("gridLayoutWidget")
-        self.gridLayout = QtWidgets.QGridLayout(self.gridLayoutWidget)
-        self.gridLayout.setContentsMargins(0, 0, 0, 0)
-        self.gridLayout.setObjectName("gridLayout")
-        self.labelImageView__Prediction_Core = QtWidgets.QLabel(self.gridLayoutWidget)
-        self.labelImageView__Prediction_Core.setObjectName("labelImageView__Prediction_Core")
-        self.gridLayout.addWidget(self.labelImageView__Prediction_Core, 0, 2, 1, 1)
-        self.labelImageView_Prediction_All = QtWidgets.QLabel(self.gridLayoutWidget)
-        self.labelImageView_Prediction_All.setObjectName("labelImageView_Prediction_All")
-        self.gridLayout.addWidget(self.labelImageView_Prediction_All, 1, 2, 1, 1)
-        self.labelImageView_Base = QtWidgets.QLabel(self.gridLayoutWidget)
-        self.labelImageView_Base.setObjectName("labelImageView_Base")
-        self.gridLayout.addWidget(self.labelImageView_Base, 0, 0, 1, 1)
-        self.labelImageView__Prediction_ET = QtWidgets.QLabel(self.gridLayoutWidget)
-        self.labelImageView__Prediction_ET.setObjectName("labelImageView__Prediction_ET")
-        self.gridLayout.addWidget(self.labelImageView__Prediction_ET, 1, 0, 1, 1)
         self.horizontalLayoutWidget_2 = QtWidgets.QWidget(self.centralwidget)
         self.horizontalLayoutWidget_2.setGeometry(QtCore.QRect(9, 10, 1301, 32))
         self.horizontalLayoutWidget_2.setObjectName("horizontalLayoutWidget_2")
@@ -109,7 +75,15 @@ class Ui_MainWindow(object):
         self.pushButton_OpenFileBroswer.setBaseSize(QtCore.QSize(100, 30))
         self.pushButton_OpenFileBroswer.setObjectName("pushButton_OpenFileBroswer")
         self.horizontalLayout.addWidget(self.pushButton_OpenFileBroswer)
-       # MainWindow.setCentralWidget(self.centralwidget)
+        self.label_NotifyStatus = QtWidgets.QLabel(self.centralwidget)
+        self.label_NotifyStatus.setGeometry(QtCore.QRect(20, 80, 1181, 41))
+        font = QtGui.QFont()
+        font.setPointSize(20)
+        self.label_NotifyStatus.setFont(font)
+        self.label_NotifyStatus.setFrameShape(QtWidgets.QFrame.NoFrame)
+        self.label_NotifyStatus.setAlignment(QtCore.Qt.AlignCenter)
+        self.label_NotifyStatus.setObjectName("label_NotifyStatus")
+#        MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -117,12 +91,9 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
-        self.pushButton_Back.setText(_translate("MainWindow", "Back"))
         self.pushButton_segmentation.setText(_translate("MainWindow", "Segmentation Image"))
-        self.pushButton_Next.setText(_translate("MainWindow", "Next"))
-        self.labelImageView__Prediction_Core.setText(_translate("MainWindow", "TextLabel"))
-        self.labelImageView_Prediction_All.setText(_translate("MainWindow", "TextLabel"))
-        self.labelImageView_Base.setText(_translate("MainWindow", "TextLabel"))
-        self.labelImageView__Prediction_ET.setText(_translate("MainWindow", "TextLabel"))
         self.label_FolerPath.setText(_translate("MainWindow", "Folder path :"))
+        self.lineEdit_FolderPath.setText(_translate("MainWindow", "Type image Path in here"))
+        self.lineEdit_FolderPath.text()
         self.pushButton_OpenFileBroswer.setText(_translate("MainWindow", "....."))
+        self.label_NotifyStatus.setText(_translate("MainWindow", "While training data, please wait until finished"))

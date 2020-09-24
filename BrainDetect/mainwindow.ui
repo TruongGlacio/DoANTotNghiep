@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>1333</width>
-    <height>782</height>
+    <height>247</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -17,8 +17,8 @@
    <widget class="QWidget" name="horizontalLayoutWidget">
     <property name="geometry">
      <rect>
-      <x>480</x>
-      <y>720</y>
+      <x>450</x>
+      <y>170</y>
       <width>381</width>
       <height>61</height>
      </rect>
@@ -27,31 +27,6 @@
      <property name="spacing">
       <number>6</number>
      </property>
-     <item>
-      <widget class="QPushButton" name="pushButton_Back">
-       <property name="sizePolicy">
-        <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-         <horstretch>0</horstretch>
-         <verstretch>0</verstretch>
-        </sizepolicy>
-       </property>
-       <property name="minimumSize">
-        <size>
-         <width>60</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="maximumSize">
-        <size>
-         <width>60</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Back</string>
-       </property>
-      </widget>
-     </item>
      <item>
       <widget class="QPushButton" name="pushButton_segmentation">
        <property name="enabled">
@@ -77,59 +52,6 @@
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QPushButton" name="pushButton_Next">
-       <property name="maximumSize">
-        <size>
-         <width>60</width>
-         <height>40</height>
-        </size>
-       </property>
-       <property name="text">
-        <string>Next</string>
-       </property>
-      </widget>
-     </item>
-    </layout>
-   </widget>
-   <widget class="QWidget" name="gridLayoutWidget">
-    <property name="geometry">
-     <rect>
-      <x>0</x>
-      <y>50</y>
-      <width>1331</width>
-      <height>661</height>
-     </rect>
-    </property>
-    <layout class="QGridLayout" name="gridLayout">
-     <item row="0" column="2">
-      <widget class="QLabel" name="labelImageView__Prediction_Core">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="2">
-      <widget class="QLabel" name="labelImageView_Prediction_All">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
-     <item row="0" column="0">
-      <widget class="QLabel" name="labelImageView_Base">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
-     <item row="1" column="0">
-      <widget class="QLabel" name="labelImageView__Prediction_ET">
-       <property name="text">
-        <string>TextLabel</string>
-       </property>
-      </widget>
-     </item>
     </layout>
    </widget>
    <widget class="QWidget" name="horizontalLayoutWidget_2">
@@ -150,7 +72,11 @@
       </widget>
      </item>
      <item>
-      <widget class="QLineEdit" name="lineEdit_FolderPath"/>
+      <widget class="QLineEdit" name="lineEdit_FolderPath">
+       <property name="text">
+        <string>Type image Path in here</string>
+       </property>
+      </widget>
      </item>
      <item>
       <widget class="QPushButton" name="pushButton_OpenFileBroswer">
@@ -187,6 +113,30 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QLabel" name="label_NotifyStatus">
+    <property name="geometry">
+     <rect>
+      <x>20</x>
+      <y>80</y>
+      <width>1181</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="font">
+     <font>
+      <pointsize>20</pointsize>
+     </font>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::NoFrame</enum>
+    </property>
+    <property name="text">
+     <string>While training data, please wait until finished</string>
+    </property>
+    <property name="alignment">
+     <set>Qt::AlignCenter</set>
+    </property>
    </widget>
   </widget>
  </widget>
