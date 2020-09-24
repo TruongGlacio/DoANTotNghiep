@@ -23,7 +23,7 @@ class Main:
         #mBraTS2018 = BraTS2018()
         mMainScreen.ui.label_NotifyStatus.setText( "While training data, please wait until finished")  
         mBrainDetectFunction=BrainDetectFunction()
-        mBrainDetectFunction.BrainDetectFunction()
+        #mBrainDetectFunction.BrainDetectFunction()
         mMainScreen.ui.label_NotifyStatus.setText("The training process has been completed, choose a photo to segmentation")        
         mMainScreen.ui.pushButton_OpenFileBroswer.clicked.connect(self.FileBroswer)          
         mMainScreen.ui.pushButton_segmentation.clicked.connect(self.DetectObject)      #  

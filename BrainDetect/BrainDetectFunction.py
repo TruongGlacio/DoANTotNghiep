@@ -428,8 +428,9 @@ class BrainDetectFunction:
         
         model.fit(x=X_train_, y=Y_train_, batch_size=12, epochs=22,validation_data=(X_val_, Y_val_))#steps_per_epoch=100, validation_steps=10)
         
-        test_loss, test_acc = model.evaluate(X_test_, Y_test_, verbose=2)        
-        model.save('BrainDetectModel.h5') 
+        test_loss, test_acc = model.evaluate(X_test_, Y_test_, verbose=2)   
+        modelPath="data/output/BrainDetectModel.h5"
+        model.save(modelPath) 
         
         history = model.history.history
         self.plot_accuracy_metrics(history)
@@ -546,6 +547,11 @@ class BrainDetectFunction:
     def DetectSpecialImage(self,imagePath):
         x= []
         y = [] 
+        modelPath="data/output/BrainDetectModel.h5"
+        new_model = tf.keras.models.load_model(modelPath)
+        
+        # Show the model architecture
+        new_model.summary()        
         
         y.append(1)
         y.append(1)    
@@ -567,7 +573,7 @@ class BrainDetectFunction:
         imageForDetectArray2, y = shuffle(imageForDetectArray2, y)
    
         X_train_, Y_train_, X_val_, Y_val_, X_test_, Y_test_ = self.split_data(imageForDetectArray2, y, test_size=0.5,train_size=0.5)
-        predictions = model.predict(X_val_)        
+        predictions = new_model.predict(X_val_)        
         if predictions>0.7:
            HaveTummor="Detected tumor"
         else:
@@ -581,4 +587,5 @@ class BrainDetectFunction:
         
     def __init__(self):
         print("BrainDetectFunction class init")
+        self.CreatFolderPaths()
         
