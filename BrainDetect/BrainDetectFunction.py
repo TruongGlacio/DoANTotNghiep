@@ -544,14 +544,15 @@ class BrainDetectFunction:
         self.BuildTrainingModelFunction();
         self.DetectObjectAndShowResultFunction();
         print("End programs!")    
-    def DetectSpecialImage(self,imagePath):
-        x= []
-        y = [] 
+    def InitialModelTrained(self):
+        global new_model
         modelPath="data/output/BrainDetectModel.h5"
         new_model = tf.keras.models.load_model(modelPath)
-        
         # Show the model architecture
-        new_model.summary()        
+        new_model.summary()         
+    def DetectSpecialImage(self,imagePath):
+        x= []
+        y = []        
         
         y.append(1)
         y.append(1)    
@@ -574,7 +575,7 @@ class BrainDetectFunction:
    
         X_train_, Y_train_, X_val_, Y_val_, X_test_, Y_test_ = self.split_data(imageForDetectArray2, y, test_size=0.5,train_size=0.5)
         predictions = new_model.predict(X_val_)        
-        if predictions>0.7:
+        if predictions>0.4:
            HaveTummor="Detected tumor"
         else:
            HaveTummor="Haven't tumor"           
@@ -588,4 +589,5 @@ class BrainDetectFunction:
     def __init__(self):
         print("BrainDetectFunction class init")
         self.CreatFolderPaths()
+        self.InitialModelTrained()
         

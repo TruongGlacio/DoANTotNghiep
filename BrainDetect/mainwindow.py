@@ -18,7 +18,7 @@ class MainScreen(QWidget):
         super(MainScreen, self).__init__()
         self.ui = Ui_MainWindow() 				   # tạo một GUI với đối tượng là giao diện MlabDemo đã thiết kế
         self.ui.setupUi(self)
-        self.setWindowTitle('Brain Detect Using DNN')   # đặt tiêu đề cho giao diện 
+        self.setWindowTitle('Brain Tumor Detect Using DNN')   # đặt tiêu đề cho giao diện 
         self.center()						   # hàm center() giúp đưa giao diện vào giữa màn hình 
 
     def center(self):	# định nghĩa hàm center() 
