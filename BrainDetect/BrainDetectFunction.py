@@ -23,34 +23,71 @@ from tensorflow.keras import backend as K
 
 
 class BrainDetectFunction:
+    def DefineGlobalPath(self):
+        global dataPath
+        global inPutImageDir
+        global outPutImageDir
+        global subInput 
+        global subOutput 
+        global IMG_SIZE;
+        global IMAGE_SIZE_FOR_BUILDMODEL;
+        global subInput 
+        global subOutput                 
+        
+        dataPath=str()
+        inPutImageDir=str()
+        outPutImageDir=str()
+        subInput=str()
+        subOutput=str()
+        IMG_SIZE = (224,224);  
+        IMAGE_SIZE_FOR_BUILDMODEL=180                
+        subInput="/input/"
+        subOutput= "/output"
+                
+    def InitialDataFolderPath(self):
+        global dataPath
+        global inPutImageDir
+        global outPutImageDir  
+        dataPath="data"
+        inPutImageDir= dataPath + subInput
+        outPutImageDir= dataPath + subOutput
+    def SetDataPath(self, DataPath):
+        global dataPath
+        global inPutImageDir
+        global outPutImageDir 
+        global subInput 
+        global subOutput         
+        dataPath=DataPath
+        inPutImageDir= dataPath + subInput
+        outPutImageDir= dataPath + subOutput      
+        print("outPutImageDir=",outPutImageDir,"subOutput=",subOutput )
+        print("inPutImageDir=",inPutImageDir,"subInput",subInput)        
+        
     def CreatFolderPaths(self):
         print("Function CreatFolderPaths");
         global augmented_yes;
         global augmented_no;
-        global image_dir
         global augmented_data_path;
         global outPutImageDirYes;
         global outPutImageDirNo; 
-        global IMG_SIZE;
-        global IMAGE_SIZE_FOR_BUILDMODEL;
+
+        
         global EXAMPLE_IMAGENAME;
         global timerForShowImage
         
         #os.environ['TF_FORCE_GPU_ALLOW_GROWTH'] = 'true'        
-        image_dir="data/input/brain-mri-images-for-brain-tumor-detection/"
         augmented_data_path="";
-        outPutImageDir= "data/output/kaggle/working/augmented-images/"
-        outPutImageDirYes= outPutImageDir+ "yes"
-        outPutImageDirNo=outPutImageDir+ "no"
+        outPutImageDirYes= outPutImageDir+ "/yes"
+        outPutImageDirNo=outPutImageDir+ "/no"
         
         augmented_data_path= outPutImageDir;
         
-        augmented_yes =augmented_data_path+'yes'
-        augmented_no = augmented_data_path+'no'
-        IMG_SIZE = (224,224);  
-        IMAGE_SIZE_FOR_BUILDMODEL=180
+        augmented_yes =augmented_data_path+'/yes'
+        augmented_no = augmented_data_path+'/no'
         timerForShowImage=3
-        EXAMPLE_IMAGENAME='/brain_tumor_dataset/yes/Y1.jpg'
+        EXAMPLE_IMAGENAME='/yes/Y1.jpg'
+        print("outPutImageDir=",outPutImageDir)
+        print("inPutImageDir=",inPutImageDir)
         
         if not os.path.isdir(outPutImageDir):
             os.makedirs(outPutImageDir)
@@ -90,9 +127,9 @@ class BrainDetectFunction:
         if len(dir) == 0: 
         
             # augment data for the examples with label equal to 'yes' representing tumurous examples
-            self.augment_data(file_dir=image_dir+'yes',n_generated_samples=6, save_to_dir=augmented_data_path+'yes')
+            self.augment_data(file_dir=inPutImageDir+'yes',n_generated_samples=6, save_to_dir=augmented_data_path+'yes')
             # augment data for the examples with label equal to 'no' representing non-tumurous examples
-            self.augment_data(file_dir=image_dir+'no', n_generated_samples=9, save_to_dir=augmented_data_path+'no')
+            self.augment_data(file_dir=inPutImageDir+'no', n_generated_samples=9, save_to_dir=augmented_data_path+'no')
         else:
             print("Number of file in load folder= %d",len(dir))   
             
@@ -410,7 +447,7 @@ class BrainDetectFunction:
         global model
         physical_devices = tf.config.experimental.list_physical_devices('GPU')
         if len(physical_devices) > 0:
-           tf.config.experimental.set_memory_growth(physical_devices[0], True)        
+           tf.config.experimental.set_memory_growth(physical_devices[0], True)              
         IMG_WIDTH = IMAGE_SIZE_FOR_BUILDMODEL
         IMG_HEIGHT =IMAGE_SIZE_FOR_BUILDMODEL
           
@@ -429,7 +466,10 @@ class BrainDetectFunction:
         model.fit(x=X_train_, y=Y_train_, batch_size=12, epochs=22,validation_data=(X_val_, Y_val_))#steps_per_epoch=100, validation_steps=10)
         
         test_loss, test_acc = model.evaluate(X_test_, Y_test_, verbose=2)   
-        modelPath="data/output/BrainDetectModel.h5"
+        if not outPutImageDir:
+            modelPath="data/output/BrainDetectModel.h5"
+        else:
+            modelPath= outPutImageDir+ '/BrainDetectModel.h5'
         model.save(modelPath) 
         
         history = model.history.history
@@ -533,11 +573,16 @@ class BrainDetectFunction:
         
         
     def BrainDetectFunction(self):
-        print("Function main");
-        self.CreatFolderPaths();    
+        print("Function BrainDetectFunction");
+        if not dataPath or not inPutImageDir or not outPutImageDir:
+            print("Data path isn't exit =")
+            self.InitialDataFolderPath();
+            
+        self.CreatFolderPaths(); 
+        self.InitialModelTrained()        
         self.LoadAgumentData();
         self.LoadDataAndPlotSample();
-        self.ImageProccessFuntionc(image_dir+EXAMPLE_IMAGENAME);
+        self.ImageProccessFuntionc(inPutImageDir+EXAMPLE_IMAGENAME);
         self.ShowImageCropFunction();
         self.ShowDataTrainingAfterCropFunction();
         self.ShowBarChartFunction();
@@ -546,7 +591,10 @@ class BrainDetectFunction:
         print("End programs!")    
     def InitialModelTrained(self):
         global new_model
-        modelPath="data/output/BrainDetectModel.h5"
+        if not outPutImageDir:
+            modelPath="data/output/BrainDetectModel.h5"
+        else:
+            modelPath=outPutImageDir+'/BrainDetectModel.h5'
         new_model = tf.keras.models.load_model(modelPath)
         # Show the model architecture
         new_model.summary()         
@@ -588,6 +636,6 @@ class BrainDetectFunction:
         
     def __init__(self):
         print("BrainDetectFunction class init")
-        self.CreatFolderPaths()
+        self.DefineGlobalPath()
         self.InitialModelTrained()
         
