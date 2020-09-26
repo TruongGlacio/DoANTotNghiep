@@ -42,7 +42,7 @@ class BrainDetectFunction:
         IMG_SIZE = (224,224);  
         IMAGE_SIZE_FOR_BUILDMODEL=180                
         subInput="/input/"
-        subOutput= "/output"
+        subOutput= "/output/"
                 
     def InitialDataFolderPath(self):
         global dataPath
@@ -61,7 +61,7 @@ class BrainDetectFunction:
         inPutImageDir= dataPath + subInput
         outPutImageDir= dataPath + subOutput      
         print("outPutImageDir=",outPutImageDir,"subOutput=",subOutput )
-        print("inPutImageDir=",inPutImageDir,"subInput",subInput)        
+        print("inPutImageDir=",inPutImageDir,"subInput=",subInput)        
         
     def CreatFolderPaths(self):
         print("Function CreatFolderPaths");
@@ -199,7 +199,7 @@ class BrainDetectFunction:
         global X_train
         global Y_train 
         X_train, Y_train = self.load_data([augmented_yes, augmented_no])
-        self.plot_samples(X_train, Y_train, ['No','Yes'], 20)    
+       # self.plot_samples(X_train, Y_train, ['No','Yes'], 20)    
         
     def crop_brain_contour(self,image, plot=False):
         
@@ -367,7 +367,7 @@ class BrainDetectFunction:
         #IMG_WIDTH, IMG_HEIGHT = (240, 240)
         X = self.Resize_Data(X)#,IMG_WIDTH,IMG_HEIGHT)
         Y = Y_train;
-        self.plot_samples(X, Y_train, ['No','Yes'],10)
+       # self.plot_samples(X, Y_train, ['No','Yes'],10)
         
     def split_data(self,x, y, test_size=0.2,train_size=None):
     
@@ -579,7 +579,7 @@ class BrainDetectFunction:
             self.InitialDataFolderPath();
             
         self.CreatFolderPaths(); 
-        self.InitialModelTrained()        
+        #self.InitialModelTrained()        
         self.LoadAgumentData();
         self.LoadDataAndPlotSample();
         self.ImageProccessFuntionc(inPutImageDir+EXAMPLE_IMAGENAME);
@@ -589,15 +589,8 @@ class BrainDetectFunction:
         self.BuildTrainingModelFunction();
         self.DetectObjectAndShowResultFunction();
         print("End programs!")    
-    def InitialModelTrained(self):
-        global new_model
-        if not outPutImageDir:
-            modelPath="data/output/BrainDetectModel.h5"
-        else:
-            modelPath=outPutImageDir+'/BrainDetectModel.h5'
-        new_model = tf.keras.models.load_model(modelPath)
-        # Show the model architecture
-        new_model.summary()         
+    #def InitialModelTrained(self):
+        
     def DetectSpecialImage(self,imagePath):
         x= []
         y = []        
@@ -607,6 +600,13 @@ class BrainDetectFunction:
         y.append(1) 
         y.append(1) 
         
+        if not outPutImageDir:
+            modelPath="data/output/BrainDetectModel.h5"
+        else:
+            modelPath=outPutImageDir+'/BrainDetectModel.h5'
+        new_model = tf.keras.models.load_model(modelPath)
+        # Show the model architecture
+        new_model.summary()                 
         imageForDetect= self.ImageProccessFuntionc(imagePath);
         
         x.append(imageForDetect)
@@ -623,7 +623,7 @@ class BrainDetectFunction:
    
         X_train_, Y_train_, X_val_, Y_val_, X_test_, Y_test_ = self.split_data(imageForDetectArray2, y, test_size=0.5,train_size=0.5)
         predictions = new_model.predict(X_val_)        
-        if predictions>0.4:
+        if predictions>0.3:
            HaveTummor="Detected tumor"
         else:
            HaveTummor="Haven't tumor"           
@@ -637,5 +637,5 @@ class BrainDetectFunction:
     def __init__(self):
         print("BrainDetectFunction class init")
         self.DefineGlobalPath()
-        self.InitialModelTrained()
+        #self.InitialModelTrained()
         

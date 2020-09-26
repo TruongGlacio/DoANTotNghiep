@@ -7,7 +7,7 @@ from PyQt5.QtCore import QCoreApplication
 from FileManager import FileManager
 from tkinter import *
 from tkinter import filedialog
-
+import time
 import os
 class Main:
 
@@ -96,7 +96,8 @@ class Main:
         if mMainScreen.ui.radioButton_trainingMode.isChecked():
             print("selectMode is trainingMode")  
             mMainScreen.ui.label_NotifyStatus.setText( "While training data, please wait until finished")  
-            mMainScreen.ui.pushButton_trainingData.setText("Started Training")          
+            mMainScreen.ui.pushButton_trainingData.setText("Started Training")   
+            time.sleep(1) # Delay for 5 seconds.
             mBrainDetectFunction.BrainDetectFunction()
             mMainScreen.ui.pushButton_trainingData.setText("Stoped Training")                      
             mMainScreen.ui.label_NotifyStatus.setText("The training process has been completed, choose a photo to segmentation")          
