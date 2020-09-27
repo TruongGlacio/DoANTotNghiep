@@ -1,4 +1,5 @@
 from BrainDetectFunction import BrainDetectFunction
+from BrainTumor_Mask_R_CNN import BrainTumorMask_RCNN
 from BraTS2018 import BraTS2018 
 from mainwindow import MainScreen
 import sys 
@@ -34,7 +35,7 @@ class Main:
         
         mMainScreen.show()			
         mMainScreen.ui.label_NotifyStatus.setText( "While training data, please wait until finished")  
-        mBrainDetectFunction=BrainDetectFunction()
+        mBrainDetectFunction=BrainTumorMask_RCNN()
         mMainScreen.ui.label_NotifyStatus.setText("The training process has been completed, choose a photo to segmentation")        
         mMainScreen.ui.pushButton_OpenFileBroswer.clicked.connect(self.FileBroswer)          
         mMainScreen.ui.pushButton_segmentation.clicked.connect(self.DetectObject)      #  
@@ -89,7 +90,10 @@ class Main:
             print("selectMode is DetectMode")  
             filename= mMainScreen.ui.lineEdit_FolderPath.text()  
             if filename:
-                mBrainDetectFunction.DetectSpecialImage(filename)    
+                statusPath=mBrainDetectFunction.DetectSpecialImage(filename)    
+                if not statusPath:
+                    mMainScreen.ui.label_NotifyStatus.setText("Model file exit, please insert them to folder data/output/, with name BrainDetectModel.h5")                            
+                
     def TrainingData(seft): 
         print("DetectObject Funtion class Main")
         print("selectMode =",selectMode)                
@@ -99,6 +103,7 @@ class Main:
             mMainScreen.ui.pushButton_trainingData.setText("Started Training")   
             time.sleep(1) # Delay for 5 seconds.
             mBrainDetectFunction.BrainDetectFunction()
+            
             mMainScreen.ui.pushButton_trainingData.setText("Stoped Training")                      
             mMainScreen.ui.label_NotifyStatus.setText("The training process has been completed, choose a photo to segmentation")          
 if __name__ == "__main__":    

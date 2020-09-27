@@ -22,7 +22,9 @@ from sklearn.preprocessing import LabelEncoder
 from tensorflow.keras import backend as K
 import pathlib
 
-class BrainDetectFunction:
+
+
+class BrainTumorMask_RCNN:
     def DefineGlobalPath(self):
         global dataPath
         global inPutImageDir
@@ -41,7 +43,7 @@ class BrainDetectFunction:
         subInput=str()
         subOutput=str()
         IMG_SIZE = (224,224);  
-        IMAGE_SIZE_FOR_BUILDMODEL=180                
+        IMAGE_SIZE_FOR_BUILDMODEL=60           
         subInput="/input/"
         subOutput= "/output/"
                 
@@ -71,6 +73,7 @@ class BrainDetectFunction:
         global augmented_data_path;
         global outPutImageDirYes;
         global outPutImageDirNo; 
+        global Augmentted_All
 
         
         global EXAMPLE_IMAGENAME;
@@ -80,11 +83,25 @@ class BrainDetectFunction:
         augmented_data_path="";
         outPutImageDirYes= outPutImageDir+ "/yes"
         outPutImageDirNo=outPutImageDir+ "/no"
+        outPutImageDir_U_mangNao=outPutImageDir+ "/U_mangNao"
+        outPutImageDir_U_thanKinhDem=outPutImageDir+ "/U_thanKinhDem"
+        outPutImageDir_U_tuyenYen=outPutImageDir+ "/U_tuyenYen"
         
         augmented_data_path= outPutImageDir;
         
+        Augmentted_All=[]
+        
         augmented_yes =augmented_data_path+'/yes'
         augmented_no = augmented_data_path+'/no'
+        augmented_U_mangNao = augmented_data_path+'/U_mangNao'
+        augmented_U_thanKinhDem = augmented_data_path+'/U_thanKinhDem'
+        augmented_U_tuyenYen = augmented_data_path+'/U_tuyenYen'
+        Augmentted_All.append(augmented_yes)
+        Augmentted_All.append(augmented_no)
+        Augmentted_All.append(augmented_U_mangNao)
+        Augmentted_All.append(augmented_U_thanKinhDem)
+        Augmentted_All.append(augmented_U_tuyenYen)
+        
         timerForShowImage=3
         EXAMPLE_IMAGENAME='/yes/Y1.jpg'
         print("outPutImageDir=",outPutImageDir)
@@ -96,7 +113,12 @@ class BrainDetectFunction:
             os.makedirs(outPutImageDirYes)
         if not os.path.isdir(outPutImageDirNo):
             os.makedirs(outPutImageDirNo)
-            
+        if not os.path.isdir(outPutImageDir_U_mangNao):
+            os.makedirs(outPutImageDir_U_mangNao)        
+        if not os.path.isdir(outPutImageDir_U_thanKinhDem):
+            os.makedirs(outPutImageDir_U_thanKinhDem)  
+        if not os.path.isdir(outPutImageDir_U_tuyenYen):
+            os.makedirs(outPutImageDir_U_tuyenYen)        
             
     def augment_data(self,file_dir, n_generated_samples, save_to_dir):
         print("Function augment_data");
@@ -131,30 +153,44 @@ class BrainDetectFunction:
             self.augment_data(file_dir=inPutImageDir+'yes',n_generated_samples=6, save_to_dir=augmented_data_path+'yes')
             # augment data for the examples with label equal to 'no' representing non-tumurous examples
             self.augment_data(file_dir=inPutImageDir+'no', n_generated_samples=9, save_to_dir=augmented_data_path+'no')
+            
+            # augment data for the examples with label equal to 'no' representing non-tumurous examples
+            self.augment_data(file_dir=inPutImageDir+'U_mangNao', n_generated_samples=6, save_to_dir=augmented_data_path+'U_mangNao')
+            # augment data for the examples with label equal to 'no' representing non-tumurous examples
+            self.augment_data(file_dir=inPutImageDir+'U_thanKinhDem', n_generated_samples=6, save_to_dir=augmented_data_path+'U_thanKinhDem')
+            # augment data for the examples with label equal to 'no' representing non-tumurous examples
+            self.augment_data(file_dir=inPutImageDir+'U_tuyenYen', n_generated_samples=6, save_to_dir=augmented_data_path+'U_tuyenYen')            
+            
         else:
-            print("Number of file in load folder= %d",len(dir))   
+            print("Number of file in load folder",len(dir))   
             
     def load_data(self,dir_list):
     
         print("Function load_data");
         # load all images in a directory
-        x = []
-        y = []
+        x_Data = []
+        y_Lable = []
     #     image_width, image_height = image_size
         
         for directory in dir_list:
             for filename in listdir(directory):
                 image = cv2.imread(directory+'/'+filename)
-                x.append(image)
+                x_Data.append(image)
                 # append a value of 1 to the target array if the image
-                # is in the folder named 'yes', otherwise append 0.
+                # is in the folder named 'yes', 
                 if directory[-3:] == 'yes':
-                    y.append([1])
-                else:
-                    y.append([0])
+                    y_Lable.append([1])
+                elif directory[-3:] == 'U_mangNao': # is in the folder named 'U_mangNao'
+                    y_Lable.append([2])
+                elif directory[-3:] == 'U_thanKinhDem':# is in the folder named 'U_thanKinhDem'
+                    y_Lable.append([3])
+                elif directory[-3:] == 'U_tuyenYen':# is in the folder named 'U_tuyenYen'
+                    y_Lable.append([3])
+                else: #otherwise append 0.
+                    y_Lable.append([0])
                     
-        x = np.array(x)
-        y = np.array(y)
+        x = np.array(x_Data)
+        y = np.array(y_Lable)
         
         # Shuffle the data
         x, y = shuffle(x, y)
@@ -199,7 +235,7 @@ class BrainDetectFunction:
         
         global X_train
         global Y_train 
-        X_train, Y_train = self.load_data([augmented_yes, augmented_no])
+        X_train, Y_train = self.load_data(Augmentted_All)
        # self.plot_samples(X_train, Y_train, ['No','Yes'], 20)    
         
     def crop_brain_contour(self,image, plot=False):
@@ -343,6 +379,7 @@ class BrainDetectFunction:
         count=0
         print ("length of image array= ",len(train))   
         for img in train:
+            print("image number",count)
             image = cv2.resize(img, dsize=(IMG_WIDTH, IMG_HEIGHT), interpolation=cv2.INTER_CUBIC)
             # normalize values
             image = image / 255.
@@ -362,8 +399,6 @@ class BrainDetectFunction:
         X = self.Croping_Data(X_train);
         
         print("plot crop image sample");            
-        augmented_yes =augmented_data_path+'yes'
-        augmented_no = augmented_data_path+'no'
         
         #IMG_WIDTH, IMG_HEIGHT = (240, 240)
         X = self.Resize_Data(X)#,IMG_WIDTH,IMG_HEIGHT)
@@ -396,25 +431,57 @@ class BrainDetectFunction:
         y = dict()
         y[0] = []
         y[1] = []
+        y[2] = []
+        y[3] = []
+        y[4] = []
         for set_name in (Y_train_, Y_val_, Y_test_):
             y[0].append(np.sum(set_name == 0))
             y[1].append(np.sum(set_name == 1))
+            y[2].append(np.sum(set_name == 2))
+            y[3].append(np.sum(set_name == 3))
+            y[4].append(np.sum(set_name == 4))
+            
+            
+            
         
         trace0 = go.Bar(
             x=['Train Set', 'Validation Set', 'Test Set'],
             y=y[0],
             name='No',
-            marker=dict(color='#33cc33'),
+            marker=dict(color='#ff0800'),
             opacity=0.7
         )
         trace1 = go.Bar(
             x=['Train Set', 'Validation Set', 'Test Set'],
             y=y[1],
             name='Yes',
-            marker=dict(color='#ff3300'),
+            marker=dict(color='#ddff00'),
             opacity=0.7
         )
-        data = [trace0, trace1]
+        trace2 = go.Bar(
+            x=['Train Set', 'Validation Set', 'Test Set'],
+            y=y[2],
+            name='U_mangNao',
+            marker=dict(color='#00d5ff'),
+            opacity=0.7
+        )
+        trace3 = go.Bar(
+            x=['Train Set', 'Validation Set', 'Test Set'],
+            y=y[3],
+            name='U_thanKinhDem',
+            marker=dict(color='#002aff'),
+            opacity=0.7
+        )        
+        trace4 = go.Bar(
+            x=['Train Set', 'Validation Set', 'Test Set'],
+            y=y[4],
+            name='U_tuyenYen',
+            marker=dict(color='#b300ff'),
+            opacity=0.7
+        )         
+        
+        
+        data = [trace0, trace1, trace2, trace3, trace4]
         layout = go.Layout(
             title='Count of classes in each set',
             xaxis={'title': 'Set'},
@@ -456,14 +523,14 @@ class BrainDetectFunction:
         model =self.build_model(IMG_SHAPE)
         model.summary()
         model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-        print("Xtrain1=", X_train_, "YTrain1=", Y_train_,"X_Val=", X_val_, "Y_Val=",Y_val_)
+        print("Xtrain_=", X_train_, "YTrain_=", Y_train_,"X_Val_=", X_val_, "Y_Val_=",Y_val_)
         #checkpoint_path = "data/output/cp.ckpt"
         #checkpoint_dir = os.path.dirname(checkpoint_path)    
         # Create a callback that saves the model's weights
         #cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path, save_weights_only=True, verbose=1)        
         #training data in here out put with the model
         #model.save_weights(checkpoint_path.format(epoch=0))
-        #model.compile(optimizer='adam', loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True), metrics=['accuracy'])                
+        #model.compile(optimizer='adam', loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True), metrics=['accuracy'])        
         model.fit(x=X_train_, y=Y_train_, batch_size=12, epochs=22,validation_data=(X_val_, Y_val_))#steps_per_epoch=100, validation_steps=10)
         
         test_loss, test_acc = model.evaluate(X_test_, Y_test_, verbose=2)   
@@ -540,26 +607,38 @@ class BrainDetectFunction:
         
     def DetectObjectAndShowResultFunction(self): #view result accurary
         print("Function DetectObjectAndShowResultFunction");
+        label_yes='yes'
+        label_no='no'
+        label_U_mangNao='U_mangNao'
+        label_U_thanKinhDem='U_thanKinhDem'
+        label_U_tuyenYen='U_tuyenYen'
+        label_All=[]
+        label_All.append(label_no)
+        label_All.append(label_yes)
+        label_All.append(label_U_mangNao)
+        label_All.append(label_U_thanKinhDem)
+        label_All.append(label_U_tuyenYen)
+        
         labels = ['yes','no']
         # validate on val set 
         predictions = model.predict(X_val_)
-        predictions = [1 if x> 0.5 else 0 for x in predictions]
+        #predictions = [1 if x> 0.5 else 0 for x in predictions]
         
         accuracy = accuracy_score(Y_val_, predictions)
         print('Val Accuracy  = %.2f' % accuracy)
         
         confusion_mtx = confusion_matrix(Y_val_, predictions) 
-        cm = self.plot_confusion_matrix(confusion_mtx, classes = labels, normalize=False, title='Confusion matrix With Validation Data')
+        cm = self.plot_confusion_matrix(confusion_mtx, classes = label_All, normalize=False, title='Confusion matrix With Validation Data')
         
         # validate on val set
         predictions = model.predict(X_test_)
-        predictions = [1 if x>0.5 else 0 for x in predictions]
+        #predictions = [1 if x>0.5 else 0 for x in predictions]
     
         accuracy = accuracy_score(Y_test_, predictions)
         print('Val Accuracy = %.2f' % accuracy)
     
         confusion_mtx = confusion_matrix(Y_test_, predictions) 
-        cm = self.plot_confusion_matrix(confusion_mtx, classes = labels, normalize=False, title='Confusion matrix With Test Data')
+        cm = self.plot_confusion_matrix(confusion_mtx, classes = label_All, normalize=False, title='Confusion matrix With Test Data')
         
         plt.figure(3)        
         for i in range(20):
@@ -600,22 +679,26 @@ class BrainDetectFunction:
         y = []        
         y_0=0
         y_1=1
+        y_2=2        
+        y_3=3
+        y_4=4
+        
         y.append(y_0)
         y.append(y_1)    
-        y.append(y_0) 
-        y.append(y_1) 
-        y.append(y_0)
-        y.append(y_1)    
-        y.append(y_0) 
-        y.append(y_1) 
-        y.append(y_0)
-        y.append(y_1)    
-        y.append(y_0) 
-        y.append(y_1) 
-        y.append(y_0)
-        y.append(y_1)    
-        y.append(y_0) 
-        y.append(y_1) 
+        y.append(y_2) 
+        y.append(y_3) 
+        y.append(y_4)
+        #y.append(y_1)    
+        #y.append(y_0) 
+        #y.append(y_1) 
+        #y.append(y_0)
+        #y.append(y_1)    
+        #y.append(y_0) 
+        #y.append(y_1) 
+        #y.append(y_0)
+        #y.append(y_1)    
+        #y.append(y_0) 
+        #y.append(y_1) 
         
         imageForDetect= self.ImageProccessFuntionc(imagePath);              
         
@@ -624,17 +707,17 @@ class BrainDetectFunction:
         x.append(imageForDetect)
         x.append(imageForDetect) 
         x.append(imageForDetect)
-        x.append(imageForDetect) 
-        x.append(imageForDetect)
-        x.append(imageForDetect) 
-        x.append(imageForDetect)
-        x.append(imageForDetect) 
-        x.append(imageForDetect)
-        x.append(imageForDetect) 
-        x.append(imageForDetect)
-        x.append(imageForDetect) 
-        x.append(imageForDetect)
-        x.append(imageForDetect) 
+        #x.append(imageForDetect) 
+        #x.append(imageForDetect)
+        #x.append(imageForDetect) 
+        #x.append(imageForDetect)
+        #x.append(imageForDetect) 
+        #x.append(imageForDetect)
+        #x.append(imageForDetect) 
+        #x.append(imageForDetect)
+        #x.append(imageForDetect) 
+        #x.append(imageForDetect)
+        #x.append(imageForDetect) 
         
         x = self.Croping_Data(x)                  
         imageForDetectArray2 = self.Resize_Data(x)
@@ -659,12 +742,12 @@ class BrainDetectFunction:
         y = np.array(y)
         imageForDetectArray2, y = shuffle(imageForDetectArray2, y)
    
-        X_train_, Y_train_, X_val_, Y_val_, X_test_, Y_test_ = self.split_data(imageForDetectArray2, y, test_size=0.5)#,train_size=0.7)
+        X_train_, Y_train_, X_val_, Y_val_, X_test_, Y_test_ = self.split_data(imageForDetectArray2, y, test_size=0.3)#,train_size=0.7)
         print("X_train_=", X_train_)        
         print("X_text_=", X_test_ )
         print("X_val_=", X_val_ )
         
-        predictions = new_model.predict(X_test_)  
+        predictions = new_model.predict(X_train_)  
         for i in range(len(predictions)):
             print("predictions[",i,"]=",predictions[i])
         if predictions[0]>0.5:
@@ -684,4 +767,3 @@ class BrainDetectFunction:
         print("BrainDetectFunction class init")
         self.DefineGlobalPath()
         #self.InitialModelTrained()
-        
