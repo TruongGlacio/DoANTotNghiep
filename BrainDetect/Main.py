@@ -29,17 +29,18 @@ class Main:
         global mMainScreen
         global mBrainDetectFunction     
         global mFileManager
+        global mBraTS2018
         
         mMainScreen = MainScreen()
         mFileManager=FileManager()
-        
+        mBraTS2018=BraTS2018()
         mMainScreen.show()			
         mMainScreen.ui.label_NotifyStatus.setText( "While training data, please wait until finished")  
-        mBrainDetectFunction=BrainTumorMask_RCNN()
+        mBrainDetectFunction=BrainDetectFunction()
         mMainScreen.ui.label_NotifyStatus.setText("The training process has been completed, choose a photo to segmentation")        
         mMainScreen.ui.pushButton_OpenFileBroswer.clicked.connect(self.FileBroswer)          
         mMainScreen.ui.pushButton_segmentation.clicked.connect(self.DetectObject)      #  
-        mMainScreen.ui.pushButton_trainingData.clicked.connect(self.TrainingData)      #  
+        mMainScreen.ui.pushButton_trainingData.clicked.connect(self.TrainingDataMode)      #  
         mMainScreen.ui.radioButtonDetectedMode.clicked.connect(self.SetDetectMode)
         mMainScreen.ui.radioButton_trainingMode.clicked.connect(self.SetModeTraining)
         mMainScreen.ui.radioButtonDetectedMode.setChecked(True)        
@@ -58,8 +59,11 @@ class Main:
             mBrainDetectFunction.SetDataPath(filename)                    
         else:
             print("selectMode = mDetectMode") 
-            
-            filename = filedialog.askopenfilename(parent=root, initialdir=currdir, title='Please select a directory')
+            if  mMainScreen.ui.checkBox_BratsData.isChecked():
+                filename = filedialog.askdirectory(parent=root, initialdir=currdir, title='Please select a directory')
+                mBraTS2018.SetImagePathForDetectoneObject(filename)
+            else:    
+                filename = filedialog.askopenfilename(parent=root, initialdir=currdir, title='Please select a directory')
            
         mMainScreen.ui.lineEdit_FolderPath.setText(filename) 
         
@@ -74,6 +78,8 @@ class Main:
         mMainScreen.ui.pushButton_trainingData.setText("Training Data")             
         mMainScreen.ui.radioButtonDetectedMode.setChecked(False)
         mMainScreen.ui.radioButton_trainingMode.setChecked(True)
+        mMainScreen.ui.checkBox_BratsData.setChecked(False)
+        mMainScreen.ui.checkBox_BratsData.setCheckable(False)
         
     def SetDetectMode(self):
         print("SetDetectMode Funtion class Main")
@@ -81,20 +87,24 @@ class Main:
         print("selectMode =",selectMode)                        
         mMainScreen.ui.radioButtonDetectedMode.setChecked(True)
         mMainScreen.ui.radioButton_trainingMode.setChecked(False)        
-        
+        mMainScreen.ui.checkBox_BratsData.setCheckable(True)        
         
     def DetectObject(self):
         print("DetectObject Funtion class Main")
-        print("selectMode =",selectMode)                
+        print("selectMode =",selectMode)    
+        mMainScreen.ui.label_NotifyStatus.setText( "Detect Object mode")          
         if mMainScreen.ui.radioButtonDetectedMode.isChecked():
-            print("selectMode is DetectMode")  
-            filename= mMainScreen.ui.lineEdit_FolderPath.text()  
-            if filename:
-                statusPath=mBrainDetectFunction.DetectSpecialImage(filename)    
-                if not statusPath:
-                    mMainScreen.ui.label_NotifyStatus.setText("Model file exit, please insert them to folder data/output/, with name BrainDetectModel.h5")                            
+            if  mMainScreen.ui.checkBox_BratsData.isChecked():
+                mBraTS2018.BraTS2018Function()
+            else:
+                print("selectMode is DetectMode")  
+                filename= mMainScreen.ui.lineEdit_FolderPath.text()
+                if filename:
+                    statusPath=mBrainDetectFunction.DetectSpecialImage(filename)    
+                    if not statusPath:
+                        mMainScreen.ui.label_NotifyStatus.setText("Model file exit, please insert them to folder data/output/, with name BrainDetectModel.h5")                            
                 
-    def TrainingData(seft): 
+    def TrainingDataMode(seft): 
         print("DetectObject Funtion class Main")
         print("selectMode =",selectMode)                
         if mMainScreen.ui.radioButton_trainingMode.isChecked():

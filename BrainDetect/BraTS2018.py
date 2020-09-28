@@ -31,8 +31,8 @@ from skimage.data import image_fetcher
 
 class BraTS2018:
 
-    def Function1(self):
-        print("Function1");
+    def IntinialDefine(self):
+        print("Function IntinialDefine")
         
         #K.set_image_dim_ordering("th")
         K.set_image_data_format('channels_first')        
@@ -49,11 +49,11 @@ class BraTS2018:
         global WEIGHTS_ET_BEST_FILE_PATH  
         
         
-        BRAT2019_DATA_PATH_HGG = "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\MICCAI_BraTS2020_TrainingData\\"#HGG\\"  
+        BRAT2019_DATA_PATH_HGG = "projectClone\\MICCAI_BraTS2020_TrainingData\\"#HGG\\"  
         
-        WEIGHTS_FULL_BEST_FILE_PATH= "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-full-best.h5"    
-        WEIGHTS_CORE_BEST_FILE_PATH= "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-core-best.h5"     
-        WEIGHTS_ET_BEST_FILE_PATH= "D:\\Projects\\GitProjects\\DoAnTotNghiep\\DoANTotNghiep\\BrainDetect\\projectClone\\weights\\weights-ET-best.h5"        
+        WEIGHTS_FULL_BEST_FILE_PATH= "BraTSDataModel\weighsts\\weights-full-best.h5"    
+        WEIGHTS_CORE_BEST_FILE_PATH= "BraTSDataModel\weighsts\\weights-core-best.h5"     
+        WEIGHTS_ET_BEST_FILE_PATH= "BraTSDataModel\weighsts\\weights-ET-best.h5"        
         imageIndex=3
         img_size = 240      #original img size is 240*240
         smooth = 0.005 
@@ -72,8 +72,9 @@ class BraTS2018:
         4: enhancing tumor
         5: full tumor
         '''
-    def GetImagePathForDetectObject(self, imagePath):
-        BRAT2019_DATA_PATH_HGG=imagePath
+    def SetImagePathForDetectoneObject(self, imagePath):
+        if imagePath:
+            BRAT2019_DATA_PATH_HGG=imagePath
     # function to read all data (training and label) and transform into numpy array    
     def create_data(self,src, mask, label=False):
         
@@ -130,17 +131,13 @@ class BraTS2018:
         r.shuffle(files)    # shuffle patients
         k = count #len(files) - count -1
         imgs = []
-        if k<=0 or k>=len(files)-1:
+        if len(files)<=0:
+            print("Image file not exit") 
             return
-        file = files[k]
+        file = files[0]#[]
         print('Processing---', mask,'--',file)
-        
-        #file = unicode(file)#file.encode('utf-8')   
-        
-       # path = image_fetcher.fetch(file)
-        #img = io.imread(file)        
+    
         img = io.imread(file, plugin='simpleitk')
-        #img = trans.resize(img, resize, mode='constant')
         if label:
             if label_num == 5:
                 img[img != 0] = 1       #Region 1 => 1+2+3+4 complete tumor
@@ -167,8 +164,8 @@ class BraTS2018:
         return np.array(imgs)
     
     #read one subject to show slices    
-    def Function2(self):
-        print("Function2"); 
+    def LoadOne_SubJectDataFromFolder(self):
+        print("Function LoadOne_SubJectDataFromFolder"); 
         global Flair
         global T1
         global T2
@@ -177,68 +174,26 @@ class BraTS2018:
         global Label_core
         global Label_ET
         global Label_all
-        
-        count = imageIndex
-        pul_seq = 'flair'
-        Flair = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*{}.nii.gz'.format(pul_seq), count, label=False)
-        pul_seq = 't1ce'
-        T1c = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*{}.nii.gz'.format(pul_seq), count, label=False)
-        pul_seq = 't1'
-        T1 = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*{}.nii.gz'.format(pul_seq), count, label=False)
-        pul_seq = 't2'
-        T2 = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*{}.nii.gz'.format(pul_seq), count, label=False)
-        label_num = 5
-        Label_full = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*seg.nii.gz', count, label=True)
-        label_num = 2
-        Label_core = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*seg.nii.gz', count, label=True)
-        label_num = 4
-        Label_ET = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*seg.nii.gz', count, label=True)
-        label_num = 3
-        Label_all = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*seg.nii.gz', count, label=True)  
-        
-        #plt.figure(figsize=(15,10))
-        
-        #plt.subplot(241)
-        #plt.title('T1')
-        #plt.axis('off')
-        #plt.imshow(T1[90, 0, :, :],cmap='gray')
-        
-        #plt.subplot(242)
-        #plt.title('T2')
-        #plt.axis('off')
-        #plt.imshow(T2[90, 0, :, :],cmap='gray')
+        if BRAT2019_DATA_PATH_HGG:
+            count = imageIndex
+            pul_seq = 'flair'
+            Flair = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*{}.nii.gz'.format(pul_seq), count, label=False)
+            pul_seq = 't1ce'
+            T1c = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*{}.nii.gz'.format(pul_seq), count, label=False)
+            pul_seq = 't1'
+            T1 = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*{}.nii.gz'.format(pul_seq), count, label=False)
+            pul_seq = 't2'
+            T2 = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*{}.nii.gz'.format(pul_seq), count, label=False)
             
-        #plt.subplot(243)
-        #plt.title('Flair')
-        #plt.axis('off')
-        #plt.imshow(Flair[90, 0, :, :],cmap='gray')
-        
-        #plt.subplot(244)
-        #plt.title('T1c')
-        #plt.axis('off')
-        #plt.imshow(T1c[90, 0, :, :],cmap='gray')
-        
-        #plt.subplot(245)
-        #plt.title('Ground Truth(Full)')
-        #plt.axis('off')
-        #plt.imshow(Label_full[90, 0, :, :],cmap='gray')
-        
-        #plt.subplot(246)
-        #plt.title('Ground Truth(Core)')
-        #plt.axis('off')
-        #plt.imshow(Label_core[90, 0, :, :],cmap='gray')
-        
-        #plt.subplot(247)
-        #plt.title('Ground Truth(ET)')
-        #plt.axis('off')
-        #plt.imshow(Label_ET[90, 0, :, :],cmap='gray')
-        
-        #plt.subplot(248)
-        #plt.title('Ground Truth(All)')
-        #plt.axis('off')
-        #plt.imshow(Label_all[90, 0, :, :],cmap='gray')
-        
-        #plt.show()
+            label_num = 5
+            Label_full = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*seg.nii.gz', count, label=True)
+            label_num = 2
+            Label_core = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*seg.nii.gz', count, label=True)
+            label_num = 4
+            Label_ET = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*seg.nii.gz', count, label=True)
+            label_num = 3
+            Label_all = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*seg.nii.gz', count, label=True)              
+
     def dice_coef(self,y_true, y_pred):
         print("Function dice_coef");         
         y_true_f = K.flatten(y_true)
@@ -317,11 +272,10 @@ class BraTS2018:
        
         return model   
     
-    def Function3(self):
+    def GetDataFullFromModel(self,weights_FULL_BEST_FILE_PATH):
         print("Function3"); 
-        global pred_full        
         model = self.unet_model()
-        model.load_weights(WEIGHTS_FULL_BEST_FILE_PATH)
+        model.load_weights(weights_FULL_BEST_FILE_PATH)
       #  history = model.fit(x, y, batch_size=16, validation_split=0,validation_data = (val_x,val_y) ,epochs = 40,callbacks = callbacks_list ,verbose=1, shuffle=True)
         
         #using Flair and T2 as input for full tumor segmentation
@@ -332,31 +286,9 @@ class BraTS2018:
         #print("x=",x)
         
         pred_full = model.predict(x)
-        #plt.figure(figsize=(15,10))
-        
-        #plt.subplot(141)
-        #plt.title('T2')
-        #plt.axis('off')
-        #plt.imshow(T2[90, 0, :, :],cmap='gray')
-            
-        #plt.subplot(142)
-        #plt.title('Flair')
-        #plt.axis('off')
-        #plt.imshow(Flair[90, 0, :, :],cmap='gray')
-        
-        #plt.subplot(143)
-        #plt.title('Ground Truth(full)')
-        #plt.axis('off')
-        #plt.imshow(Label_full[90, 0, :, :],cmap='gray')
-        
-        #plt.subplot(144)
-        #plt.title('prediction(full)')
-        #plt.axis('off')
-        #plt.imshow(pred_full[0, 0, :, :],cmap='gray')
-        
-        #plt.show()
-    
-    # cropping function
+        print("pred_full=", pred_full)
+        return pred_full
+
     def crop_tumor_tissue(self,x, pred, size):   #   input: x:T1c image , pred:prediction of full tumor ,size default  64x64
         print("Function crop_tumor_tissue");  
         crop_x = []
@@ -438,14 +370,14 @@ class BraTS2018:
             
         return np.array(crop_x) , list_xy   #(y,x)        
    
-    def Function4(self,):
-        print("Function4 ");  
+    def CropTumor(self,Pred_full):
+        print("Function CropTumor ");  
         global crop
         global li
         # cropping prediction part for tumor core and enhancing tumor segmentation
-        crop , li = self.crop_tumor_tissue(T1c[90,:,:,:],pred_full[0,:,:,:],64)
+        crop , li = self.crop_tumor_tissue(T1c[90,:,:,:],Pred_full[0,:,:,:],64)
         crop.shape[0]
-        
+        return crop, li
         # U-net for Tumor core and ET        
     def unet_model_nec3(self,):
         print("Function unet_model_nec3 ");  
@@ -514,18 +446,16 @@ class BraTS2018:
         return model
     
     
-    def Function5(self):
-        print("Function5");  
-
-        global pred_core
-        global pred_ET
+    def GetDataCoreAndETFromModel(self,weights_CORE_BEST_FILE_PATH,weights_ET_BEST_FILE_PATH,Crop):
+        print("Function GetDataFromModel");  
        
         model_core = self.unet_model_nec3()
-        model_core.load_weights(WEIGHTS_CORE_BEST_FILE_PATH)
+        model_core.load_weights(weights_CORE_BEST_FILE_PATH)
         model_ET = self.unet_model_nec3()
-        model_ET.load_weights(WEIGHTS_ET_BEST_FILE_PATH)
-        pred_core = model_core.predict(crop)
-        pred_ET = model_ET.predict(crop)
+        model_ET.load_weights(weights_ET_BEST_FILE_PATH)
+        pred_core = model_core.predict(Crop)
+        pred_ET = model_ET.predict(Crop)
+        return pred_core, pred_ET
     
     def paint_color_algo(self,pred_full, pred_core , pred_ET , li):   #input image is [n,1, y, x]
         print("Function paint_color_algo");  
@@ -551,9 +481,9 @@ class BraTS2018:
     
         return total
     
-    def Function6(self):
-        print("Function6 "); 
-        tmp = self.paint_color_algo(pred_full[0,:,:,:], pred_core, pred_ET, li)
+    def PlotDetectBrainTumor(self,pred_full,pred_core, pred_ET,Li):
+        print("Function PlotDetectBrainTumor "); 
+        tmp = self.paint_color_algo(pred_full[0,:,:,:], pred_core, pred_ET, Li)
         
         core = np.zeros((1,240,240),np.float32)
         ET = np.zeros((1,240,240),np.float32)
@@ -626,11 +556,12 @@ class BraTS2018:
         plt.show()        
     def BraTS2018Function(self):
         print("Function BraTS2018Function "); 
-        self.Function1()
-        self.Function2()
-        self.Function3()
-        self.Function4()
-        self.Function5()
-        self.Function6()
+        self.IntinialDefine()
+        self.LoadOne_SubJectDataFromFolder()
+        pred_full=self.GetDataFullFromModel(WEIGHTS_FULL_BEST_FILE_PATH)
+        crop, li= self.CropTumor(pred_full)
+        pred_core, pred_ET= self.GetDataCoreAndETFromModel(WEIGHTS_CORE_BEST_FILE_PATH,WEIGHTS_ET_BEST_FILE_PATH, crop)
+        self.PlotDetectBrainTumor(pred_full,pred_core, pred_ET,li)
     def __init__(self):
         print("BraTS2018Function class init")
+        self.IntinialDefine()

@@ -34,6 +34,8 @@ class BrainDetectFunction:
         global subInput 
         global subOutput       
         global new_model
+        global NUMBER_OF_LABEL
+        NUMBER_OF_LABEL=2    
         
         dataPath=str()
         inPutImageDir=str()
@@ -436,8 +438,20 @@ class BrainDetectFunction:
         x = MaxPooling2D((4, 4))(x) 
         x = MaxPooling2D((4, 4))(x) 
         x = Flatten()(x) 
-        x = Dense(1, activation='sigmoid')(x) 
+        x = Dense(128, activation='relu')(x) 
+        x = Dense(2)(x) 
+        
         model = Model(inputs = X_input, outputs = x)
+        #model = tf.keras.Sequential([#layers.experimental.preprocessing.Rescaling(1./255),
+                                    #tf.keras.layers.Conv2D(32, 3, activation='relu'),
+                                    #tf.keras.layers.MaxPooling2D(),
+                                    #tf.keras.layers.Conv2D(32, 3, activation='relu'),
+                                    #tf.keras.layers.MaxPooling2D(),
+                                    #tf.keras.layers.Conv2D(32, 3, activation='relu'),
+                                    #tf.keras.layers.MaxPooling2D(),
+                                    #tf.keras.layers.Flatten(),
+                                    #tf.keras.layers.Dense(128, activation='relu'),
+                                    #tf.keras.layers.Dense(2)])             
         
         return model
     
@@ -454,26 +468,20 @@ class BrainDetectFunction:
           
         IMG_SHAPE = (IMG_WIDTH, IMG_HEIGHT, 3)
         model =self.build_model(IMG_SHAPE)
-        model.summary()
         model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
-        print("Xtrain1=", X_train_, "YTrain1=", Y_train_,"X_Val=", X_val_, "Y_Val=",Y_val_)
-        #checkpoint_path = "data/output/cp.ckpt"
-        #checkpoint_dir = os.path.dirname(checkpoint_path)    
-        # Create a callback that saves the model's weights
-        #cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path, save_weights_only=True, verbose=1)        
-        #training data in here out put with the model
-        #model.save_weights(checkpoint_path.format(epoch=0))
-        #model.compile(optimizer='adam', loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True), metrics=['accuracy'])                
+        print("Xtrain1=", X_train_, "YTrain1=", Y_train_,"X_Val=", X_val_, "Y_Val=",Y_val_)   
+        
         model.fit(x=X_train_, y=Y_train_, batch_size=12, epochs=22,validation_data=(X_val_, Y_val_))#steps_per_epoch=100, validation_steps=10)
+        model.summary()        
         
         test_loss, test_acc = model.evaluate(X_test_, Y_test_, verbose=2)   
         print("test_acc=", test_acc)
-        
+        probability_model = tf.keras.Sequential([model, tf.keras.layers.Softmax()])        
         if not outPutImageDir:
             modelPath="data/output/BrainDetectModel.h5"
         else:
             modelPath= outPutImageDir+ '/BrainDetectModel.h5'
-        model.save(modelPath) 
+        probability_model.save(modelPath) 
         
         history = model.history.history
         self.plot_accuracy_metrics(history)
@@ -543,6 +551,8 @@ class BrainDetectFunction:
         labels = ['yes','no']
         # validate on val set 
         predictions = model.predict(X_val_)
+        print("predictions=",predictions)
+        
         predictions = [1 if x> 0.5 else 0 for x in predictions]
         
         accuracy = accuracy_score(Y_val_, predictions)
@@ -553,6 +563,7 @@ class BrainDetectFunction:
         
         # validate on val set
         predictions = model.predict(X_test_)
+        print("predictions=",predictions)
         predictions = [1 if x>0.5 else 0 for x in predictions]
     
         accuracy = accuracy_score(Y_test_, predictions)
@@ -604,18 +615,18 @@ class BrainDetectFunction:
         y.append(y_1)    
         y.append(y_0) 
         y.append(y_1) 
-        y.append(y_0)
-        y.append(y_1)    
-        y.append(y_0) 
-        y.append(y_1) 
-        y.append(y_0)
-        y.append(y_1)    
-        y.append(y_0) 
-        y.append(y_1) 
-        y.append(y_0)
-        y.append(y_1)    
-        y.append(y_0) 
-        y.append(y_1) 
+        #y.append(y_0)
+        #y.append(y_1)    
+        #y.append(y_0) 
+        #y.append(y_1) 
+        #y.append(y_0)
+        #y.append(y_1)    
+        #y.append(y_0) 
+        #y.append(y_1) 
+        #y.append(y_0)
+        #y.append(y_1)    
+        #y.append(y_0) 
+        #y.append(y_1) 
         
         imageForDetect= self.ImageProccessFuntionc(imagePath);              
         
@@ -623,18 +634,18 @@ class BrainDetectFunction:
         x.append(imageForDetect) 
         x.append(imageForDetect)
         x.append(imageForDetect) 
-        x.append(imageForDetect)
-        x.append(imageForDetect) 
-        x.append(imageForDetect)
-        x.append(imageForDetect) 
-        x.append(imageForDetect)
-        x.append(imageForDetect) 
-        x.append(imageForDetect)
-        x.append(imageForDetect) 
-        x.append(imageForDetect)
-        x.append(imageForDetect) 
-        x.append(imageForDetect)
-        x.append(imageForDetect) 
+        #x.append(imageForDetect)
+        #x.append(imageForDetect) 
+        #x.append(imageForDetect)
+        #x.append(imageForDetect) 
+        #x.append(imageForDetect)
+        #x.append(imageForDetect) 
+        #x.append(imageForDetect)
+        #x.append(imageForDetect) 
+        #x.append(imageForDetect)
+        #x.append(imageForDetect) 
+        #x.append(imageForDetect)
+        #x.append(imageForDetect) 
         
         x = self.Croping_Data(x)                  
         imageForDetectArray2 = self.Resize_Data(x)
@@ -659,12 +670,12 @@ class BrainDetectFunction:
         y = np.array(y)
         imageForDetectArray2, y = shuffle(imageForDetectArray2, y)
    
-        X_train_, Y_train_, X_val_, Y_val_, X_test_, Y_test_ = self.split_data(imageForDetectArray2, y, test_size=0.5)#,train_size=0.7)
+        X_train_, Y_train_, X_val_, Y_val_, X_test_, Y_test_ = self.split_data(imageForDetectArray2, y, test_size=0.3)#,train_size=0.7)
         print("X_train_=", X_train_)        
         print("X_text_=", X_test_ )
         print("X_val_=", X_val_ )
-        
-        predictions = new_model.predict(X_test_)  
+        test = (np.expand_dims(imageForDetectArray2,0))        
+        predictions = new_model.predict(imageForDetectArray2)  
         for i in range(len(predictions)):
             print("predictions[",i,"]=",predictions[i])
         if predictions[0]>0.5:
