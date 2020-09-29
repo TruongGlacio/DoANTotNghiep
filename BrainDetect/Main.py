@@ -30,20 +30,23 @@ class Main:
         global mBrainDetectFunction     
         global mFileManager
         global mBraTS2018
-        
+        global mBrainTumorMask_RCNN
         mMainScreen = MainScreen()
         mFileManager=FileManager()
         mBraTS2018=BraTS2018()
         mMainScreen.show()			
         mMainScreen.ui.label_NotifyStatus.setText( "While training data, please wait until finished")  
         mBrainDetectFunction=BrainDetectFunction()
+        mBrainTumorMask_RCNN=BrainTumorMask_RCNN()        
         mMainScreen.ui.label_NotifyStatus.setText("The training process has been completed, choose a photo to segmentation")        
         mMainScreen.ui.pushButton_OpenFileBroswer.clicked.connect(self.FileBroswer)          
         mMainScreen.ui.pushButton_segmentation.clicked.connect(self.DetectObject)      #  
-        mMainScreen.ui.pushButton_trainingData.clicked.connect(self.TrainingDataMode)      #  
+        mMainScreen.ui.pushButton_trainingData.clicked.connect(self.TrainingData)      #  
         mMainScreen.ui.radioButtonDetectedMode.clicked.connect(self.SetDetectMode)
         mMainScreen.ui.radioButton_trainingMode.clicked.connect(self.SetModeTraining)
-        mMainScreen.ui.radioButtonDetectedMode.setChecked(True)        
+        mMainScreen.ui.radioButtonDetectedMode.setChecked(True)       
+        mMainScreen.ui.pushButton_trainingData.setEnabled(False)
+        mMainScreen.ui.checkBox_TrainingWithMultiLabel.setCheckable(False)        
         sys.exit(app.exec_())
 
     def FileBroswer(self):
@@ -54,9 +57,14 @@ class Main:
         currdir=os.getcwd()
         root =Tk()        
         if mMainScreen.ui.radioButton_trainingMode.isChecked():
-            print("selectMode = trainingMode") 
-            filename = filedialog.askdirectory(parent=root, initialdir=currdir, title='Please select a directory')
-            mBrainDetectFunction.SetDataPath(filename)                    
+            filename = filedialog.askdirectory(parent=root, initialdir=currdir, title='Please select a directory')            
+            if  mMainScreen.ui.checkBox_TrainingWithMultiLabel.isChecked():  
+                mBrainTumorMask_RCNN.SetInputDataPath(filename)
+                mBrainTumorMask_RCNN.SetOutputPath(filename)
+                
+            else:       
+                print("selectMode = trainingMode") 
+                mBrainDetectFunction.SetDataPath(filename)                    
         else:
             print("selectMode = mDetectMode") 
             if  mMainScreen.ui.checkBox_BratsData.isChecked():
@@ -80,6 +88,9 @@ class Main:
         mMainScreen.ui.radioButton_trainingMode.setChecked(True)
         mMainScreen.ui.checkBox_BratsData.setChecked(False)
         mMainScreen.ui.checkBox_BratsData.setCheckable(False)
+        mMainScreen.ui.checkBox_TrainingWithMultiLabel.setCheckable(True)
+        mMainScreen.ui.pushButton_segmentation.setEnabled(False)        
+        mMainScreen.ui.pushButton_trainingData.setEnabled(True)        
         
     def SetDetectMode(self):
         print("SetDetectMode Funtion class Main")
@@ -87,7 +98,11 @@ class Main:
         print("selectMode =",selectMode)                        
         mMainScreen.ui.radioButtonDetectedMode.setChecked(True)
         mMainScreen.ui.radioButton_trainingMode.setChecked(False)        
-        mMainScreen.ui.checkBox_BratsData.setCheckable(True)        
+        mMainScreen.ui.checkBox_BratsData.setCheckable(True)   
+        mMainScreen.ui.checkBox_TrainingWithMultiLabel.setChecked(False)
+        mMainScreen.ui.checkBox_TrainingWithMultiLabel.setCheckable(False)  
+        mMainScreen.ui.pushButton_segmentation.setEnabled(True)        
+        mMainScreen.ui.pushButton_trainingData.setEnabled(False)
         
     def DetectObject(self):
         print("DetectObject Funtion class Main")
@@ -104,16 +119,21 @@ class Main:
                     if not statusPath:
                         mMainScreen.ui.label_NotifyStatus.setText("Model file exit, please insert them to folder data/output/, with name BrainDetectModel.h5")                            
                 
-    def TrainingDataMode(seft): 
+    def TrainingData(seft): 
         print("DetectObject Funtion class Main")
         print("selectMode =",selectMode)                
         if mMainScreen.ui.radioButton_trainingMode.isChecked():
             print("selectMode is trainingMode")  
             mMainScreen.ui.label_NotifyStatus.setText( "While training data, please wait until finished")  
             mMainScreen.ui.pushButton_trainingData.setText("Started Training")   
-            time.sleep(1) # Delay for 5 seconds.
-            mBrainDetectFunction.BrainDetectFunction()
-            
+            time.sleep(1) # Delay for 5 seconds.            
+            if mMainScreen.ui.checkBox_TrainingWithMultiLabel.isChecked():
+                
+                mBrainTumorMask_RCNN.TrainingDataModel()             
+            else:
+                
+                mBrainDetectFunction.BrainDetectFunction()                
+
             mMainScreen.ui.pushButton_trainingData.setText("Stoped Training")                      
             mMainScreen.ui.label_NotifyStatus.setText("The training process has been completed, choose a photo to segmentation")          
 if __name__ == "__main__":    

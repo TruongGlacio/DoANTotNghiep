@@ -6,6 +6,10 @@ import tensorflow as tf
 import tensorflow_datasets as tfds
 import matplotlib.pyplot as plt
 from tensorflow.keras import layers
+import pathlib
+import glob
+from pathlib import Path
+from skimage.data import image_fetcher
 #train_ds training data
 #val_ds validation data
 
@@ -14,6 +18,10 @@ class BrainTumorMask_RCNN:
         global mInputDir
         global mOutPuDir
         global mLabelClass
+        global subInput
+        global subOutput
+        subInput= '/input'
+        subOutput='/output'
         
     def LoadDataFroFromDir(self, InputDir):
         batch_size = 32
@@ -49,8 +57,12 @@ class BrainTumorMask_RCNN:
             #print(image_batch.shape)
             #print(labels_batch.shape)
             #break        
-        
+        #image_count = len(glob.glob(InputDir+'**\*{}.jpg',recursive=True))                
+        InputDir = pathlib.Path(InputDir)     
+        image_count = len(list(InputDir.glob('*/*.jpg')))        
         list_ds = tf.data.Dataset.list_files(str(InputDir/'*/*'), shuffle=False)
+        print("list_ds=",list_ds, "image_count=",image_count)  
+        
         list_ds = list_ds.shuffle(image_count, reshuffle_each_iteration=False)
         for f in list_ds.take(5):
             print(f.numpy())  
@@ -65,8 +77,8 @@ class BrainTumorMask_RCNN:
         train_ds = list_ds.skip(val_size)
         val_ds = list_ds.take(val_size)    
         
-        print(tf.data.experimental.cardinality(train_ds).numpy())
-        print(tf.data.experimental.cardinality(val_ds).numpy())
+        print("train_ds=",tf.data.experimental.cardinality(train_ds).numpy())
+        print("val_ds=",tf.data.experimental.cardinality(val_ds).numpy())
         
         
         return train_ds,val_ds,class_names,labelNumber
@@ -86,10 +98,10 @@ class BrainTumorMask_RCNN:
         return tf.image.resize(img, [img_height, img_width])    
     
     def process_path(self,file_path):
-        label = get_label(file_path)
+        label = self.get_label(file_path)
         # load the raw data from the file as a string
         img = tf.io.read_file(file_path)
-        img = decode_img(img)
+        img =self.decode_img(img)
         return img, label
     
     def MapData(self, train_ds, val_ds):
@@ -98,12 +110,13 @@ class BrainTumorMask_RCNN:
         
         #train_ds = train_ds.cache().prefetch(buffer_size=AUTOTUNE)
         #val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)        
-        train_ds = train_ds.map(process_path, num_parallel_calls=AUTOTUNE)
-        val_ds = val_ds.map(process_path, num_parallel_calls=AUTOTUNE)   
+        train_ds = train_ds.map(self.process_path, num_parallel_calls=AUTOTUNE)
+        val_ds = val_ds.map(self.process_path, num_parallel_calls=AUTOTUNE)   
         
         for image, label in train_ds.take(1):
             print("Image shape: ", image.numpy().shape)
             print("Label: ", label.numpy())
+        return train_ds,val_ds
     
     def configure_for_performance(self,train_ds):
         train_ds = train_ds.cache()
@@ -161,14 +174,21 @@ class BrainTumorMask_RCNN:
     def TrainingDataModel(self):
         imagePath=mInputDir
         train_ds,val_ds,class_names,labelNumber = self.LoadDataFroFromDir(imagePath)
+        train_ds_AfterMap,val_ds_AfterMap=self.MapData(train_ds,val_ds)
+        
+        train_ds_AfterMap = self.configure_for_performance(train_ds_AfterMap)
+        val_ds_AfterMap = self.configure_for_performance(val_ds_AfterMap)  
+        self.PlotSample(val_ds_AfterMap)
+        
         
     def DetectSpecialImage(self,imagePath):
         return True
     
     def SetInputDataPath(self, InputDir):
-        mInputDir=InputDir
+        global mInputDir
+        mInputDir=InputDir+subInput
     def SetOutputPath(seft, OutputPath):
-        mOutPuDir=OutputPath
+        mOutPuDir=OutputPath+subOutput
         
         
     def __init__(self):
