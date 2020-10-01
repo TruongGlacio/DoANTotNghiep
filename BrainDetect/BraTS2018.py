@@ -14,16 +14,16 @@ import skimage.io as io
 import skimage.color as color
 import random as r
 import math
+from tensorflow.keras import layers
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten
 from tensorflow.keras.layers import concatenate, Conv2D, MaxPooling2D, Conv2DTranspose
-from tensorflow.keras.layers import Input, UpSampling2D,BatchNormalization, concatenate
+from tensorflow.keras.layers import Input, UpSampling2D,BatchNormalization
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 
 from tensorflow.keras import backend as K
-
 
 import glob
 from pathlib import Path
@@ -213,25 +213,25 @@ class BraTS2018:
         batch1 = BatchNormalization(axis=1)(conv1)
         conv1 = Conv2D(64, (3, 3), activation='relu', padding='same') (batch1)
         batch1 = BatchNormalization(axis=1)(conv1)
-        pool1 = MaxPooling2D((2, 2)) (batch1)
+        pool1 = layers.MaxPooling2D((2, 2)) (batch1)
         
         conv2 = Conv2D(128, (3, 3), activation='relu', padding='same') (pool1)
         batch2 = BatchNormalization(axis=1)(conv2)
         conv2 = Conv2D(128, (3, 3), activation='relu', padding='same') (batch2)
         batch2 = BatchNormalization(axis=1)(conv2)
-        pool2 = MaxPooling2D((2, 2)) (batch2)
+        pool2 = layers.MaxPooling2D((2, 2)) (batch2)
         
         conv3 = Conv2D(256, (3, 3), activation='relu', padding='same') (pool2)
         batch3 = BatchNormalization(axis=1)(conv3)
         conv3 = Conv2D(256, (3, 3), activation='relu', padding='same') (batch3)
         batch3 = BatchNormalization(axis=1)(conv3)
-        pool3 = MaxPooling2D((2, 2)) (batch3)
+        pool3 = layers.MaxPooling2D((2, 2)) (batch3)
         
         conv4 = Conv2D(512, (3, 3), activation='relu', padding='same') (pool3)
         batch4 = BatchNormalization(axis=1)(conv4)
         conv4 = Conv2D(512, (3, 3), activation='relu', padding='same') (batch4)
         batch4 = BatchNormalization(axis=1)(conv4)
-        pool4 = MaxPooling2D(pool_size=(2, 2)) (batch4)
+        pool4 = layers.MaxPooling2D(pool_size=(2, 2)) (batch4)
         
         conv5 = Conv2D(1024, (3, 3), activation='relu', padding='same') (pool4)
         batch5 = BatchNormalization(axis=1)(conv5)

@@ -1,6 +1,7 @@
 import numpy as np
 import os
 import PIL
+import cv2
 import PIL.Image
 import tensorflow as tf
 import tensorflow_datasets as tfds
@@ -25,11 +26,15 @@ class BrainTumorMask_RCNN:
         global img_height
         global img_width
         global batch_size
+        global timerForShowImage
+        
         subInput= '/input'
         subOutput='/output'
         img_height=180
         img_width=180
         batch_size=32
+        timerForShowImage=3
+        
         
     def LoadDataFroFromDir(self, InputDir):
         print("Function LoadDataFroFromDir");
@@ -86,12 +91,20 @@ class BrainTumorMask_RCNN:
         val_size = int(image_count * 0.3)
         train_ds = list_ds.skip(val_size)
         val_ds = list_ds.take(val_size)    
-        
+            
         print("train_ds=",tf.data.experimental.cardinality(train_ds).numpy())
         print("val_ds=",tf.data.experimental.cardinality(val_ds).numpy())
         
         
         return train_ds,val_ds,class_names,labelNumber
+    def ConvertLabelStringToInterger(self, class_names):
+        class_names_interger=[]
+        for i in range(len(class_names)):
+            class_names_interger.append(i)
+        
+        class_names_interger= np.array(class_names_interger)
+        print ("class_names_interger",class_names_interger)
+        return class_names_interger
     
     def get_label(self,file_path):
         print("Function get_label");
@@ -101,8 +114,11 @@ class BrainTumorMask_RCNN:
         print("parts=",parts)
         # The second to last is the class-directory
         one_hot = parts[-2] == mclass_names
+        print ("one_hot=",one_hot)
+        print ("mclass_names=",one_hot)
+        
         # Integer encode the label
-        return mclass_names#tf.argmax(one_hot)
+        return class_name_Interger#tf.argmax(one_hot)
     
     def decode_img(self,img):
         print("Function decode_img");
@@ -116,9 +132,11 @@ class BrainTumorMask_RCNN:
         print("Function process_path");
         
         label = self.get_label(file_path)
+        #train_labels = np.argmax(label, axis=1)
         # load the raw data from the file as a string
         img = tf.io.read_file(file_path)
         img =self.decode_img(img)
+        
         return img, label
     
     def MapData(self, train_ds, val_ds):
@@ -127,15 +145,14 @@ class BrainTumorMask_RCNN:
         global AUTOTUNE
         # Set `num_parallel_calls` so multiple images are loaded/processed in parallel.
         AUTOTUNE = tf.data.experimental.AUTOTUNE
-        
-        #train_ds = train_ds.cache().prefetch(buffer_size=AUTOTUNE)
-        #val_ds = val_ds.cache().prefetch(buffer_size=AUTOTUNE)        
+       
         train_ds = train_ds.map(self.process_path, num_parallel_calls=AUTOTUNE)
         val_ds = val_ds.map(self.process_path, num_parallel_calls=AUTOTUNE)   
         
         for image, label in train_ds.take(1):
             print("Image shape: ", image.numpy().shape)
             print("Label: ", label.numpy())
+            
         return train_ds,val_ds
     
     def configure_for_performance(self,train_ds):
@@ -145,7 +162,9 @@ class BrainTumorMask_RCNN:
         train_ds = train_ds.shuffle(buffer_size=1000)
         train_ds = train_ds.batch(batch_size)
         train_ds = train_ds.prefetch(buffer_size=AUTOTUNE)
-        return train_ds        
+        train_ds_=tf.data.experimental.cardinality(train_ds).numpy()
+        
+        return train_ds,train_ds_       
     def PlotSample(self, train_ds,class_names):
         print("Function PlotSample ");
         
@@ -157,29 +176,43 @@ class BrainTumorMask_RCNN:
             plt.imshow(image_batch[i].numpy().astype("uint8"))
             label = label_batch[i]
             print ("mclass_names[label]=",label[0])
-            plt.title(label[0])
+            plt.title(f'{label[0]}')
             plt.axis("off")
-        plt.show()
+        
+        plt.show(block=False)
+        plt.pause(timerForShowImage)
+        plt.close()                                  
+        
     
     
     def ReScaleImage(self,train_ds):
         print("Function ReScaleImage ");
         
-        normalization_layer = tf.keras.layers.experimental.preprocessing.Rescaling(1./255)
-        normalized_ds = train_ds.map(lambda x, y: (normalization_layer(x), y))
-        image_batch, labels_batch = next(iter(normalized_ds))
-        first_image = image_batch[0]
-        # Notice the pixels values are now in `[0,1]`.
-        print(np.min(first_image), np.max(first_image))  
+        print("Function Resize_Data");
+        # load all images in a directory
+        normalized_ds = []
+    
+        IMAGE_SIZE_FOR_BUILDMODEL=180                        
+        IMG_WIDTH, IMG_HEIGHT = (IMAGE_SIZE_FOR_BUILDMODEL, IMAGE_SIZE_FOR_BUILDMODEL)
+        count=0
+        print ("length of image array= ",train_ds)   
+        for img in train_ds:
+            image = cv2.resize(img, dsize=(IMG_WIDTH, IMG_HEIGHT), interpolation=cv2.INTER_CUBIC)
+            # normalize values
+            image = image / 255.
+            # convert image to numpy array and append it to X
+            count=count+1
+            normalized_ds.append(image)    
+        print("convert image to numpy array  ")            
+        normalized_ds = np.array(normalized_ds)#.astype(np.float32); #np.array(x)
+        
         return normalized_ds
 
     def BuildDataModel(self,LabelClass,train_ds,val_ds):
         print("Function BuildDataModel ");
-        
-       
-            
+              
         model = tf.keras.Sequential([
-          tf.keras.layers.experimental.preprocessing.Rescaling(1./255),
+#          tf.keras.layers.experimental.preprocessing.Rescaling(1./255),
           tf.keras.layers.Conv2D(32, 3, activation='relu'),
           tf.keras.layers.MaxPooling2D(),
           tf.keras.layers.Conv2D(32, 3, activation='relu'),
@@ -190,16 +223,15 @@ class BrainTumorMask_RCNN:
           tf.keras.layers.Dense(128, activation='relu'),
           tf.keras.layers.Dense(len(LabelClass))
         ])   
-        physical_devices = tf.config.experimental.list_physical_devices('GPU')
-        if len(physical_devices) > 0:
-            tf.config.experimental.set_memory_growth(physical_devices[0], True)            
-        model.compile( optimizer='adam',loss=tf.losses.SparseCategoricalCrossentropy(from_logits=True), metrics=['accuracy'])  
+        #physical_devices = tf.config.experimental.list_physical_devices('GPU')
+        #if len(physical_devices) > 0:
+         #   tf.config.experimental.set_memory_growth(physical_devices[0], True)            
+        model.compile( optimizer='adam',loss='categorical_crossentropy', metrics=['accuracy'])  
        
+        print("train_ds=",train_ds)
         model.fit(train_ds, validation_data=val_ds, epochs=22)#,steps_per_epoch=10)#batch_size=12, )
-        probability_model = tf.keras.Sequential([model, tf.keras.layers.Softmax()])        
-        probability_model.summary()                
-        
-        
+        #probability_model = tf.keras.Sequential([model, tf.keras.layers.Softmax()])        
+        model.summary()                
 
     def SaveModel(self,model,modelSavePath):
         print("Function SaveModel ");
@@ -210,18 +242,20 @@ class BrainTumorMask_RCNN:
   
     def TrainingDataModel(self):
         print("Function TrainingDataModel ");
-        
-        imagePath=mInputDir
+        global class_name_Interger
         global mclass_names
+        imagePath=mInputDir
+        
         train_ds,val_ds,mclass_names,labelNumber = self.LoadDataFroFromDir(imagePath)
+        
+        class_name_Interger=self.ConvertLabelStringToInterger(mclass_names)
+        print("Function class_names",class_name_Interger);        
         train_ds_AfterMap,val_ds_AfterMap=self.MapData(train_ds,val_ds)
         
-        train_ds_AfterMap = self.configure_for_performance(train_ds_AfterMap)
-        val_ds_AfterMap = self.configure_for_performance(val_ds_AfterMap)  
+        train_ds_AfterMap,train_ds_AfterMap_ = self.configure_for_performance(train_ds_AfterMap)
+        val_ds_AfterMap,val_ds_AfterMap_ = self.configure_for_performance(val_ds_AfterMap)  
         self.PlotSample(val_ds_AfterMap,mclass_names)
         
-        val_ds_AfterMap= self.ReScaleImage(val_ds_AfterMap)
-        val_ds_AfterMap=self.ReScaleImage(val_ds_AfterMap)
         print("len(mclass_names)=",len(mclass_names))
         
         self.BuildDataModel(mclass_names,train_ds_AfterMap,val_ds_AfterMap)

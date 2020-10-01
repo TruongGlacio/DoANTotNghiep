@@ -335,9 +335,7 @@ class BrainDetectFunction:
     def Resize_Data(self,train):
         print("Function Resize_Data");
         # load all images in a directory
-        x = []
-        y = []
-    
+        x = []    
     
         IMG_WIDTH, IMG_HEIGHT = (IMAGE_SIZE_FOR_BUILDMODEL, IMAGE_SIZE_FOR_BUILDMODEL)
         count=0
@@ -433,8 +431,8 @@ class BrainDetectFunction:
         x = BatchNormalization(axis = 3, name = 'bn0')(x)
         x = Activation('relu')(x) 
         
-        x = MaxPooling2D((4, 4))(x) 
-        x = MaxPooling2D((4, 4))(x) 
+        x = MaxPooling2D((2, 2))(x) 
+        x = MaxPooling2D((2, 2))(x) 
         x = Flatten()(x) 
         x = Dense(1, activation='sigmoid')(x) 
         model = Model(inputs = X_input, outputs = x)
@@ -457,14 +455,8 @@ class BrainDetectFunction:
         model.summary()
         model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
         print("Xtrain1=", X_train_, "YTrain1=", Y_train_,"X_Val=", X_val_, "Y_Val=",Y_val_)
-        #checkpoint_path = "data/output/cp.ckpt"
-        #checkpoint_dir = os.path.dirname(checkpoint_path)    
-        # Create a callback that saves the model's weights
-        #cp_callback = tf.keras.callbacks.ModelCheckpoint(filepath=checkpoint_path, save_weights_only=True, verbose=1)        
-        #training data in here out put with the model
-        #model.save_weights(checkpoint_path.format(epoch=0))
-        #model.compile(optimizer='adam', loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True), metrics=['accuracy'])                
-        model.fit(x=X_train_, y=Y_train_, batch_size=12, epochs=32,validation_data=(X_val_, Y_val_))#steps_per_epoch=100, validation_steps=10)
+               
+        model.fit(x=X_train_, y=Y_train_, batch_size=12, epochs=52,validation_data=(X_val_, Y_val_))#steps_per_epoch=100, validation_steps=10)
         
         test_loss, test_acc = model.evaluate(X_test_, Y_test_, verbose=2)   
         print("test_acc=", test_acc)
@@ -503,7 +495,7 @@ class BrainDetectFunction:
         print("train_acc_max=",max(train_acc))
         
         plt.plot(val_acc, label='Validation Accuracy')
-        print("train_acc_max=",max(val_acc))
+        print("val_acc_max=",max(val_acc))
         
         plt.title(f'Accuracy={max(val_acc)}')
         plt.legend()
