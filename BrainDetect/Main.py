@@ -1,6 +1,6 @@
-from BrainDetectFunction import BrainDetectFunction
 from BrainTumor_Mask_R_CNN import BrainTumorMask_RCNN
-from BraTS2018 import BraTS2018 
+#from BraTS2018 import BraTS2018 
+from BrainDetectFunction import BrainDetectFunction
 from mainwindow import MainScreen
 import sys 
 from PyQt5.QtWidgets import *
@@ -10,6 +10,7 @@ from tkinter import *
 from tkinter import filedialog
 import time
 import os
+
 class Main:
 
     def Initial(self):
@@ -28,7 +29,7 @@ class Main:
         global mMainScreen
         global mBrainDetectFunction     
         global mFileManager
-        global mBraTS2018
+        #global mBraTS2018
         global mBrainTumorMask_RCNN
         mMainScreen = MainScreen()
         mFileManager=FileManager()

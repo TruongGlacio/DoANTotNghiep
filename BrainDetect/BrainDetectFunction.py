@@ -14,7 +14,8 @@ import imutils
 import itertools
 from sklearn.metrics import accuracy_score, confusion_matrix
 from tensorflow.keras.models import Model,load_model
-from tensorflow.keras.layers import Conv2D,Input,ZeroPadding2D,BatchNormalization,Flatten,Activation,Dense,MaxPooling2D
+from tensorflow.keras.layers import Conv2D,Input,ZeroPadding2D,BatchNormalization,Flatten,Activation,Dense
+from tensorflow.keras.layers import MaxPooling2D #as mMaxPooling2D1
 from sklearn.model_selection import train_test_split
 from sklearn.utils import shuffle #shuffling the data improves the model
 from IPython.display import display
@@ -431,8 +432,8 @@ class BrainDetectFunction:
         x = BatchNormalization(axis = 3, name = 'bn0')(x)
         x = Activation('relu')(x) 
         
-        x = MaxPooling2D((2, 2))(x) 
-        x = MaxPooling2D((2, 2))(x) 
+        x = MaxPooling2D((4, 4))(x) 
+        x = MaxPooling2D((4, 4))(x) 
         x = Flatten()(x) 
         x = Dense(1, activation='sigmoid')(x) 
         model = Model(inputs = X_input, outputs = x)
@@ -441,7 +442,7 @@ class BrainDetectFunction:
     
     def BuildTrainingModelFunction(self):
         print("Function Function6");
-        
+        tf.keras.backend.clear_session()        
         global history
         global model
         physical_devices = tf.config.experimental.list_physical_devices('GPU')

@@ -36,14 +36,16 @@ class BrainTumorMask_RCNN:
         timerForShowImage=3
         
         
-    def LoadDataFroFromDir(self, InputDir):
+    def LoadDataFroFromDir(self, inputDir):
         print("Function LoadDataFroFromDir");
-        
+        global OutputDir
         batch_size = 32
         img_height = 180
         img_width = 180
         labelNumber=0
         validation_split=0.3
+        #InputDir=InputDir+ subInput
+        OutputDir=inputDir+ subOutput
         #train_ds = tf.keras.preprocessing.image_dataset_from_directory( InputDir,
                                                                         #validation_split=0.3,
                                                                         #subset="training",
@@ -73,7 +75,7 @@ class BrainTumorMask_RCNN:
             #print(labels_batch.shape)
             #break        
         #image_count = len(glob.glob(InputDir+'**\*{}.jpg',recursive=True))                
-        InputDir = pathlib.Path(InputDir)     
+        InputDir = pathlib.Path(inputDir)     
         image_count = len(list(InputDir.glob('*/*.jpg')))        
         list_ds = tf.data.Dataset.list_files(str(InputDir/'*/*'), shuffle=False)
         print("list_ds=",list_ds, "image_count=",image_count)  
@@ -118,7 +120,7 @@ class BrainTumorMask_RCNN:
         print ("mclass_names=",one_hot)
         
         # Integer encode the label
-        return class_name_Interger#tf.argmax(one_hot)
+        return tf.argmax(class_name_Interger)
     
     def decode_img(self,img):
         print("Function decode_img");
@@ -175,8 +177,8 @@ class BrainTumorMask_RCNN:
             ax = plt.subplot(3, 3, i + 1)
             plt.imshow(image_batch[i].numpy().astype("uint8"))
             label = label_batch[i]
-            print ("mclass_names[label]=",label[0])
-            plt.title(f'{label[0]}')
+            print ("mclass_names[label]=",class_names[label])
+            plt.title(f'{class_names[label]}')
             plt.axis("off")
         
         plt.show(block=False)
@@ -226,26 +228,26 @@ class BrainTumorMask_RCNN:
         #physical_devices = tf.config.experimental.list_physical_devices('GPU')
         #if len(physical_devices) > 0:
          #   tf.config.experimental.set_memory_growth(physical_devices[0], True)            
-        model.compile( optimizer='adam',loss='categorical_crossentropy', metrics=['accuracy'])  
+        model.compile( optimizer='adam',loss='binary_crossentropy', metrics=['accuracy'])  #categorical_crossentropy
        
         print("train_ds=",train_ds)
-        model.fit(train_ds, validation_data=val_ds, epochs=22)#,steps_per_epoch=10)#batch_size=12, )
+        model.fit(x =train_ds, validation_data=val_ds, batch_size=None,epochs=22)#batch_size=12, )
         #probability_model = tf.keras.Sequential([model, tf.keras.layers.Softmax()])        
-        model.summary()                
+        #probability_model.summary()   
+        return model
 
     def SaveModel(self,model,modelSavePath):
         print("Function SaveModel ");
         
-        model.save(modelSavePath) 
-        
-        
+        modelSavePath=modelSavePath+'/MultiBrainDetectModel.h5'
+        print('modelSavePath',modelSavePath)
+        model.save(modelSavePath)    
   
     def TrainingDataModel(self):
         print("Function TrainingDataModel ");
         global class_name_Interger
         global mclass_names
         imagePath=mInputDir
-        
         train_ds,val_ds,mclass_names,labelNumber = self.LoadDataFroFromDir(imagePath)
         
         class_name_Interger=self.ConvertLabelStringToInterger(mclass_names)
@@ -258,10 +260,19 @@ class BrainTumorMask_RCNN:
         
         print("len(mclass_names)=",len(mclass_names))
         
-        self.BuildDataModel(mclass_names,train_ds_AfterMap,val_ds_AfterMap)
+        model= self.BuildDataModel(mclass_names,train_ds_AfterMap,val_ds_AfterMap)
+        self.SaveModel(model,mOutPuDir)
         
         
     def DetectSpecialImage(self,imagePath):
+        global modelPath
+        if not mOutPuDir:
+            modelPath="data/output/MultiBrainDetectModel.h5"
+        else:
+            modelPath=mOutPuDir+'/MultiBrainDetectModel.h5'       
+        new_model = tf.keras.models.load_model(modelPath)
+        # Show the model architecture
+        new_model.summary()             
         print("Function DetectSpecialImage ");
         
         return True
@@ -271,7 +282,10 @@ class BrainTumorMask_RCNN:
         
         global mInputDir
         mInputDir=InputDir+subInput
+        self.SetOutputPath(InputDir)
+        
     def SetOutputPath(seft, OutputPath):
+        global mOutPuDir
         mOutPuDir=OutputPath+subOutput
         
         

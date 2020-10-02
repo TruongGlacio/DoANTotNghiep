@@ -16,9 +16,11 @@ import random as r
 import math
 from tensorflow.keras import layers
 from tensorflow.keras.models import Model
-from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten
-from tensorflow.keras.layers import concatenate, Conv2D, MaxPooling2D, Conv2DTranspose
-from tensorflow.keras.layers import Input, UpSampling2D,BatchNormalization
+from tensorflow.keras.layers import Dropout
+from tensorflow.keras.layers import Conv2D,Input,ZeroPadding2D,BatchNormalization,Flatten,Activation,Dense,Dropout
+from tensorflow.keras.layers import MaxPooling2D as mMaxPooling2D
+from tensorflow.keras.layers import concatenate, Conv2DTranspose
+from tensorflow.keras.layers import Input, UpSampling2D
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
@@ -213,25 +215,25 @@ class BraTS2018:
         batch1 = BatchNormalization(axis=1)(conv1)
         conv1 = Conv2D(64, (3, 3), activation='relu', padding='same') (batch1)
         batch1 = BatchNormalization(axis=1)(conv1)
-        pool1 = layers.MaxPooling2D((2, 2)) (batch1)
+        pool1 = mMaxPooling2D((2, 2)) (batch1)
         
         conv2 = Conv2D(128, (3, 3), activation='relu', padding='same') (pool1)
         batch2 = BatchNormalization(axis=1)(conv2)
         conv2 = Conv2D(128, (3, 3), activation='relu', padding='same') (batch2)
         batch2 = BatchNormalization(axis=1)(conv2)
-        pool2 = layers.MaxPooling2D((2, 2)) (batch2)
+        pool2 = mMaxPooling2D((2, 2)) (batch2)
         
         conv3 = Conv2D(256, (3, 3), activation='relu', padding='same') (pool2)
         batch3 = BatchNormalization(axis=1)(conv3)
         conv3 = Conv2D(256, (3, 3), activation='relu', padding='same') (batch3)
         batch3 = BatchNormalization(axis=1)(conv3)
-        pool3 = layers.MaxPooling2D((2, 2)) (batch3)
+        pool3 = mMaxPooling2D((2, 2)) (batch3)
         
         conv4 = Conv2D(512, (3, 3), activation='relu', padding='same') (pool3)
         batch4 = BatchNormalization(axis=1)(conv4)
         conv4 = Conv2D(512, (3, 3), activation='relu', padding='same') (batch4)
         batch4 = BatchNormalization(axis=1)(conv4)
-        pool4 = layers.MaxPooling2D(pool_size=(2, 2)) (batch4)
+        pool4 = mMaxPooling2D(pool_size=(2, 2)) (batch4)
         
         conv5 = Conv2D(1024, (3, 3), activation='relu', padding='same') (pool4)
         batch5 = BatchNormalization(axis=1)(conv5)
@@ -284,9 +286,9 @@ class BraTS2018:
         x[:,:1,:,:] = Flair[89:90,:,:,:]   #choosing 90th slice as example
         x[:,1:,:,:] = T2[89:90,:,:,:] 
         #print("x=",x)
-        
-        pred_full = model.predict(x)
-        print("pred_full=", pred_full)
+        with tf.device('/cpu:0'):
+            pred_full = model.predict(x)
+            print("pred_full=", pred_full)
         return pred_full
 
     def crop_tumor_tissue(self,x, pred, size):   #   input: x:T1c image , pred:prediction of full tumor ,size default  64x64
@@ -387,19 +389,19 @@ class BraTS2018:
         batch1 = BatchNormalization(axis=1)(conv1)
         conv1 = Conv2D(64, (3, 3), activation='relu', padding='same') (batch1)
         batch1 = BatchNormalization(axis=1)(conv1)
-        pool1 = MaxPooling2D((2, 2)) (batch1)
+        pool1 = mMaxPooling2D((2, 2)) (batch1)
         
         conv2 = Conv2D(128, (3, 3), activation='relu', padding='same') (pool1)
         batch2 = BatchNormalization(axis=1)(conv2)
         conv2 = Conv2D(128, (3, 3), activation='relu', padding='same') (batch2)
         batch2 = BatchNormalization(axis=1)(conv2)
-        pool2 = MaxPooling2D((2, 2)) (batch2)
+        pool2 = mMaxPooling2D((2, 2)) (batch2)
         
         conv3 = Conv2D(256, (3, 3), activation='relu', padding='same') (pool2)
         batch3 = BatchNormalization(axis=1)(conv3)
         conv3 = Conv2D(256, (3, 3), activation='relu', padding='same') (batch3)
         batch3 = BatchNormalization(axis=1)(conv3)
-        pool3 = MaxPooling2D((2, 2)) (batch3)
+        pool3 = mMaxPooling2D((2, 2)) (batch3)
         
         #conv4 = Conv2D(256, (3, 3), activation='relu', padding='same') (pool3)
         #conv4 = Conv2D(256, (3, 3), activation='relu', padding='same') (conv4)
