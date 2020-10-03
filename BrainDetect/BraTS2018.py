@@ -580,7 +580,7 @@ class BraTS2018:
             print("area {",i,"}=",area)       
             
         if max(areAll) >20:        
-            haveTumor=f'--> Have tumor, Tumor Area={max(areAll)}'
+            haveTumor=f'--> Have tumor, Tumor Area={max(areAll)} pixels'
         else:
             haveTumor="--> Haven't tumor"         
         return Prediction,haveTumor
