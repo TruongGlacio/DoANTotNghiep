@@ -1,13 +1,5 @@
 import tensorflow as tf
 
-#from tensorflow.keras.models import Model
-#from tensorflow.keras.layers import Dense, Dropout, Activation, Flatten
-#from tensorflow.keras.layers import concatenate, Conv2D, MaxPooling2D, Conv2DTranspose
-#from keras.layers import Input, merge, UpSampling2D,BatchNormalization
-#from tensorflow.keras.callbacks import ModelCheckpoint
-#from tensorflow.keras.optimizers import Adam
-#from tensorflow.keras.preprocessing.image import ImageDataGenerator
-
 import numpy as np
 import matplotlib.pyplot as plt
 import skimage.io as io
@@ -48,7 +40,7 @@ class BraTS2018:
         global smooth
         global imageIndex
         #initial folder path and file path for this project
-        global BRAT2019_DATA_PATH_HGG  
+        #global BRAT2019_DATA_PATH_HGG  
         global WEIGHTS_FULL_BEST_FILE_PATH
         global WEIGHTS_CORE_BEST_FILE_PATH
         global WEIGHTS_ET_BEST_FILE_PATH  
@@ -59,6 +51,8 @@ class BraTS2018:
         WEIGHTS_FULL_BEST_FILE_PATH= "BraTSDataModel\weighsts\\weights-full-best.h5"    
         WEIGHTS_CORE_BEST_FILE_PATH= "BraTSDataModel\weighsts\\weights-core-best.h5"     
         WEIGHTS_ET_BEST_FILE_PATH= "BraTSDataModel\weighsts\\weights-ET-best.h5"        
+        print("WEIGHTS_FULL_BEST_FILE_PATH=",WEIGHTS_FULL_BEST_FILE_PATH)
+        
         imageIndex=3
         img_size = 240      #original img size is 240*240
         smooth = 0.005 
@@ -78,8 +72,11 @@ class BraTS2018:
         5: full tumor
         '''
     def SetImagePathForDetectoneObject(self, imagePath):
+        print("imagePath=",imagePath)
         if imagePath:
+            global BRAT2019_DATA_PATH_HGG            
             BRAT2019_DATA_PATH_HGG=imagePath
+            print("BRAT2019_DATA_PATH_HGG_After_changed =",BRAT2019_DATA_PATH_HGG)
     # function to read all data (training and label) and transform into numpy array    
     def create_data(self,src, mask, label=False):
         
@@ -180,6 +177,7 @@ class BraTS2018:
         global Label_ET
         global Label_all
         if BRAT2019_DATA_PATH_HGG:
+            print("BRAT2019_DATA_PATH_HGG=",BRAT2019_DATA_PATH_HGG)
             count = imageIndex
             pul_seq = 'flair'
             Flair = self.create_data_onesubject_val(BRAT2019_DATA_PATH_HGG, '**\*{}.nii.gz'.format(pul_seq), count, label=False)
