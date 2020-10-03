@@ -113,14 +113,14 @@ class BrainTumorMask_RCNN:
         
         # convert the path to a list of path components
         parts = tf.strings.split(file_path, os.path.sep)
-        print("parts=",parts)
+        print("parts=",parts[-2])
         # The second to last is the class-directory
-        one_hot = parts[-2] == mclass_names
+        one_hot = parts[-2] == class_name_Interger
         print ("one_hot=",one_hot)
         print ("mclass_names=",one_hot)
         
         # Integer encode the label
-        return tf.argmax(class_name_Interger)
+        return tf.argmax(class_name_Interger)#class_name_Interger)
     
     def decode_img(self,img):
         print("Function decode_img");

@@ -21,15 +21,18 @@ from tensorflow.keras.layers import Conv2D,Input,ZeroPadding2D,BatchNormalizatio
 from tensorflow.keras.layers import MaxPooling2D as mMaxPooling2D
 from tensorflow.keras.layers import concatenate, Conv2DTranspose
 from tensorflow.keras.layers import Input, UpSampling2D
+from keras.preprocessing.image import array_to_img
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.optimizers import Adam
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
-
+import cv2
+'exec(%matplotlib inline)'
 from tensorflow.keras import backend as K
-
+import scipy.misc
 import glob
 from pathlib import Path
 from skimage.data import image_fetcher
+from PIL import Image
 
 class BraTS2018:
 
@@ -286,7 +289,7 @@ class BraTS2018:
         x[:,:1,:,:] = Flair[89:90,:,:,:]   #choosing 90th slice as example
         x[:,1:,:,:] = T2[89:90,:,:,:] 
         #print("x=",x)
-        with tf.device('/cpu:0'):
+        with tf.device('/gpu:0'):
             pred_full = model.predict(x)
             print("pred_full=", pred_full)
         return pred_full
@@ -535,16 +538,19 @@ class BraTS2018:
         #plt.title('Ground Truth(All)')
         #plt.axis('off')
         #plt.imshow(Label_all[90, 0, :, :],cmap='gray')
-        
+        self.DrawContoursToPrediction(pred_full[0, 0, :, :])
         plt.subplot(245)
         plt.title('Prediction (Full)')
         plt.axis('off')
+        print("pred_full[0, 0, :, :]=",pred_full[0, 0, :, :])
+        
         plt.imshow(pred_full[0, 0, :, :],cmap='gray')
         
         plt.subplot(2,4,6)
         plt.title('Prediction (Core)')
         plt.axis('off')
         plt.imshow(core[0, :, :],cmap='gray')
+        
         plt.subplot(2,4,7)
         plt.title('Prediction (ET)')
         plt.axis('off')
@@ -556,6 +562,26 @@ class BraTS2018:
         plt.imshow(tmp[0, :, :],cmap='gray')
         
         plt.show()        
+    def DrawContoursToPrediction(self,Prediction):
+        imagerank4 = np.expand_dims(Prediction, axis=0)
+        imagerank4 = (imagerank4 * 255).round().astype(np.uint8)
+        gray=np.asarray(imagerank4)        
+        #gray = Image.fromarray(gray, 'RGB')        
+        #gray = cv2.cvtColor(gray, cv2.COLOR_BGR2GRAY)        
+     
+        # threshold the image, then perform a series of erosions +
+        # dilations to remove any small regions of noise
+        #(thresh, im_bw) = cv2.threshold(gray, 45, 255, cv2.THRESH_BINARY)
+
+        
+        # find contours in thresholded image, then grab the largest one
+        im2, contours, hierarchy = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        
+        cv.drawContours(Prediction, contours, -1, (0,255,0), 3)
+        return Prediction
+#        cnts = imutils.grab_contours(cnts)
+        
+        
     def BraTS2018Function(self):
         print("Function BraTS2018Function "); 
         self.IntinialDefine()

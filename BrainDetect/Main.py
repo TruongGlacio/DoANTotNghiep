@@ -1,5 +1,5 @@
 from BrainTumor_Mask_R_CNN import BrainTumorMask_RCNN
-#from BraTS2018 import BraTS2018 
+from BraTS2018 import BraTS2018 
 from BrainDetectFunction import BrainDetectFunction
 from mainwindow import MainScreen
 import sys 
@@ -29,11 +29,11 @@ class Main:
         global mMainScreen
         global mBrainDetectFunction     
         global mFileManager
-        #global mBraTS2018
+        global mBraTS2018
         global mBrainTumorMask_RCNN
         mMainScreen = MainScreen()
         mFileManager=FileManager()
-        #mBraTS2018=BraTS2018()
+        mBraTS2018=BraTS2018()
         mMainScreen.show()			
         mMainScreen.ui.label_NotifyStatus.setText( "While training data, please wait until finished")  
         mBrainDetectFunction=BrainDetectFunction()
@@ -69,7 +69,7 @@ class Main:
             print("selectMode = mDetectMode") 
             if  mMainScreen.ui.checkBox_BratsData.isChecked():
                 filename = filedialog.askdirectory(parent=root, initialdir=currdir, title='Please select a directory')
-                #mBraTS2018.SetImagePathForDetectoneObject(filename)
+                mBraTS2018.SetImagePathForDetectoneObject(filename)
             else:    
                 filename = filedialog.askopenfilename(parent=root, initialdir=currdir, title='Please select a directory')
            
@@ -110,7 +110,7 @@ class Main:
         mMainScreen.ui.label_NotifyStatus.setText( "Detect Object mode")          
         if mMainScreen.ui.radioButtonDetectedMode.isChecked():
             if  mMainScreen.ui.checkBox_BratsData.isChecked():
-                #mBraTS2018.BraTS2018Function()
+                mBraTS2018.BraTS2018Function()
                 print("selectMode is DetectMode")  
             else:
                 print("selectMode is DetectMode")  
