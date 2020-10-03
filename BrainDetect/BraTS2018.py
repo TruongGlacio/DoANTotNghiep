@@ -538,47 +538,52 @@ class BraTS2018:
         #plt.title('Ground Truth(All)')
         #plt.axis('off')
         #plt.imshow(Label_all[90, 0, :, :],cmap='gray')
-        self.DrawContoursToPrediction(pred_full[0, 0, :, :])
+        prediction,haveTumor=self.DrawContoursToPrediction(pred_full[0, 0, :, :])
         plt.subplot(245)
-        plt.title('Prediction (Full)')
+        plt.title(f'Prediction (Full) \n {haveTumor}')
         plt.axis('off')
         print("pred_full[0, 0, :, :]=",pred_full[0, 0, :, :])
         
-        plt.imshow(pred_full[0, 0, :, :],cmap='gray')
+        plt.imshow(prediction)#,cmap='gray')
         
         plt.subplot(2,4,6)
-        plt.title('Prediction (Core)')
+        plt.title(f'Prediction (Core)')#{haveTumor}')
         plt.axis('off')
-        plt.imshow(core[0, :, :],cmap='gray')
+        plt.imshow(core[0, :, :])#,cmap='gray')
+        prediction,haveTumor=self.DrawContoursToPrediction(pred_full[0, 0, :, :])
         
         plt.subplot(2,4,7)
-        plt.title('Prediction (ET)')
+        plt.title(f'Prediction (ET)')#{haveTumor}')
         plt.axis('off')
-        plt.imshow(ET[0, :, :],cmap='gray')
+        plt.imshow(ET[0, :, :])#,cmap='gray')
+        prediction,haveTumor=self.DrawContoursToPrediction(pred_full[0, 0, :, :])
         
         plt.subplot(2,4,8)
-        plt.title('Prediction (All)')
+        plt.title(f'Prediction (All)')#{haveTumor}')
         plt.axis('off')
-        plt.imshow(tmp[0, :, :],cmap='gray')
+        plt.imshow(tmp[0, :, :])#,cmap='gray')
         
         plt.show()        
     def DrawContoursToPrediction(self,Prediction):
-        imagerank4 = np.expand_dims(Prediction, axis=0)
-        imagerank4 = (imagerank4 * 255).round().astype(np.uint8)
-        gray=np.asarray(imagerank4)        
-        #gray = Image.fromarray(gray, 'RGB')        
-        #gray = cv2.cvtColor(gray, cv2.COLOR_BGR2GRAY)        
-     
-        # threshold the image, then perform a series of erosions +
-        # dilations to remove any small regions of noise
-        #(thresh, im_bw) = cv2.threshold(gray, 45, 255, cv2.THRESH_BINARY)
-
+        imagerank4 = np.array(Prediction * 255, dtype = np.uint8)        
+        gray = cv2.GaussianBlur(imagerank4, (5, 5), 0)
         
         # find contours in thresholded image, then grab the largest one
-        im2, contours, hierarchy = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        im2, contours, hierarchy = cv2.findContours(imagerank4, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        #print('contours=',contours)
         
-        cv.drawContours(Prediction, contours, -1, (0,255,0), 3)
-        return Prediction
+        cv2.drawContours(Prediction, contours, -1, (255,0,0), 3)
+        areAll=[]
+        for i in range(len(contours)):
+            area= cv2.contourArea(contours[i])  
+            areAll.append(area)
+            print("area {",i,"}=",area)       
+            
+        if max(areAll) >20:        
+            haveTumor=f'--> Have tumor, Tumor Area={max(areAll)}'
+        else:
+            haveTumor="--> Haven't tumor"         
+        return Prediction,haveTumor
 #        cnts = imutils.grab_contours(cnts)
         
         
