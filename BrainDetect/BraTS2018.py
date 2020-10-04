@@ -1,5 +1,5 @@
 import tensorflow as tf
-
+import datetime
 import numpy as np
 import matplotlib.pyplot as plt
 import skimage.io as io
@@ -25,7 +25,8 @@ import glob
 from pathlib import Path
 from skimage.data import image_fetcher
 from PIL import Image
-
+import os
+from os import listdir
 class BraTS2018:
 
     def IntinialDefine(self):
@@ -39,13 +40,24 @@ class BraTS2018:
         global LR
         global smooth
         global imageIndex
+        global OutputPath
+        global SubOutputPath_No
+        global SubOutputPath_Yes
+        
         #initial folder path and file path for this project
         #global BRAT2019_DATA_PATH_HGG  
         global WEIGHTS_FULL_BEST_FILE_PATH
         global WEIGHTS_CORE_BEST_FILE_PATH
         global WEIGHTS_ET_BEST_FILE_PATH  
-        
-        
+        OutputPath='data/'
+        SubOutputPath_Yes='yes/'
+        SubOutputPath_No='no/'
+        if not os.path.isdir(OutputPath):
+            os.makedirs(OutputPath)
+        if not os.path.isdir(OutputPath+SubOutputPath_Yes):
+            os.makedirs(OutputPath+SubOutputPath_Yes)
+        if not os.path.isdir(OutputPath+SubOutputPath_No):
+            os.makedirs(OutputPath+SubOutputPath_No)        
         BRAT2019_DATA_PATH_HGG = "projectClone\\MICCAI_BraTS2020_TrainingData\\"#HGG\\"  
         
         WEIGHTS_FULL_BEST_FILE_PATH= "BraTSDataModel\weighsts\\weights-full-best.h5"    
@@ -275,10 +287,18 @@ class BraTS2018:
        
         return model   
     
-    def GetDataFullFromModel(self,weights_FULL_BEST_FILE_PATH):
+    def LoadDataModel(self,weights_FULL_BEST_FILE_PATH,weights_CORE_BEST_FILE_PATH,weights_ET_BEST_FILE_PATH):
+        model_full = self.unet_model()
+        model_full.load_weights(weights_FULL_BEST_FILE_PATH)
+        model_core = self.unet_model_nec3()
+        model_core.load_weights(weights_CORE_BEST_FILE_PATH)
+        model_ET = self.unet_model_nec3()
+        model_ET.load_weights(weights_ET_BEST_FILE_PATH)     
+        return model_full,model_core,model_ET
+    def GetDataFullFromModel(self,model_full):
         print("Function3"); 
-        model = self.unet_model()
-        model.load_weights(weights_FULL_BEST_FILE_PATH)
+        #model = self.unet_model()
+        #model.load_weights(weights_FULL_BEST_FILE_PATH)
       #  history = model.fit(x, y, batch_size=16, validation_split=0,validation_data = (val_x,val_y) ,epochs = 40,callbacks = callbacks_list ,verbose=1, shuffle=True)
         
         #using Flair and T2 as input for full tumor segmentation
@@ -288,7 +308,7 @@ class BraTS2018:
         x[:,1:,:,:] = T2[89:90,:,:,:] 
         #print("x=",x)
         with tf.device('/gpu:0'):
-            pred_full = model.predict(x)
+            pred_full = model_full.predict(x)
             print("pred_full=", pred_full)
         return pred_full
 
@@ -303,7 +323,9 @@ class BraTS2018:
         index_xy = np.where(p_tmp==1)   # get all the axial of pixel which value is 1
     
         if index_xy[0].shape[0] == 0:   #skip when no tumor
-            return [],[]
+            haveTomor=0
+            return haveTomor,[],[]
+        haveTomor=1
     
         center_x = (max(index_xy[0]) + min(index_xy[0])) / 2 
         center_y = (max(index_xy[1]) + min(index_xy[1])) / 2 
@@ -371,18 +393,22 @@ class BraTS2018:
             crop_x.append(img_x)
             list_xy.append((int(center_x),int(center_y)))   
             
-        return np.array(crop_x) , list_xy   #(y,x)        
+        return haveTomor, np.array(crop_x) , list_xy   #(y,x)        
    
     def CropTumor(self,Pred_full):
         print("Function CropTumor ");  
         global crop
         global li
         # cropping prediction part for tumor core and enhancing tumor segmentation
-        crop , li = self.crop_tumor_tissue(T1c[90,:,:,:],Pred_full[0,:,:,:],64)
-        crop.shape[0]
-        return crop, li
+        haveTomor, crop , li = self.crop_tumor_tissue(T1c[90,:,:,:],Pred_full[0,:,:,:],64)
+        print("Crop=",crop)
+        if haveTomor==0:
+            print("haven't tumor in image");     
+            return haveTomor,crop, li            
+        crop.shape[0]        
+        return haveTomor, crop, li
         # U-net for Tumor core and ET        
-    def unet_model_nec3(self,):
+    def unet_model_nec3(self):
         print("Function unet_model_nec3 ");  
         img_size_nec = 64        
         inputs = Input((1, img_size_nec, img_size_nec))
@@ -449,15 +475,16 @@ class BraTS2018:
         return model
     
     
-    def GetDataCoreAndETFromModel(self,weights_CORE_BEST_FILE_PATH,weights_ET_BEST_FILE_PATH,Crop):
+    def GetDataCoreAndETFromModel(self,model_core,model_ET,Crop):
         print("Function GetDataFromModel");  
        
-        model_core = self.unet_model_nec3()
-        model_core.load_weights(weights_CORE_BEST_FILE_PATH)
-        model_ET = self.unet_model_nec3()
-        model_ET.load_weights(weights_ET_BEST_FILE_PATH)
-        pred_core = model_core.predict(Crop)
-        pred_ET = model_ET.predict(Crop)
+       # model_core = self.unet_model_nec3()
+       # model_core.load_weights(weights_CORE_BEST_FILE_PATH)
+        #model_ET = self.unet_model_nec3()
+        #model_ET.load_weights(weights_ET_BEST_FILE_PATH)
+        with tf.device('/gpu:0'):
+            pred_core = model_core.predict(Crop)
+            pred_ET = model_ET.predict(Crop)
         return pred_core, pred_ET
     
     def paint_color_algo(self,pred_full, pred_core , pred_ET , li):   #input image is [n,1, y, x]
@@ -484,8 +511,36 @@ class BraTS2018:
     
         return total
     
-    def PlotDetectBrainTumor(self,pred_full,pred_core, pred_ET,Li):
+    def PlotDetectBrainTumor(self,haveTumor,pred_full,pred_core, pred_ET,Li):
         print("Function PlotDetectBrainTumor "); 
+        if not haveTumor:
+            savePath=OutputPath+SubOutputPath_No   
+            imagerank4 = np.array((T1[90, 0, :, :]) * 255, dtype = np.uint8)                    
+            self.SaveImageFromprediction(imagerank4,savePath)
+            
+            plt.figure(figsize=(15,10))
+            
+            plt.subplot(141)
+            plt.title('T1- Have not tumor')
+            plt.axis('off')
+            plt.imshow(T1[90, 0, :, :],cmap='gray')
+            plt.subplot(142)
+            plt.title('T2- Have not tumor')
+            plt.axis('off')
+            plt.imshow(T2[90, 0, :, :],cmap='gray')
+            
+            plt.subplot(143)
+            plt.title('Flair- Have not tumor')
+            plt.axis('off')
+            plt.imshow(Flair[90, 0, :, :],cmap='gray')
+            
+            plt.subplot(144)
+            plt.title('T1c- Have not tumor')
+            plt.axis('off')
+            plt.imshow(T1c[90, 0, :, :],cmap='gray')
+            
+            plt.show()
+            return        
         tmp = self.paint_color_algo(pred_full[0,:,:,:], pred_core, pred_ET, Li)
         
         core = np.zeros((1,240,240),np.float32)
@@ -516,6 +571,7 @@ class BraTS2018:
         plt.title('T1c')
         plt.axis('off')
         plt.imshow(T1c[90, 0, :, :],cmap='gray')
+
         
         #plt.subplot(345)
         #plt.title('Ground Truth(Full)')
@@ -536,7 +592,7 @@ class BraTS2018:
         #plt.title('Ground Truth(All)')
         #plt.axis('off')
         #plt.imshow(Label_all[90, 0, :, :],cmap='gray')
-        prediction,haveTumor=self.DrawContoursToPrediction(pred_full[0, 0, :, :])
+        prediction,haveTumor=self.DrawContoursToPrediction(haveTumor,pred_full[0, 0, :, :])
         plt.subplot(245)
         plt.title(f'Prediction (Full) \n {haveTumor}')
         plt.axis('off')
@@ -548,13 +604,13 @@ class BraTS2018:
         plt.title(f'Prediction (Core)')#{haveTumor}')
         plt.axis('off')
         plt.imshow(core[0, :, :])#,cmap='gray')
-        prediction,haveTumor=self.DrawContoursToPrediction(pred_full[0, 0, :, :])
+        prediction,haveTumor=self.DrawContoursToPrediction(haveTumor,pred_full[0, 0, :, :])
         
         plt.subplot(2,4,7)
         plt.title(f'Prediction (ET)')#{haveTumor}')
         plt.axis('off')
         plt.imshow(ET[0, :, :])#,cmap='gray')
-        prediction,haveTumor=self.DrawContoursToPrediction(pred_full[0, 0, :, :])
+        prediction,haveTumor=self.DrawContoursToPrediction(haveTumor,pred_full[0, 0, :, :])
         
         plt.subplot(2,4,8)
         plt.title(f'Prediction (All)')#{haveTumor}')
@@ -562,12 +618,25 @@ class BraTS2018:
         plt.imshow(tmp[0, :, :])#,cmap='gray')
         
         plt.show()        
-    def DrawContoursToPrediction(self,Prediction):
+    
+    def SaveImageFromprediction(self,imagerank4,outPutPath):
+        fileNameFromTime=datetime.datetime.now().strftime("%I:%M%p on %B %d, %Y")
+        fileNameFromTime= ''.join(e for e in fileNameFromTime if e.isalnum())
+        fileNameFromTime=fileNameFromTime+'.jpg'
+        imageSave = Image.fromarray(imagerank4)
+        
+        print('fileNameFromTime=',fileNameFromTime)
+        
+        filePath=outPutPath + fileNameFromTime
+        print('filePath=',filePath)
+        
+        imageSave.save(filePath)                
+        
+    def DrawContoursToPrediction(self,haveTumor,Prediction):
         imagerank4 = np.array(Prediction * 255, dtype = np.uint8)        
         gray = cv2.GaussianBlur(imagerank4, (5, 5), 0)
-        
         # find contours in thresholded image, then grab the largest one
-        im2, contours, hierarchy = cv2.findContours(imagerank4, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+        im2, contours, hierarchy = cv2.findContours(gray, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         #print('contours=',contours)
         
         cv2.drawContours(Prediction, contours, -1, (255,0,0), 3)
@@ -578,10 +647,15 @@ class BraTS2018:
             print("area {",i,"}=",area)       
             
         if max(areAll) >20:        
-            haveTumor=f'--> Have tumor, Tumor Area={max(areAll)} pixels'
+            haveTumorString=f'--> Have tumor, Tumor Area={max(areAll)} pixels'
+            savePath=OutputPath+SubOutputPath_Yes                          
         else:
-            haveTumor="--> Haven't tumor"         
-        return Prediction,haveTumor
+            haveTumorString="--> Haven't tumor"  
+            savePath=OutputPath+SubOutputPath_No      
+            
+            
+        self.SaveImageFromprediction(imagerank4,savePath)
+        return Prediction,haveTumorString
 #        cnts = imutils.grab_contours(cnts)
         
         
@@ -589,10 +663,16 @@ class BraTS2018:
         print("Function BraTS2018Function "); 
         self.IntinialDefine()
         self.LoadOne_SubJectDataFromFolder()
-        pred_full=self.GetDataFullFromModel(WEIGHTS_FULL_BEST_FILE_PATH)
-        crop, li= self.CropTumor(pred_full)
-        pred_core, pred_ET= self.GetDataCoreAndETFromModel(WEIGHTS_CORE_BEST_FILE_PATH,WEIGHTS_ET_BEST_FILE_PATH, crop)
-        self.PlotDetectBrainTumor(pred_full,pred_core, pred_ET,li)
+        pred_full=self.GetDataFullFromModel(model_full)
+        haveTomor, crop, li= self.CropTumor(pred_full)
+        if not haveTomor:
+            print("haven't tumor in image");     
+            self.PlotDetectBrainTumor(haveTomor,pred_full,None, None,None)            
+            return
+        pred_core, pred_ET= self.GetDataCoreAndETFromModel(model_core,model_ET, crop)
+        self.PlotDetectBrainTumor(haveTomor,pred_full,pred_core, pred_ET,li)
     def __init__(self):
         print("BraTS2018Function class init")
+        global model_full,model_core,model_ET        
         self.IntinialDefine()
+        model_full,model_core,model_ET = self.LoadDataModel(WEIGHTS_FULL_BEST_FILE_PATH,WEIGHTS_CORE_BEST_FILE_PATH,WEIGHTS_ET_BEST_FILE_PATH)
