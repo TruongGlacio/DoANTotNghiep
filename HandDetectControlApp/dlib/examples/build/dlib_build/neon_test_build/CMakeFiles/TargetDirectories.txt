@@ -1,3 +1,0 @@
-D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/examples/build/dlib_build/neon_test_build/CMakeFiles/neon_test.dir
-D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/examples/build/dlib_build/neon_test_build/CMakeFiles/ALL_BUILD.dir
-D:/Projects/GitProjects/DoAnTotNghiep/DoANTotNghiep/HandDetectControlApp/dlib/examples/build/dlib_build/neon_test_build/CMakeFiles/ZERO_CHECK.dir
