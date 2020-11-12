@@ -12,8 +12,11 @@ DEPENDPATH += "$$PWD/dlib"
 
 
 
-II. install package on linux
+II. Install package on linux
 sudo apt-get install mingw-w64 gcc-mingw-w64
+
+Download and install qt5.14 less than, Cmake Gui for build opencv...
+ 
 
 III. Readme for build and install opencv lib:
 
