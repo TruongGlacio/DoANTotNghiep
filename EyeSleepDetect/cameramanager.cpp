@@ -3,11 +3,6 @@
 #include <QAbstractVideoSurface>
 #include <iostream>
 
-#include <dlib/image_processing.h>
-#include <dlib/gui_widgets.h>
-#include <dlib/image_io.h>
-#include "opencv2/opencv.hpp"
-#include"opencv2/videoio.hpp"
 QAbstractVideoSurface *CameraManager::videoSurface() const
 {
     FUNCTION_LOG();

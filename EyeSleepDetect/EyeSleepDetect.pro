@@ -34,6 +34,7 @@ SOURCES += \
 HEADERS += \
     FacesDetectClass.h \
     GlobalFile.h \
+    GlobalLib.h \
     appenginer.h \
     cameramanager.h \ \
     handDetectClass.h \
@@ -74,6 +75,8 @@ LIBS +=-llibopencv_imgcodecs430 -llibopencv_imgproc430 -llibopencv_ml430
 LIBS += -llibopencv_objdetect430 -llibopencv_photo430 -llibopencv_stitching430
 LIBS += -llibopencv_video430 -llibopencv_videoio430
 }
+
+
 linux{
 INCLUDEPATH += $$PWD/../dlib/
 #QMAKE_CXXFLAGS_RELEASE += /arch:AVX
@@ -99,23 +102,34 @@ PKGCONFIG += x11
 #sudo apt-get install qml-module-qtmultimedia
 
 # include path and lib for opencv
-#INCLUDEPATH += /usr/local/include/opencv4/
 
-INCLUDEPATH += $$PWD/../opencv/build_Linux/include
-INCLUDEPATH += $$PWD/../opencv/build_Linux/opencv4
+#INCLUDEPATH += $$PWD/../opencv/BuildMingw32_Ubuntu/include
+INCLUDEPATH += $$PWD/../opencv/BuildMingw32_Ubuntu/opencv4
 
-#DEPENDPATH += $$PWD/../opencv/build_Linux/include
-
-#LIBS += -L$$PWD/../../../../usr/local/lib/
-
-#INCLUDEPATH += $$PWD/../../../../usr/local/include
-#DEPENDPATH += $$PWD/../../../../usr/local/include
-LIBS += -L$$PWD/../opencv/build_Linux/lib/
+#INCLUDEPATH += $$PWD/../opencv/BuildMingw32_Ubuntu/lib
+#DEPENDPATH += $$PWD/../opencv/BuildMingw32_Ubuntu/lib
+INCLUDEPATH += $$PWD/../../../../usr/local/include
+DEPENDPATH += $$PWD/../../../../usr/local/include
+LIBS += -L$$PWD/../opencv/BuildMingw32_Ubuntu/lib/
 LIBS += -lopencv_calib3d -lopencv_core
 LIBS += -lopencv_dnn -lopencv_features2d
 LIBS += -lopencv_flann -lopencv_gapi -lopencv_highgui
 LIBS += -lopencv_imgcodecs -lopencv_imgproc -lopencv_ml
 LIBS += -lopencv_objdetect -lopencv_photo -lopencv_stitching
 LIBS += -lopencv_video -lopencv_videoio
-LIBS+=$(shell pkg-config opencv --lib)
+
+
+#LIBS += -L$$PWD/../opencv/BuildMingw32_Ubuntu/lib/
+#LIBS += -llibopencv_calib3d -llibopencv_core
+#LIBS += -llibopencv_dnn -llibopencv_features2d
+#LIBS += -llibopencv_flann -llibopencv_gapi -llibopencv_highgui
+#LIBS += -llibopencv_imgcodecs -llibopencv_imgproc -llibopencv_ml
+#LIBS += -llibopencv_objdetect -llibopencv_photo -llibopencv_stitching
+#LIBS += -llibopencv_video -llibopencv_videoio
+#LIBS+=$(shell pkg-config opencv --lib)
+
 }
+
+#unix:!macx: LIBS += -L$$PWD/../opencv/BuildMingw32_Ubuntu/lib/ -lopencv_videoio
+
+

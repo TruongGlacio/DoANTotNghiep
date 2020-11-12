@@ -2,17 +2,7 @@
 #define HANDDETECTCLASS_H
 
 #include <QObject>
-#include <dlib/opencv.h>
-#include <dlib/image_processing/frontal_face_detector.h>
-#include <dlib/image_processing/render_face_detections.h>
-#include <dlib/image_processing.h>
-#include <dlib/gui_widgets.h>
-#include <dlib/image_io.h>
-
-#include <opencv2/highgui.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/dnn.hpp>
-#include <opencv2/imgproc.hpp>
+#include"GlobalLib.h"
 #include <iostream>
 #include<GlobalFile.h>
 

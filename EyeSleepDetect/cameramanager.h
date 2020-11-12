@@ -5,19 +5,10 @@
 #include <QPointer>
 #include <QVideoFrame>
 #include <QVideoSurfaceFormat>
-
-#include <opencv2/core/mat.hpp>
-#include <dlib/opencv.h>
-#include <opencv2/highgui/highgui.hpp>
-#include <dlib/image_processing.h>
-#include <dlib/gui_widgets.h>
-#include <dlib/image_io.h>
-
-#include <opencv2/core/mat.hpp>
-#include <opencv2/videoio.hpp>
-#include<GlobalFile.h>
-#include<QDebug>
-#include<QDateTime>
+#include"GlobalLib.h"
+#include <GlobalFile.h>
+#include <QDebug>
+#include <QDateTime>
 #include <QTimer>
 #include <QDir>
 
