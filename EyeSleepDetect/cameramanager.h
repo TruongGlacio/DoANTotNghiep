@@ -47,7 +47,7 @@ private:
     void setFormat(int width, int height, QVideoFrame::PixelFormat frameFormat);
 
 public:
-    cv::VideoCapture *m_videoCapture;
+    cv::VideoCapture m_videoCapture;
     // image_window mWin;
     QPointer<QAbstractVideoSurface> m_surface;
     //QScopedPointer<Backend> m_backend;

@@ -29,13 +29,14 @@ bool CameraManager::StartWebCam()
         //cv::VideoCapture cap(0);
         int deviceID = 0;             // 0 = open default camera
         int apiID = cv::CAP_ANY;      // 0 = autodetect default API
-        m_videoCapture = new cv::VideoCapture(0);
 
+         m_videoCapture=cv::VideoCapture(apiID);// = new cv::VideoCapture(0);
         // open selected camera using selected API
-        m_videoCapture->open(deviceID,apiID);
-        m_videoCapture->set(CAP_PROP_FRAME_WIDTH, CAM_WIDTH);//use small resolution for fast processing
-        m_videoCapture->set(CAP_PROP_FRAME_HEIGHT, CAM_HEIGHT);
-        if (!m_videoCapture->isOpened()) {
+
+        //m_videoCapture.open(apiID);
+        m_videoCapture.set(CAP_PROP_FRAME_WIDTH, CAM_WIDTH);//use small resolution for fast processing
+        m_videoCapture.set(CAP_PROP_FRAME_HEIGHT, CAM_HEIGHT);
+        if (!m_videoCapture.isOpened()) {
             qDebug() << "Unable to connect to camera";
             return false;
         }
@@ -59,7 +60,9 @@ void CameraManager::StopWebCam()
 
 {
     FUNCTION_LOG();
-    m_videoCapture->release();
+//    if (!m_videoCapture.isOpened())
+//        return;
+    m_videoCapture.release();
     disconnect(timer,SIGNAL(timeout()), this, SLOT(getFrame()));
     connect(this, SIGNAL(SendFrameForImageView(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
     disconnect(this, SIGNAL(SendTrackingFrameToVideoOutput(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
@@ -143,9 +146,9 @@ void CameraManager::getFrame()
     FUNCTION_LOG();
 
     cv::Mat frame;
-    if (!m_videoCapture->isOpened())
+    if (!m_videoCapture.isOpened())
         return;
-    m_videoCapture->read(frame);
+    m_videoCapture.read(frame);
 
     if (!frame.empty())
     {
