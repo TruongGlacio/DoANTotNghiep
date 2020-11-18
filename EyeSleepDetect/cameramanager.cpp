@@ -13,12 +13,10 @@ QAbstractVideoSurface *CameraManager::videoSurface() const
 CameraManager::CameraManager(QObject *parent) : QObject(parent)
 {
     FUNCTION_LOG();
-    timer=new QTimer();
     connect(this, SIGNAL(SendTrackingFrameToVideoOutput(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
     connect(this, SIGNAL(SendNormalFrameGetFromCamera(cv::Mat)), this,SLOT(updateFrame(cv::Mat)));
-    connect(timer,SIGNAL(timeout()), this, SLOT(getFrame()));
+    //connect(timer,SIGNAL(timeout()), this, SLOT(getFrame()));
     disconnect(this, SIGNAL(SendFrameForImageView(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
-    timer->setInterval(100);
 }
 
 bool CameraManager::StartWebCam()
@@ -41,12 +39,12 @@ bool CameraManager::StartWebCam()
             return false;
         }
         qDebug()<< "camera started " <<endl;
-
-        connect(timer,SIGNAL(timeout()), this, SLOT(getFrame()));
+        //timer=new QTimer();
+        connect(&timer,SIGNAL(timeout()), this, SLOT(getFrame()));
         connect(this, SIGNAL(SendTrackingFrameToVideoOutput(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
         disconnect(this, SIGNAL(SendFrameForImageView(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
-
-        timer->start();
+        timer.setInterval(100);
+        timer.start();
 
     }
     catch (exception& e) {
@@ -63,13 +61,13 @@ void CameraManager::StopWebCam()
 //    if (!m_videoCapture.isOpened())
 //        return;
     m_videoCapture.release();
-    disconnect(timer,SIGNAL(timeout()), this, SLOT(getFrame()));
+    disconnect(&timer,SIGNAL(timeout()), this, SLOT(getFrame()));
     connect(this, SIGNAL(SendFrameForImageView(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
     disconnect(this, SIGNAL(SendTrackingFrameToVideoOutput(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
 
-    timer->stop();
+    timer.stop();
 
-    if(timer->isActive())
+    if(timer.isActive())
     {
 
         qDebug() << "Can't stop timer";
@@ -93,6 +91,8 @@ void CameraManager::StopWebCam()
     QDir directoryImage(mFolderPathSaveImage);
     QStringList imagesList = directoryImage.entryList(QStringList() << "*.jpg" << "*.JPG",QDir::Files);
     mImageFileIndex=imagesList.size()-1;
+//    delete timer;
+
 }
 
 void CameraManager::SetImagePathForView(bool distance)
@@ -130,7 +130,7 @@ void CameraManager::SetImagePathForView(bool distance)
 #else
     mImagepathForView=mFolderPathSaveImage + '/'+imagesList.at(mImageFileIndex);
 #endif
-    qDebug()<<"image file path sahll show on "<<mImagepathForView<<endl;
+    qDebug()<<"image file path shall show on "<<mImagepathForView<<endl;
     // mImagepathForView= mFolderPathSaveImage+
     Mat imageFrame;
     imageFrame = cv::imread(mImagepathForView.toStdString(), 1 );

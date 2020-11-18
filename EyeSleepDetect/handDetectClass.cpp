@@ -6,11 +6,11 @@
 HandDetectClass::HandDetectClass(QObject *parent) : QObject(parent)
 {
     FUNCTION_LOG();
-    InitialFaceDetector(SHAPE_PREDIRTOR_HAND_LANDMARK,SHAPE_HAND_DETECTOR_PATH);
+    InitialHandDetector(SHAPE_PREDIRTOR_HAND_LANDMARK,SHAPE_HAND_DETECTOR_PATH);
 
 
 }
-void HandDetectClass::InitialFaceDetector(std::string shape_Predirtor,std::string shapeHandDetectorPath)
+void HandDetectClass::InitialHandDetector(std::string shape_Predirtor,std::string shapeHandDetectorPath)
 {
     FUNCTION_LOG();
 
@@ -28,7 +28,7 @@ void HandDetectClass::InitialFaceDetector(std::string shape_Predirtor,std::strin
 
 }
 
-Mat HandDetectClass::DrawEyeLineOnFrame(full_object_detection shape, Mat frame)
+Mat HandDetectClass::DrawandHandLineOnFrame(full_object_detection shape, Mat frame)
 {
     // full_object_detection subShape;
     cv::Mat frame1=frame.clone();
@@ -116,7 +116,7 @@ void HandDetectClass::DetectHand(cv::Mat frame)
                     shape.part(i).y()=shape.part(i).y()*HAND_DOWNSAMPLE_RATIO;
                 }
 
-                frame1=DrawEyeLineOnFrame(shape,frame);
+                frame1=DrawandHandLineOnFrame(shape,frame);
 
                 frame2=DrawHandDetectStatus(frame1,mHandDetectStatus);
 

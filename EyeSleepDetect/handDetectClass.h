@@ -23,8 +23,8 @@ signals:
         void GetFrameForSaveToFile(cv::Mat frame);
 public slots:
     void DetectHand(cv::Mat frame);
-    void InitialFaceDetector(std::string shapeLandMarkPredirtorPath,std::string shapeHandDetectorPath);
-    cv::Mat DrawEyeLineOnFrame(full_object_detection shape,cv::Mat frame);
+    void InitialHandDetector(std::string shapeLandMarkPredirtorPath,std::string shapeHandDetectorPath);
+    cv::Mat DrawandHandLineOnFrame(full_object_detection shape,cv::Mat frame);
     cv::Mat DrawHandDetectStatus(cv::Mat frame, std::string handdetectStatus);
     std::vector<dlib::rectangle> resizeBoxes(std::vector<dlib::rectangle> rects, int scaleFactor);
 

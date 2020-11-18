@@ -2,16 +2,8 @@ QT += core widgets gui quick multimedia websockets concurrent network
 
 CONFIG += c++11 release
 
-
-# The following define makes your compiler emit warnings if you use
-# any Qt feature that has been marked deprecated (the exact warnings
-# depend on your compiler). Refer to the documentation for the
-# deprecated API to know how to port your code away from it.
 DEFINES += QT_DEPRECATED_WARNINGS
 
-# You can also make your code fail to compile if it uses deprecated APIs.
-# In order to do so, uncomment the following line.
-# You can also select to disable deprecated APIs only up to a certain version of Qt.
 CMAKE_INSTALL_PREFIX = $$PWD/../dlib/
 DEFINES += DLIB_ENABLE_ASSERTS
 DEFINES += QT_DEPRECATED_WARNINGS
@@ -24,6 +16,7 @@ SOURCES += \
     appenginer.cpp \
     cameramanager.cpp \
     handDetectClass.cpp \
+    phonedetectclass.cpp \
     train_shape_predictor.cpp\
     main.cpp \
 
@@ -34,6 +27,7 @@ HEADERS += \
     appenginer.h \
     cameramanager.h \ \
     handDetectClass.h \
+    phonedetectclass.h \
     train_shape_predictor.h\
 
 RESOURCES += qml.qrc \
@@ -113,16 +107,6 @@ LIBS += -lopencv_flann -lopencv_gapi -lopencv_highgui
 LIBS += -lopencv_imgcodecs -lopencv_imgproc -lopencv_ml
 LIBS += -lopencv_objdetect -lopencv_photo -lopencv_stitching
 LIBS += -lopencv_video -lopencv_videoio
-
-
-#LIBS += -L$$PWD/../opencv/BuildMingw32_Ubuntu/lib/
-#LIBS += -llibopencv_calib3d -llibopencv_core
-#LIBS += -llibopencv_dnn -llibopencv_features2d
-#LIBS += -llibopencv_flann -llibopencv_gapi -llibopencv_highgui
-#LIBS += -llibopencv_imgcodecs -llibopencv_imgproc -llibopencv_ml
-#LIBS += -llibopencv_objdetect -llibopencv_photo -llibopencv_stitching
-#LIBS += -llibopencv_video -llibopencv_videoio
-#LIBS+=$(shell pkg-config opencv --lib)
 
 }
 

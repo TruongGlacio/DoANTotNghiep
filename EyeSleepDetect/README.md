@@ -1,38 +1,41 @@
-# Sleep detection
-
-This repository contains two app for driver drowsiness detection via eye monitoring being it closed or opened.
-
-1. Python code: Simple app to detect the status of eye being it closed or opened (sleep_detection.py (test1.jpg and test2.jpg are for testing))
-
-
-2. C++ code: Realtime sleep detection (cpp code/sleep_detection.cpp)
-<img src="http://emaraic.com/assets/img/posts/machine-learning/sleep-detection/sleep-detection-cpp1.png" alt="" data-canonical-src="http://emaraic.com/assets/img/posts/machine-learning/sleep-detection/sleep-detection-cpp1.png" width="400" height="400" />           <img src="http://emaraic.com/assets/img/posts/machine-learning/sleep-detection/sleep-detection-cpp2.png" alt="" data-canonical-src="http://emaraic.com/assets/img/posts/machine-learning/sleep-detection/sleep-detection-cpp2.png" width="400" height="400" />
-
-### Prerequisites
-1. Install Opencv3 for realtime sleep detection (C++ code).
-2. Install Python. 
-3. Install Dlib and its dependencies https://github.com/davisking/dlib . 
-
-For more info : [http://emaraic.com/blog/realtime-sleep-detection](http://emaraic.com/blog/realtime-sleep-detection)
+# DoANTotNghiep
+I. Steps for build project with dlib
+1. add file source.cpp from dlib/dlib/all/source.cpp of dlib to project
+2. add to .pro file : 
+win32{
+INCLUDEPATH += $$PWD/dlib
+LIBS+= -lgdi32 -lcomctl32 -luser32 -lwinmm -lws2_32
+LIBS += -luser32 -lws2_32 -lgdi32 -lcomctl32 -limm32 -lwinmm
+DEPENDPATH += "$$PWD/dlib"
+}
+3. build project and start using dlib
 
 
 
-### Realtime Driver Drowsiness Detection (Sleep Detection)
-https://www.youtube.com/watch?v=DxHW8f6ryHQ
+II. Install package on linux
+sudo apt-get install mingw-w64 gcc-mingw-w64
 
-[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/DxHW8f6ryHQ/3.jpg)](https://www.youtube.com/watch?v=DxHW8f6ryHQ)
+Download and install qt5.14 less than, Cmake Gui for build opencv...
+ 
 
-### References 
+III. Readme for build and install opencv lib:
 
-Real-Time Eye Blink Detection using Facial Landmarks by Tereza Soukupova and Jan Cech
+1. unzip opencv zip file: 
 
-https://vision.fe.uni-lj.si/cvww2016/proceedings/papers/05.pdf
+-In Zip 3.0 version the following commands: 
+Put all your zip files in the same directory: zip_file.z01, zip_file.z02, zip_file.z03, ..., zip_file.zip
 
+-run command:
+$ zip -s- opencv.zip -O zip_file_full.zip
+$ unzip zip_file_full.zip
 
-
-
-
-
-
+2. build opencv with commands: 
+cd opencv
+mkdir build
+cd build 
+cmake -G "Unix Makefiles" ../sources
+cmake --build . --target install --config Release
+sudo make install
+copy folder opencv4 from /usr/local/opencv4 to fle opencv/build_Linux if it not exit
 
 

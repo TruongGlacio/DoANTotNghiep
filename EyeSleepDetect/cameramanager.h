@@ -53,7 +53,7 @@ public:
     //QScopedPointer<Backend> m_backend;
     QVideoSurfaceFormat m_format;
     QImage m_image;
-    QTimer *timer;
+    QTimer timer;
     int countFrame=0;
     QString mImagepathForView;
     QString mFolderPathSaveImage;
