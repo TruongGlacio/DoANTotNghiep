@@ -6,8 +6,10 @@
 #include"handDetectClass.h"
 #include"cameramanager.h"
 #include"GlobalFile.h"
-#include"train_shape_predictor.h"
+#include"Traning/train_shape_predictor.h"
 #include"phonedetectclass.h"
+#include"capturedataimage.h"
+#include"roadmarkerdetect.h"
 class AppEnginer : public QObject
 {
     Q_OBJECT
@@ -21,6 +23,8 @@ private:
     FacesDetectClass mFaceDetectClass;
     HandDetectClass mHandDetectClass;
     PhoneDetectClass mPhoneDetectClass;
+    CaptureDataImage mCaptureDataImage;
+    RoadMarkerDetect mRoadMarkerDetect;
 
 };
 

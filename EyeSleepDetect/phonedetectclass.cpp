@@ -39,21 +39,13 @@ void PhoneDetectClass::DetectPhone(Mat frame)
             // hand = DetectHandsBox(handDetector,frame);
             hand = phoneDetector(cimg);
 
-            // hand = detector(cimg); // detect the faces from cimg frame
-
-            qDebug()<< "Number of hand detected: " << hand.size() << endl;
+            qDebug()<< "Number of object detected: " << hand.size() << endl;
             // Find the pose of each face.
             if (hand.size() > 0) {
 
                 shape = landMarkOfPhone(cimg, hand[0]); //work only with 1 face
 
                 mPhoneDetectStatus=PHONE_DETECTING_STATUS;
-
-                for (int b = 0; b < 9; b++) {
-                    locationPointsOfPhone.x = shape.part(b).x()*PHONE_DOWNSAMPLE_RATIO;
-                    locationPointsOfPhone.y = shape.part(b).y()*PHONE_DOWNSAMPLE_RATIO;
-                    pointsOfHandResize.push_back(locationPointsOfPhone);
-                }
 
                 // restore size and location of point as fist frame for draw on camera output
 
@@ -71,11 +63,16 @@ void PhoneDetectClass::DetectPhone(Mat frame)
                 if(mPhoneDetectStatus==PHONE_DETECTING_STATUS)
                 {
                     qDebug()<< "Emit frame for save file " << endl;
-                    emit GetFrameForSaveToFile(frame1);
+                    emit GetFrameForSaveToFile(frame);
                 }
-                pointsOfHandResize.clear();
                 char c;
                 c = (char)waitKey(70);
+            }
+            else
+            {
+                qDebug()<< "Emit frame for save file  training data" << endl;
+                emit GetFrameForSaveToFile(frame);
+
             }
         }
         else
@@ -105,17 +102,21 @@ void PhoneDetectClass::DetectPhone(Mat frame)
 Mat PhoneDetectClass::DrawandPhoneLineOnFrame(full_object_detection shape, Mat frame)
 {
     FUNCTION_LOG();
-
+    if(shape.num_parts()<=1)
+        return frame;
     // full_object_detection subShape;
     cv::Mat frame1=frame.clone();
 
     cv::Scalar scalar(0,255,0);
     // draw phone body
-    cv::line(frame1, cv::Point(shape.part(1).x(),shape.part(1).y()), cv::Point(shape.part(2).x(),shape.part(2).y()),scalar, 2, 8, 0);
+    cv::line(frame1, cv::Point(shape.part(0).x(),shape.part(0).y()), cv::Point(shape.part(1).x(),shape.part(1).y()),scalar, 2, 8, 0);
 
     cv::line(frame1, cv::Point(shape.part(2).x(),shape.part(2).y()), cv::Point(shape.part(3).x(),shape.part(3).y()),scalar, 2, 8, 0);
-    cv::line(frame1, cv::Point(shape.part(3).x(),shape.part(3).y()), cv::Point(shape.part(0).x(),shape.part(0).y()),scalar, 2, 8, 0);
-    cv::line(frame1, cv::Point(shape.part(0).x(),shape.part(0).y()), cv::Point(shape.part(1).x(),shape.part(1).y()),scalar, 2, 8, 0);
+    cv::line(frame1, cv::Point(shape.part(3).x(),shape.part(3).y()), cv::Point(shape.part(4).x(),shape.part(4).y()),scalar, 2, 8, 0);
+    cv::line(frame1, cv::Point(shape.part(5).x(),shape.part(5).y()), cv::Point(shape.part(6).x(),shape.part(6).y()),scalar, 2, 8, 0);
+    cv::line(frame1, cv::Point(shape.part(6).x(),shape.part(6).y()), cv::Point(shape.part(7).x(),shape.part(7).y()),scalar, 2, 8, 0);
+    cv::line(frame1, cv::Point(shape.part(8).x(),shape.part(8).y()), cv::Point(shape.part(9).x(),shape.part(9).y()),scalar, 2, 8, 0);
+    cv::line(frame1, cv::Point(shape.part(9).x(),shape.part(9).y()), cv::Point(shape.part(10).x(),shape.part(10).y()),scalar, 2, 8, 0);
 
     return frame1;
 
@@ -126,7 +127,7 @@ Mat PhoneDetectClass::DrawPhoneDetectStatus(Mat frame, string phonedetectStatus)
     FUNCTION_LOG();
 
     cv::Mat frame1=frame.clone();
-    cv::putText(frame1, mPhoneDetectStatus, cv::Point(20,200), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.0, cv::Scalar(0,255,0),1, cv::LINE_AA);
+    cv::putText(frame1, phonedetectStatus, cv::Point(20,200), cv::FONT_HERSHEY_COMPLEX_SMALL, 1.0, cv::Scalar(0,255,0),1, cv::LINE_AA);
     return  frame1;
 }
 

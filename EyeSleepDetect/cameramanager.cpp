@@ -10,6 +10,7 @@ QAbstractVideoSurface *CameraManager::videoSurface() const
     return m_surface;
 }
 
+// Cameramanager contrutor, default connect
 CameraManager::CameraManager(QObject *parent) : QObject(parent)
 {
     FUNCTION_LOG();
@@ -19,6 +20,8 @@ CameraManager::CameraManager(QObject *parent) : QObject(parent)
     disconnect(this, SIGNAL(SendFrameForImageView(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
 }
 
+
+//Start camera
 bool CameraManager::StartWebCam()
 {
     FUNCTION_LOG();
@@ -30,7 +33,6 @@ bool CameraManager::StartWebCam()
 
          m_videoCapture=cv::VideoCapture(apiID);// = new cv::VideoCapture(0);
         // open selected camera using selected API
-
         //m_videoCapture.open(apiID);
         m_videoCapture.set(CAP_PROP_FRAME_WIDTH, CAM_WIDTH);//use small resolution for fast processing
         m_videoCapture.set(CAP_PROP_FRAME_HEIGHT, CAM_HEIGHT);
@@ -39,11 +41,10 @@ bool CameraManager::StartWebCam()
             return false;
         }
         qDebug()<< "camera started " <<endl;
-        //timer=new QTimer();
         connect(&timer,SIGNAL(timeout()), this, SLOT(getFrame()));
         connect(this, SIGNAL(SendTrackingFrameToVideoOutput(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
         disconnect(this, SIGNAL(SendFrameForImageView(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
-        timer.setInterval(100);
+        timer.setInterval(200);
         timer.start();
 
     }
@@ -54,6 +55,7 @@ bool CameraManager::StartWebCam()
     return true;
 }
 
+//Stop camera
 void CameraManager::StopWebCam()
 
 {
@@ -91,9 +93,9 @@ void CameraManager::StopWebCam()
     QDir directoryImage(mFolderPathSaveImage);
     QStringList imagesList = directoryImage.entryList(QStringList() << "*.jpg" << "*.JPG",QDir::Files);
     mImageFileIndex=imagesList.size()-1;
-//    delete timer;
 
 }
+
 
 void CameraManager::SetImagePathForView(bool distance)
 {
@@ -140,6 +142,7 @@ void CameraManager::SetImagePathForView(bool distance)
         return;
     }
     emit SendFrameForImageView(imageFrame);
+    emit SendFrameGetFromCameraForDetect(imageFrame);
 }
 void CameraManager::getFrame()
 {
@@ -213,6 +216,7 @@ void CameraManager::SaveImageToFile(Mat frame)
     imwrite(filePath, frame); // A JPG FILE IS BEING SAVED
 
 }
+
 
 void CameraManager::onVideoFrameReady(Mat currentFrame)
 {

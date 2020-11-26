@@ -13,22 +13,28 @@ QMAKE_CXXFLAGS += -std=c++11 -DDLIB_ENABLE_ASSERTS #-DDLIB_JPEG_SUPPORT -DNEED_S
 SOURCES += \
         ../dlib/dlib/all/source.cpp \
     FacesDetectClass.cpp \
+    #Traning/handLandmarkTrainer.cpp \
+    #Traning/handTrainer.cpp \
+    Traning/train_shape_predictor.cpp \
     appenginer.cpp \
     cameramanager.cpp \
+    capturedataimage.cpp \
     handDetectClass.cpp \
     phonedetectclass.cpp \
-    train_shape_predictor.cpp\
     main.cpp \
+    roadmarkerdetect.cpp
 
 HEADERS += \
     FacesDetectClass.h \
     GlobalFile.h \
     GlobalLib.h \
+    Traning/train_shape_predictor.h \
     appenginer.h \
-    cameramanager.h \ \
+    cameramanager.h \
+    capturedataimage.h \
     handDetectClass.h \
     phonedetectclass.h \
-    train_shape_predictor.h\
+    roadmarkerdetect.h
 
 RESOURCES += qml.qrc \
 
@@ -65,7 +71,6 @@ LIBS +=-llibopencv_imgcodecs430 -llibopencv_imgproc430 -llibopencv_ml430
 LIBS += -llibopencv_objdetect430 -llibopencv_photo430 -llibopencv_stitching430
 LIBS += -llibopencv_video430 -llibopencv_videoio430
 }
-
 
 linux{
 INCLUDEPATH += $$PWD/../dlib/

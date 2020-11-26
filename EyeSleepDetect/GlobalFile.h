@@ -4,10 +4,13 @@
 #define CAM_WIDTH 640
 #define CAM_HEIGHT 480
 #define FACE_DOWNSAMPLE_RATIO 0.5
-#define HAND_DOWNSAMPLE_RATIO 0.5
+#define HAND_DOWNSAMPLE_RATIO 0.3
 #define HAND_IMAGE_SCALE_RESIZE 3
-#define PHONE_DOWNSAMPLE_RATIO 0.5
-#define PHONE_IMAGE_SCALE_RESIZE 3
+#define PHONE_DOWNSAMPLE_RATIO 1
+#define PHONE_IMAGE_SCALE_RESIZE 1
+
+#define ROADMARKER_DOWNSAMPLE_RATIO 0.5
+#define ROADMARKER_IMAGE_SCALE_RESIZE 1
 
 #define SKIP_FRAMES 2
 #define SKIP_FRAMES1 1
@@ -30,6 +33,10 @@
 #define SHAPE_PREDIRTOR_PHONE_LANDMARK "Models/Phone_4_Landmarks_Detector.dat"
 #define SHAPE_PHONE_DETECTOR_PATH "Models/PhoneDetector.svm"
 
+
+#define SHAPE_PREDIRTOR_ROADMARKER_LANDMARK "Models/RoadMarker_4_Landmarks_Detector.dat"
+#define SHAPE_ROADMARKER_DETECTOR_PATH "Models/RoadMarkerDetector.svm"
+
 #define FOLDER_PATH_SAVE_IMAGE "/ImageSave"
 
 
@@ -41,7 +48,9 @@
 #define FILE_PATH_FOR_TRAIN "..\\GenerateHandDataSet\\Hands-Detection-master\\images_training\\hands_training.xml"
 #define SHAPE_PREDIRTOR_PHONE_LANDMARK "Models\\Phone_4_Landmarks_Detector.dat"
 #define SHAPE_PHONE_DETECTOR_PATH "Models\\PhoneDetector.svm"
-#define FOLDER_PATH_SAVE_IMAGE "/ImageSave"
+#define SHAPE_PREDIRTOR_ROADMARKER_LANDMARK "Models\\RoadMarker_4_Landmarks_Detector.dat"
+#define SHAPE_ROADMARKER_DETECTOR_PATH "Models\\RoadMarkerDetector.svm"
+#define FOLDER_PATH_SAVE_IMAGE "\\ImageSave"
 #endif
 
 #define TO_REPLACE_STRING ":"
@@ -60,5 +69,8 @@
 #define NOT_HAND_DETECT_STATUS "Not detect hand"
 #define PHONE_DETECTING_STATUS "Detecting phone"
 #define NOT_PHONE_DETECT_STATUS "Not detect phone"
+
+#define ROADMARKER_DETECTING_STATUS "Detecting road marker"
+#define NOT_ROADMARKER_DETECT_STATUS "Not detect road marker"
 
 #endif // GLOBALFILE_H

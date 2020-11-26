@@ -17,13 +17,9 @@ void HandDetectClass::InitialHandDetector(std::string shape_Predirtor,std::strin
     this->shapeLandMarkPredirtorPath=shape_Predirtor;
     this->shapeHandDetectorPath=shapeHandDetectorPath;
     // Load face detection and deserialize face landmarks model.
+
     deserialize(this->shapeLandMarkPredirtorPath) >> landMarkOfHand;
-    //detector = get_frontal_face_detector();
-
     deserialize(this->shapeHandDetectorPath) >> handDetector;
-
-   // detector=DetectHandLandmarks()
-
 
 
 }
@@ -90,10 +86,7 @@ void HandDetectClass::DetectHand(cv::Mat frame)
         std::vector<dlib::rectangle> hand;
         if ( countNumberOfFrame % SKIP_FRAMES == 0 )
         {
-           // hand = DetectHandsBox(handDetector,frame);
             hand = handDetector(cimg);
-
-            // hand = detector(cimg); // detect the faces from cimg frame
 
             qDebug()<< "Number of hand detected: " << hand.size() << endl;
             // Find the pose of each face.

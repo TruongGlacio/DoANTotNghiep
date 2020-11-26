@@ -3,7 +3,6 @@
 
 #include <QObject>
 #include"GlobalLib.h"
-#include <iostream>
 #include<GlobalFile.h>
 
 using namespace dlib;

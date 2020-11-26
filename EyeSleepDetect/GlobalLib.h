@@ -43,5 +43,11 @@
 #include <dlib/image_io.h>
 #include "opencv2/opencv.hpp"
 #include"opencv2/videoio.hpp"
+#include <dlib/image_processing.h>
+#include <dlib/gui_widgets.h>
+#include <dlib/image_io.h>
+#include "dlib/data_io.h"
+#include "dlib/external/libjpeg/jpeglib.h"
+
 
 #endif // GLOBALLIB_H
