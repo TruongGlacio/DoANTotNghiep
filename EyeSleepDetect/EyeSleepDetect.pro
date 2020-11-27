@@ -19,6 +19,7 @@ SOURCES += \
     appenginer.cpp \
     cameramanager.cpp \
     capturedataimage.cpp \
+    dnn_mmod_find_verhicle.cpp \
     handDetectClass.cpp \
     phonedetectclass.cpp \
     main.cpp \
@@ -32,6 +33,7 @@ HEADERS += \
     appenginer.h \
     cameramanager.h \
     capturedataimage.h \
+    dnn_mmod_find_verhicle.h \
     handDetectClass.h \
     phonedetectclass.h \
     roadmarkerdetect.h

@@ -227,7 +227,6 @@ void FacesDetectClass::DetectFace(cv::Mat frame)
         //resize frame to increase performance
         cv::resize(frame, im_small, cv::Size(), 1.0/FACE_DOWNSAMPLE_RATIO, 1.0/FACE_DOWNSAMPLE_RATIO);
         cv_image<bgr_pixel> cimg(im_small);
-        // Resize image for face detection
         full_object_detection shape;
 
         // Detect faces
