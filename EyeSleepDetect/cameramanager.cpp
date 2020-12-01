@@ -43,7 +43,7 @@ bool CameraManager::StartWebCam()
         qDebug()<< "camera started " <<endl;
         connect(&timer,SIGNAL(timeout()), this, SLOT(getFrame()));
         connect(this, SIGNAL(SendTrackingFrameToVideoOutput(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
-        disconnect(this, SIGNAL(SendFrameForImageView(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
+        //disconnect(this, SIGNAL(SendFrameForImageView(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
         timer.setInterval(200);
         timer.start();
 
@@ -65,7 +65,7 @@ void CameraManager::StopWebCam()
     m_videoCapture.release();
     disconnect(&timer,SIGNAL(timeout()), this, SLOT(getFrame()));
     connect(this, SIGNAL(SendFrameForImageView(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
-    disconnect(this, SIGNAL(SendTrackingFrameToVideoOutput(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
+    //disconnect(this, SIGNAL(SendTrackingFrameToVideoOutput(cv::Mat)), this,SLOT(onVideoFrameReady(cv::Mat)));
 
     timer.stop();
 
