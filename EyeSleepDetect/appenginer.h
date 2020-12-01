@@ -10,6 +10,7 @@
 #include"phonedetectclass.h"
 #include"capturedataimage.h"
 #include"roadmarkerdetect.h"
+#include"dnn_mmod_find_verhicle.h"
 class AppEnginer : public QObject
 {
     Q_OBJECT
@@ -25,6 +26,7 @@ private:
     PhoneDetectClass mPhoneDetectClass;
     CaptureDataImage mCaptureDataImage;
     RoadMarkerDetect mRoadMarkerDetect;
+    dnn_mmod_find_verhicle mDnn_mmod_find_verhicle;
 
 };
 
